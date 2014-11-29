@@ -1,26 +1,20 @@
 #!/usr/bin/env python
 
-import sys
-sys.path.append("..")
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import unittest
-from selenium import webdriver
+from basetest import BaseTest
 from adminautomation.pages import LoginPage
 
 
-class BypassIntegrationLogin(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Chrome()
-
+class BypassIntegrationLogin(BaseTest):
     def test_user_with_valid_credentials(self):
         with open("login.auth", "r") as f:
             user, passwd = f.readlines()
         login_page = LoginPage(self.driver)
         login_page.login(user.strip(), passwd.strip())
         assert login_page.driver.current_url == "https://admin-integration.bypasslane.com/admin_sessions/choose_venue"
-
-    def tearDown(self):
-        self.driver.close()
 
 
 if __name__ == "__main__":
