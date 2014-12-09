@@ -1,0 +1,21 @@
+{ "tests": {
+    "test_root_url_unauthenticated": {
+      "start_url": "https://admin-integration.bypasslane.com",
+      "end_url": "https://admin-integration.bypasslane.com/admin_sessions/new"
+    },
+    "test_login_with_valid_credentials": {
+      "user": "sam@bypassmobile.com",
+      "passwd": "bypass",
+      "end_url": "https://admin-integration.bypasslane.com/admin_sessions/choose_venue"
+    },
+    "test_login_with_invalid_credentials": {
+      "user": "notauser@bypassmobile.com",
+      "passwd": "fakepass",
+      "end_url": "https://admin-integration.bypasslane.com/admin_sessions/new"
+    },
+    "test_invalid_login_toast": {
+      "user": "notauser@bypassmobile.com",
+      "passwd": "fakepass"
+    }
+  }
+}

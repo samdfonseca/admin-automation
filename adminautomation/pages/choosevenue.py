@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 
 class ChooseVenuePage(BasePage):
 
+    # Expected values to check against
     CHECK_VALUES = {
         "page_title": "Admin Sessions - Choose Venue",
         "form_title": "Please Select a Venue"

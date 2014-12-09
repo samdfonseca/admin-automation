@@ -61,6 +61,15 @@ class BasePage(object):
             print("No expected value for {}".format(check_value_name))
 
 
+    def check_exists(self, locator):
+        try:
+            target_item = self.get_element(locator)
+        except (NoSuchElementException, StaleElementReferenceException):
+            return False
+
+        return True
+
+
     def is_title_match(self, custom_message):
         """
         Checks that the page title matches the expected value.

@@ -7,21 +7,41 @@ from selenium.webdriver.common.keys import Keys
 
 class LoginPage(BasePage):
 
-    URL = "https://admin-integration.bypasslane.com"
+    URL = "https://admin-integration.bypasslane.com/admin_sessions/new"
 
+    # Expected values to check against
     CHECK_VALUES = {
         "page_title": "Admin Sessions - New",
         "form_title": "Login to your account"
     }
 
-    def __init__(self, driver):
+
+    def __init__(self, driver, url=None):
         super(LoginPage, self).__init__(driver)
+        if url is not None:
+            self.URL = url
+
         self.driver.get(self.URL)
 
-        self.FORM_TITLE = self.get_element(LoginPageLocators.FORM_TITLE)
-        self.EMAIL_TEXTBOX = self.get_element(LoginPageLocators.EMAIL_TEXTBOX)
-        self.PASSWORD_TEXTBOX = self.get_element(LoginPageLocators.PASSWORD_TEXTBOX)
-        self.LOGIN_BUTTON = self.get_element(LoginPageLocators.LOGIN_BUTTON)
+
+    @property
+    def FORM_TITLE(self):
+        return self.get_element(LoginPageLocators.FORM_TITLE)
+
+
+    @property
+    def EMAIL_TEXTBOX(self):
+        return self.get_element(LoginPageLocators.EMAIL_TEXTBOX)
+
+
+    @property
+    def PASSWORD_TEXTBOX(self):
+        return self.get_element(LoginPageLocators.PASSWORD_TEXTBOX)
+
+
+    @property
+    def LOGIN_BUTTON(self):
+        return self.get_element(LoginPageLocators.LOGIN_BUTTON)
 
 
     def is_form_title_match(self, custom_message=None):
@@ -90,3 +110,13 @@ class LoginPage(BasePage):
         self.enter_email(email)
         self.enter_password(password)
         self.click_login_button()
+
+
+    def check_for_invalid_login_toast(self):
+        """
+        Checks for the existence of the invalid login toast.
+
+        :return: a bool based on if the toast is found
+        """
+
+        return self.check_exists(LoginPageLocators.INVALID_LOGIN_TOAST)

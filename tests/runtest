@@ -1,0 +1,7 @@
+#!/bin/bash
+
+PYPATH=$(python -c "import sys; print ':'.join(sys.path)[1:]")
+DIRNAME=$(dirname $PWD)
+export PYTHONPATH="$DIRNAME:$PYPATH"
+
+exec `python -B $1 -v`

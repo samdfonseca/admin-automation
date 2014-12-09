@@ -1,14 +1,14 @@
-#!/usr/bin/env python
-
-import os, sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+#!./runtest
 
 import unittest
-from basetest import BaseTest
+from tests import BaseTest
 from adminautomation.pages import LoginPage, ChooseVenuePage
 
 
 class ChooseVenueTest(BaseTest):
+
+    DATA_FILE = './data/choosevenuetest.csv'
+
     def test_select_venue_by_name(self):
         with open("login.auth", "r") as f:
             user, passwd = f.readlines()

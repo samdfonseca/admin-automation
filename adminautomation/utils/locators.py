@@ -6,6 +6,8 @@ class LoginPageLocators(object):
     PASSWORD_TEXTBOX = (By.ID, 'user_password')
     LOGIN_BUTTON = (By.CSS_SELECTOR, 'button.btn')
     FORM_TITLE = (By.CLASS_NAME, 'form-title')
+    INVALID_LOGIN_TOAST = (By.CLASS_NAME, 'toast-container')
+    INVALID_LOGIN_TOAST_MESSAGE = (By.CLASS_NAME, 'toast-message')
 
 
 class ChooseVenueLocators(object):

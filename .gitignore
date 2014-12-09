@@ -5,7 +5,7 @@ files.exproject
 
 .idea
 
-tests/*.auth
+*.auth
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
