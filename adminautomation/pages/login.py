@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 from adminautomation.pages import BasePage
-# from adminautomation.utils.locators import LoginPageLocators
 from adminautomation.utils import LoginPageLocators
 from selenium.webdriver.common.keys import Keys
 

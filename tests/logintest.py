@@ -24,7 +24,6 @@ class LoginTest(BaseTest):
         self.assertTrue(login_page.driver.current_url == test_data.end_url)
 
 
-    # TODO: Figure out how to pass a pre-authenticated session to the driver
     def test_root_url_authenticated(self):
         # Browser is allowed to access the Admin dashboard at the root url, if user has
         # an active session stored.
@@ -33,14 +32,12 @@ class LoginTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        login_page = LoginPage(self.driver, url=test_data.start_url)
-        login_page.attach_authenticated_session(test_data.user, test_data.passwd)
-        login_page.driver.get(test_data.end_url)
+        admin = LoginPage(self.driver, url=test_data.start_url)
+        self.attach_authenticated_session_to_driver(user=test_data.user, passwd=test_data.passwd,
+                                                    force_new_session=True, headless=True)
+        admin.driver.get(test_data.end_url)
 
-        # self.log.debug(login_page.driver.title)
-        # self.log.debug(test_data.end_page_title)
-
-        self.assertTrue(login_page.driver.title == test_data.end_page_title)
+        self.assertTrue(admin.driver.title == test_data.end_page_title)
 
 
     def test_login_with_valid_credentials(self):

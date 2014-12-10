@@ -4,4 +4,5 @@ PYPATH=$(python -c "import sys; print ':'.join(sys.path)[1:]")
 DIRNAME=$(dirname $PWD)
 export PYTHONPATH="$DIRNAME:$PYPATH"
 
-exec `python -B $1 -v`
+#exec `$(which python) -B $1 -v`
+$(which python) -B $1 -v

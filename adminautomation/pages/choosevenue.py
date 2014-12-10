@@ -2,6 +2,7 @@ from __future__ import print_function
 
 from adminautomation.pages import BasePage
 from adminautomation.utils import ChooseVenueLocators
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
 
@@ -31,7 +32,7 @@ class ChooseVenuePage(BasePage):
 
     @property
     def VENUE_OPTIONS(self):
-        return self.get_element(ChooseVenueLocators.VENUE_OPTIONS)
+        return self.get_elements(ChooseVenueLocators.VENUE_OPTIONS)
 
 
     @property
@@ -47,6 +48,11 @@ class ChooseVenuePage(BasePage):
     @property
     def VENUE_LIST(self):
         return self.get_element(ChooseVenueLocators.VENUE_LIST, "Cannot locate VENUE_LIST")
+
+
+    @property
+    def VENUE_LIST_ITEMS(self):
+        return self.get_elements(ChooseVenueLocators.VENUE_LIST_ITEMS, "Cannot locate VENUE_LIST_ITEMS")
 
 
     @property
@@ -78,12 +84,37 @@ class ChooseVenuePage(BasePage):
 
         return False
 
-    def click_venues_listbox(self):
+    def expand_venues_listbox(self):
         """
-        Simulates clicking the venues listbox.
+        Simulates clicking the venues listbox. If already expanded, does nothing.
         """
 
-        self.VENUES_LISTBOX.click()
+        if self.is_dropdown_visible() is False:
+            # If the dropdown is not visible/expanded, click it
+            self.VENUES_LISTBOX.click()
+
+
+    def contract_venues_listbox(self):
+        """
+        Simulates pressing escape in the venues list searchbox. If already contracted, does nothing.
+        """
+
+        if self.is_dropdown_visible():
+            # If the dropdown is visible/expanded, press escape in the searchbox.
+            self.VENUE_LIST_SEARCHBOX.send_keys(Keys.ESCAPE)
+
+
+    def toggle_venues_listbox(self):
+        """
+        Toggles the venues listbox between expanded and contracted.
+        """
+
+        if self.is_dropdown_visible():
+            # If the dropdown is visible/expanded, contract it.
+            self.contract_venues_listbox()
+        else:
+            # If the dropdown is not visible/expanded, expand it.
+            self.expand_venues_listbox()
 
 
     def click_go_button(self):
@@ -122,8 +153,7 @@ class ChooseVenuePage(BasePage):
         Simulates clicking the venues searchbox.
         """
 
-        if self.is_dropdown_visible() is False:
-            self.click_venues_listbox()
+        self.expand_venues_listbox()
 
         self.clear_searchbox()
         if isinstance(search_query, basestring):
@@ -137,13 +167,12 @@ class ChooseVenuePage(BasePage):
         :param venue_name: the venue's name as a string
         """
 
-        if self.is_dropdown_visible() is False:
-            print("Dropdown list is not visible. Unable to select a venue.")
-            return
-
+        self.expand_venues_listbox()
         list_items = self.get_current_list_items()
         for item in list_items:
-            if item.text == venue_name: break
+            if item.text == venue_name:
+                break
+            self.VENUE_LIST_SEARCHBOX.send_keys(Keys.ARROW_DOWN)
         else:
             print("Could not find venue in list: {}".format(venue_name))
             return

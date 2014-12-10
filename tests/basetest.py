@@ -4,6 +4,7 @@ import unittest
 from selenium import webdriver
 
 from adminautomation.utils import TestCaseDataReader
+from adminautomation.utils import attachAuthenticatedSessionToDriver
 
 class BaseTest(unittest.TestCase):
 
@@ -22,3 +23,7 @@ class BaseTest(unittest.TestCase):
     @property
     def CURRENT_TEST_DATA(self):
         return self.TEST_DATA[self._testMethodName]
+
+
+    def attach_authenticated_session_to_driver(self, session_cookie=None, **kwargs):
+        attachAuthenticatedSessionToDriver(self.driver, session_cookie, **kwargs)
