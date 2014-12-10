@@ -2,6 +2,9 @@
 venv/
 activate
 
+# cached cookies
+tests/*_cookie.pickle
+
 # data files
 tests/data/*
 

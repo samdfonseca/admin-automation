@@ -31,13 +31,16 @@ class LoginTest(BaseTest):
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5939
 
-        test_data = self.current_test_data()
+        test_data = self.CURRENT_TEST_DATA
 
         login_page = LoginPage(self.driver, url=test_data.start_url)
         login_page.attach_authenticated_session(test_data.user, test_data.passwd)
-        login_page.refresh_page()
+        login_page.driver.get(test_data.end_url)
 
-        self.assertTrue(login_page.driver.current_url == test_data.end_page_title)
+        # self.log.debug(login_page.driver.title)
+        # self.log.debug(test_data.end_page_title)
+
+        self.assertTrue(login_page.driver.title == test_data.end_page_title)
 
 
     def test_login_with_valid_credentials(self):

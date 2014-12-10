@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
-from adminautomation.utils import AdminAuthCookie
+from sys import modules
 
 
 class BasePage(object):
@@ -97,6 +97,9 @@ class BasePage(object):
 
         :param cookie:
         """
+
+        if not modules.get("AdminAuthCookie"):
+            from adminautomation.utils import AdminAuthCookie
 
         session_cookie_name = kwargs.get('session_cookie_name', '_bypass_admin_session')
 
