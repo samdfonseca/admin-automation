@@ -1,5 +1,7 @@
 #!./runtest
 
+import logging
+import sys
 import unittest
 from tests import BaseTest
 from adminautomation.pages import LoginPage
@@ -7,9 +9,7 @@ from adminautomation.pages import LoginPage
 
 class LoginTest(BaseTest):
 
-    TEST_INDEX = 0
     DATA_FILE = './data/logintest.json'
-
 
     def test_root_url_unauthenticated(self):
         # Browser is redirected from the Admin app's root URL to a login URL,
@@ -17,7 +17,8 @@ class LoginTest(BaseTest):
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5933
 
-        test_data = LoginTest.CURRENT_TEST_DATA
+        self.log.debug(self._testMethodName)
+        test_data = self.current_test_data(self._testMethodName)
 
         login_page = LoginPage(self.driver, url=test_data.start_url)
         self.assertTrue(login_page.driver.current_url == test_data.end_url)
@@ -43,7 +44,8 @@ class LoginTest(BaseTest):
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5934
 
-        test_data = LoginTest.CURRENT_TEST_DATA
+        self.log.debug(self._testMethodName)
+        test_data = self.current_test_data(self._testMethodName)
 
         login_page = LoginPage(self.driver)
         login_page.login(test_data.user, test_data.passwd)
@@ -53,7 +55,8 @@ class LoginTest(BaseTest):
         # Login with invalid user credentials.
         # Checks that the user is returned to the login screen.
 
-        test_data = LoginTest.CURRENT_TEST_DATA
+        self.log.debug(self._testMethodName)
+        test_data = self.current_test_data(self._testMethodName)
 
         login_page = LoginPage(self.driver)
         login_page.login(test_data.user, test_data.passwd)
@@ -63,7 +66,8 @@ class LoginTest(BaseTest):
         # Login with invalid user credentials.
         # Checks that the error toast is displayed.
 
-        test_data = LoginTest.CURRENT_TEST_DATA
+        self.log.debug(self._testMethodName)
+        test_data = self.current_test_data(self._testMethodName)
 
         login_page = LoginPage(self.driver)
         login_page.login(test_data.user, test_data.passwd)
@@ -71,4 +75,6 @@ class LoginTest(BaseTest):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(stream=sys.stderr)
+    logging.getLogger("TestCaseLogger").setLevel(logging.DEBUG)
     unittest.main()

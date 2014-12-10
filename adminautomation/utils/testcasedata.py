@@ -16,10 +16,11 @@ def read_test_case_data_file(data_file):
     with open(data_file, 'r') as f:
         contents = readjson(f)
 
-    sorted_items = sorted(contents['tests'].items(), key=lambda i: i[0])
-    sorted_dicts = [item[1] for item in sorted_items]
+    # sorted_items = sorted(contents['tests'].items(), key=lambda i: i[0])
+    # sorted_dicts = [item[1] for item in sorted_items]
 
-    return sorted_dicts
+    test_data = [(key, new_test_case_data_object(contents['tests'][key])) for key in contents['tests'].keys()]
+    return dict(test_data)
 
 
 def new_test_case_data_object(data_dict):

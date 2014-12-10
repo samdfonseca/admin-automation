@@ -1,16 +1,17 @@
+import logging
 import unittest
 
 from selenium import webdriver
 
-from adminautomation.utils.testcasedata import new_test_case_data_object as TestCaseData
-from adminautomation.utils.testcasedata import read_test_case_data_file as TestCaseDataReader
+from adminautomation.utils import TestCaseDataReader
 
 class BaseTest(unittest.TestCase):
 
     TEST_DATA = None
 
     def setUp(self):
-        BaseTest.TEST_DATA = TestCaseDataReader(self.DATA_FILE)
+        self.TEST_DATA = TestCaseDataReader(self.DATA_FILE)
+        self.log = logging.getLogger("TestCaseLogger")
         self.driver = webdriver.Chrome()
 
 
@@ -18,11 +19,8 @@ class BaseTest(unittest.TestCase):
         self.driver.close()
 
 
-    @property
-    def CURRENT_TEST_DATA(self):
+    def current_test_data(self, test_name):
         # Returns the data for the current test case in a dict.
-        # Pops the first row of data in TEST_DATA['test_cases'], so the current test data will always
-        # be located at TEST_DATA['test_cases'][0].
 
-        current_test_case = BaseTest.TEST_DATA.pop(0)
-        return TestCaseData(current_test_case)
+        return self.TEST_DATA[test_name]
+

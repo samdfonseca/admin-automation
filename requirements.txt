@@ -1,2 +1,5 @@
-selenium>=2.44.0
-simplejson>=3.6.5
+py==1.4.26
+pytest==2.6.4
+selenium==2.44.0
+simplejson==3.6.5
+wsgiref==0.1.2
