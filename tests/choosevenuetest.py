@@ -1,19 +1,22 @@
 #!./runtest
 
+import logging
+import sys
 import unittest
 from tests import BaseTest
-from adminautomation.pages import LoginPage, ChooseVenuePage
+from adminautomation.pages import ChooseVenuePage
 
 
 class ChooseVenueTest(BaseTest):
 
-    DATA_FILE = './data/choosevenuetest.csv'
+    DATA_FILE = './data/choosevenuetest.json'
 
     def test_select_venue_by_name(self):
-        with open("login.auth", "r") as f:
-            user, passwd = f.readlines()
-        login_page = LoginPage(self.driver)
-        login_page.login(user.strip(), passwd.strip())
+        # Simulates a user clicking the venues drop down box then selecting a venue by name.
+        #
+        # NEEDS TESTRAIL CASE
+
+        self
         choose_venue_page = ChooseVenuePage(self.driver)
         choose_venue_page.click_venues_listbox()
         choose_venue_page.select_venue_from_list_by_name("QA Kingdom")

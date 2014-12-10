@@ -19,8 +19,6 @@ class BaseTest(unittest.TestCase):
         self.driver.close()
 
 
-    def current_test_data(self, test_name):
-        # Returns the data for the current test case in a dict.
-
-        return self.TEST_DATA[test_name]
-
+    @property
+    def CURRENT_TEST_DATA(self):
+        return self.TEST_DATA[self._testMethodName]

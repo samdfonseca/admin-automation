@@ -1,7 +1,8 @@
 from __future__ import print_function
 
 from adminautomation.pages import BasePage
-from adminautomation.utils.locators import LoginPageLocators
+# from adminautomation.utils.locators import LoginPageLocators
+from adminautomation.utils import LoginPageLocators
 from selenium.webdriver.common.keys import Keys
 
 
@@ -16,10 +17,10 @@ class LoginPage(BasePage):
     }
 
 
-    def __init__(self, driver, url=None):
+    def __init__(self, driver, **kwargs):
         super(LoginPage, self).__init__(driver)
-        if url is not None:
-            self.URL = url
+
+        self.URL = kwargs.get("url", self.URL)
 
         self.driver.get(self.URL)
 

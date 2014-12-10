@@ -3,6 +3,13 @@
       "start_url": "https://admin-integration.bypasslane.com",
       "end_url": "https://admin-integration.bypasslane.com/admin_sessions/new"
     },
+    "test_root_url_authenticated": {
+      "start_url": "https://admin-integration.bypasslane.com",
+      "end_url": "https://admin-integration.bypasslane.com",
+      "end_page_title": "Dashboard - Index",
+      "user": "sam@bypassmobile.com",
+      "passwd": "bypass"
+    },
     "test_login_with_valid_credentials": {
       "user": "sam@bypassmobile.com",
       "passwd": "bypass",

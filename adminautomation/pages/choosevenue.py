@@ -1,11 +1,13 @@
 from __future__ import print_function
 
-from adminautomation.pages.basepage import BasePage
-from adminautomation.utils.locators import ChooseVenueLocators
+from adminautomation.pages import BasePage
+from adminautomation.utils import ChooseVenueLocators
 from selenium.webdriver.common.keys import Keys
 
 
 class ChooseVenuePage(BasePage):
+
+    URL = "https://admin-integration.bypasslane.com/admin_sessions/choose_venue"
 
     # Expected values to check against
     CHECK_VALUES = {
@@ -13,20 +15,43 @@ class ChooseVenuePage(BasePage):
         "form_title": "Please Select a Venue"
     }
 
-    def __init__(self, driver):
+
+    def __init__(self, driver, **kwargs):
         super(ChooseVenuePage, self).__init__(driver)
 
+        self.URL = kwargs.get("url", self.URL)
 
-        self.VENUES_LISTBOX = self.get_element(ChooseVenueLocators.VENUES_LISTBOX)
-        self.VENUE_OPTIONS = self.get_element(ChooseVenueLocators.VENUE_OPTIONS)
-        self.GO_BUTTON = self.get_element(ChooseVenueLocators.GO_BUTTON)
-        self.FORM_TITLE = self.get_element(ChooseVenueLocators.FORM_TITLE)
-        self.VENUES_LISTBOX.click()
-        self.VENUE_LIST = self.get_element(ChooseVenueLocators.VENUE_LIST, "Cannot locate VENUE_LIST")
-        self.VENUE_LIST_SEARCHBOX = self.get_element(ChooseVenueLocators.VENUE_LIST_SEARCHBOX,
-                                                     "Cannot locate VENUE_LIST_SEARCHBOX")
-        if self.VENUE_LIST_SEARCHBOX is not None:
-            self.VENUE_LIST_SEARCHBOX.send_keys(Keys.RETURN)
+        self.driver.get(self.URL)
+
+
+    @property
+    def VENUES_LISTBOX(self):
+        return self.get_element(ChooseVenueLocators.VENUES_LISTBOX)
+
+
+    @property
+    def VENUE_OPTIONS(self):
+        return self.get_element(ChooseVenueLocators.VENUE_OPTIONS)
+
+
+    @property
+    def GO_BUTTON(self):
+        return self.get_element(ChooseVenueLocators.GO_BUTTON)
+
+
+    @property
+    def FORM_TITLE(self):
+        return self.get_element(ChooseVenueLocators.FORM_TITLE)
+
+
+    @property
+    def VENUE_LIST(self):
+        return self.get_element(ChooseVenueLocators.VENUE_LIST, "Cannot locate VENUE_LIST")
+
+
+    @property
+    def VENUE_LIST_SEARCHBOX(self):
+        return self.get_element(ChooseVenueLocators.VENUE_LIST_SEARCHBOX, "Cannot locate VENUE_LIST_SEARCHBOX")
 
 
     def is_form_title_match(self, custom_message=None):

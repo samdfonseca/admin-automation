@@ -1,10 +1,11 @@
 from __future__ import print_function
 
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from adminautomation.utils import AdminAuthCookie
 
 
 class BasePage(object):
-    def __init__(self, driver):
+    def __init__(self, driver, **kwargs):
         """
         Constructor for a BasePage object.
 
@@ -13,6 +14,15 @@ class BasePage(object):
         """
 
         self.driver = driver
+
+
+    def refresh_page(self):
+        """
+        Refreshes the current page.
+
+        """
+
+        self.driver.refresh()
 
 
     def get_element(self, locator, custom_message=None):
@@ -79,3 +89,19 @@ class BasePage(object):
 
         found_title = self.driver.title
         self.check_value("page_title", found_title, custom_message=custom_message)
+
+
+    def attach_authenticated_session(self, user, passwd, **kwargs):
+        """
+        Replaces the _bypass_admin_session cookie with a pre-authenticated session cookie.
+
+        :param cookie:
+        """
+
+        session_cookie_name = kwargs.get('session_cookie_name', '_bypass_admin_session')
+
+        authed_cookie = AdminAuthCookie(user, passwd, **kwargs)
+
+        self.driver.delete_cookie(session_cookie_name)
+        self.driver.add_cookie(authed_cookie)
+
