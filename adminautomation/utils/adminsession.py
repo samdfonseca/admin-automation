@@ -15,12 +15,14 @@ def get_admin_session_cookie(user, passwd, **kwargs):
 
     auth_cookie_file = kwargs.get("cookie_file", "auth_cookie.pickle")
     max_cache_time = kwargs.get("max_cache_time", THREE_DAYS_IN_SECONDS)
-    force_new_session = kwargs.get("force_new", False)
-    venue_name = kwargs.get('venue_name', 'Bypass World Headquarters')
+    force_new_session = kwargs.get("force_new_session", False)
     auth_url = kwargs.get('auth_url', 'https://admin-integration.bypasslane.com/admin_sessions/new')
     session_cookie_name = kwargs.get("session_cookie_name", "_bypass_admin_session")
     cache_session_cookie = kwargs.get("cache_cookie", True)
     use_headless_browser = kwargs.get("headless", True)
+
+    if user is None or passwd is None:
+        raise Warning("user and passwd arguments should not be None in case the cached cookie is expired.")
 
     if force_new_session is not True:
         # If param force_new is not set to True, try to use a cached session cookie
@@ -36,6 +38,9 @@ def get_admin_session_cookie(user, passwd, **kwargs):
 
                 return cookie
 
+    if user is None or passwd is None:
+        raise TypeError("Cached cookie is not found/expired. 'user' and 'passwd' cannot be None.")
+
     # If not using the cached session cookie, login to a new Admin session and extract its session cookie
     if use_headless_browser:
         # Use PhantomJS if headless param is set to True (Default)
@@ -46,12 +51,14 @@ def get_admin_session_cookie(user, passwd, **kwargs):
     admin = LoginPage(driver, url=auth_url)
     admin.login(user, passwd)
 
-    admin = ChooseVenuePage(admin.driver)
+    # admin = ChooseVenuePage(admin.driver)
     # admin.select_venue_from_list_by_row_number(0)
-    admin.select_venue_from_list_by_name(venue_name)
-    admin.click_go_button()
+    # admin.select_venue_from_list_by_name(venue_name)
+    # admin.click_go_button()
 
-    cookie = driver.get_cookie(session_cookie_name)
+    cookie = admin.driver.get_cookie(session_cookie_name)
+
+    admin.driver.quit()
 
     # Pickle the session cookie and save it to a file if cache_session_cookie is set to True
     if cache_session_cookie:
@@ -72,26 +79,41 @@ def attach_auth_session_to_driver(driver, session_cookie=None, **kwargs):
     :param cookie: an optional cookie object which can be attached directly
     """
 
-    preauthed_cookie = None
     if isinstance(session_cookie, dict):
-        # Cookie objects are dicts with certain keys-values.
-        try:
-            if session_cookie["domain"].lower() in driver.current_url.lower():
-                # Assume session cookie is valid if it has the key 'domain' and its value is a substring of the
-                # driver's current url
-                preauthed_cookie = session_cookie
-        except KeyError:
-            preauthed_cookie = None
+        driver.delete_cookie(session_cookie["name"])
+        driver.add_cookie(session_cookie)
+    else:
+        if kwargs.get("user") is None:
+            raise TypeError("'user' is not set")
+        if kwargs.get("passwd") is None:
+            raise TypeError("'passwd' is not set")
 
-    if preauthed_cookie is None:
-        # If session_cookie is not given or not usable, pass kwargs to get_admin_session_cookie.
-        user = kwargs.pop("user")
-        passwd = kwargs.pop("passwd")
+        session_cookie = get_admin_session_cookie(kwargs.get("user"), kwargs.get("passwd"))
+        if isinstance(session_cookie, dict):
+            attach_auth_session_to_driver(driver, session_cookie=session_cookie)
+        else:
+            raise Exception("Unable to get session cookie")
 
-        preauthed_cookie = get_admin_session_cookie(user, passwd, **kwargs)
-
-    # Delete the old cookie and add the new one
-    driver.delete_cookie(preauthed_cookie["name"])
-    driver.add_cookie(preauthed_cookie)
+    # preauthed_cookie = None
+    # if isinstance(session_cookie, dict):
+    #     # Cookie objects are dicts with certain keys-values.
+    #     try:
+    #         if session_cookie["domain"].lower() in driver.current_url.lower():
+    #             # Assume session cookie is valid if it has the key 'domain' and its value is a substring of the
+    #             # driver's current url
+    #             preauthed_cookie = session_cookie
+    #     except KeyError:
+    #         preauthed_cookie = None
+    #
+    # if preauthed_cookie is None:
+    #     # If session_cookie is not given or not usable, pass kwargs to get_admin_session_cookie.
+    #     user = kwargs.pop("user")
+    #     passwd = kwargs.pop("passwd")
+    #
+    #     preauthed_cookie = get_admin_session_cookie(user, passwd, **kwargs)
+    #
+    # # Delete the old cookie and add the new one
+    # driver.delete_cookie(preauthed_cookie["name"])
+    # driver.add_cookie(preauthed_cookie)
 
 

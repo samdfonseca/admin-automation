@@ -205,8 +205,11 @@ class ChooseVenuePage(BasePage):
         :param venue_id: the venue's id number as an integer
         """
 
+        self.expand_venues_listbox()
         for item in self.VENUE_OPTIONS:
-            if item.get_attribute("value") == venue_id: break
+            if item.get_attribute("value") == venue_id:
+                break
+            self.VENUE_LIST_SEARCHBOX.send_keys(Keys.ARROW_DOWN)
         else:
             print("Could not find venue id in list: {}".format(venue_id))
             return

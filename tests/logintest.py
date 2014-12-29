@@ -2,8 +2,6 @@
 
 # Tests for logging into Admin
 
-import logging
-import sys
 import unittest
 from tests import BaseTest
 from adminautomation.pages import LoginPage
@@ -12,6 +10,7 @@ from adminautomation.pages import LoginPage
 class LoginTest(BaseTest):
 
     DATA_FILE = './data/logintest.json'
+    __AUTO_AUTH = False
 
 
     def test_root_url_unauthenticated(self):
@@ -36,11 +35,14 @@ class LoginTest(BaseTest):
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver, url=test_data.start_url)
-        self.attach_authenticated_session_to_driver(user=test_data.user, passwd=test_data.passwd,
-                                                    force_new_session=True, headless=True)
+        self.attach_authenticated_session_to_driver(admin.driver, self.AUTH_COOKIE,
+                                                    user=self.AUTH_CREDENTIALS["user"],
+                                                    passwd=self.AUTH_CREDENTIALS["passwd"],
+                                                    force_new_session=True)
         admin.driver.get(test_data.end_url)
 
         self.assertEqual(admin.driver.title, test_data.end_page_title)
+        self.driver.save_screenshot('dash.png')
 
 
     def test_login_with_valid_credentials(self):
@@ -80,7 +82,4 @@ class LoginTest(BaseTest):
 
 
 if __name__ == "__main__":
-    # TODO: Better test debug logging
-    logging.basicConfig(stream=sys.stderr)
-    logging.getLogger("TestCaseLogger").setLevel(logging.DEBUG)
     unittest.main()

@@ -7,15 +7,29 @@ def read_test_case_data_file(data_file):
     Deserializes a json file containing test case input data into a usable object. Results are then sorted
     alphabetically to match the order of test case execution.
 
-    :param data_file: the absolute path to the target data file as a string
+    :param data_file: the path to the target data file as a string
     :return: a sorted list of dicts
     """
 
     with open(data_file, 'r') as f:
         contents = readjson(f)
 
-    test_data = [(key, new_test_case_data_object(contents['tests'][key])) for key in contents['tests'].keys()]
+    test_data = [(key, new_test_case_data_object(contents["tests"][key])) for key in contents["tests"].keys()]
     return dict(test_data)
+
+
+def read_test_case_auth_file(auth_file):
+    """
+    Same as read_test_case_data_file but for auth files.
+
+    :param auth_file: the path to the target auth file as a string
+    :return: a dict with keys "user" and "passwd"
+    """
+
+    with open(auth_file, "r") as f:
+        contents = readjson(f)
+
+    return contents["credentials"]
 
 
 def new_test_case_data_object(data_dict):

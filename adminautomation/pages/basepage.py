@@ -3,13 +3,13 @@
 from __future__ import print_function
 
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
-# from sys import modules
 
-
+_ADMIN_ROOT_URL = "https://admin-integration.bypasslane.com"
+_ADMIN_SESSION_COOKIE_NAME = "_bypass_admin_session"
 
 class BasePage(object):
 
-    ROOT_URL = "https://admin-integration.bypasslane.com"
+    ROOT_URL = _ADMIN_ROOT_URL
 
 
     def __init__(self, driver, **kwargs):
@@ -21,14 +21,9 @@ class BasePage(object):
         """
 
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
-        # try:
-        #     self.ROOT_URL =
-        # except KeyError as e:
-        #     self.ROOT_URL = self.ENVIRONMENT
-        #     self.ENVIRONMENT = "custom"
-
 
         self.driver = driver
+        self.driver.get(kwargs.get("url", self.ROOT_URL + self.PATH))
 
 
     def refresh_page(self):
