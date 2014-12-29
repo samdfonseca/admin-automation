@@ -47,8 +47,8 @@ def get_admin_session_cookie(user, passwd, **kwargs):
     admin.login(user, passwd)
 
     admin = ChooseVenuePage(admin.driver)
-    admin.select_venue_from_list_by_row_number(0)
-    # admin.select_venue_from_list_by_name(venue_name)
+    # admin.select_venue_from_list_by_row_number(0)
+    admin.select_venue_from_list_by_name(venue_name)
     admin.click_go_button()
 
     cookie = driver.get_cookie(session_cookie_name)

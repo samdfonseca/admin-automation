@@ -6,9 +6,10 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 # from sys import modules
 
 
+
 class BasePage(object):
 
-    BASE_URL = "https://admin-integration.bypasslane.com"
+    ROOT_URL = "https://admin-integration.bypasslane.com"
 
 
     def __init__(self, driver, **kwargs):
@@ -19,7 +20,14 @@ class BasePage(object):
         :return: a BasePage object
         """
 
-        self.BASE_URL = kwargs.get("base_url", self.BASE_URL)
+        self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
+        # try:
+        #     self.ROOT_URL =
+        # except KeyError as e:
+        #     self.ROOT_URL = self.ENVIRONMENT
+        #     self.ENVIRONMENT = "custom"
+
+
         self.driver = driver
 
 

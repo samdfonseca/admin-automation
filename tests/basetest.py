@@ -8,13 +8,20 @@ from selenium import webdriver
 from adminautomation.utils import TestCaseDataReader
 from adminautomation.utils import attachAuthenticatedSessionToDriver
 
+
 class BaseTest(unittest.TestCase):
 
     TEST_DATA = None
 
 
+    @classmethod
+    def setUpClass(cls):
+        cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE)
+
+
     def setUp(self):
-        self.TEST_DATA = TestCaseDataReader(self.DATA_FILE)
+
+        # self.TEST_DATA = TestCaseDataReader(self.DATA_FILE)
         self.log = logging.getLogger("TestCaseLogger")
         self.driver = webdriver.Chrome()
 

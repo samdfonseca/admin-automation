@@ -22,7 +22,8 @@ class LoginPage(BasePage):
     def __init__(self, driver, **kwargs):
         super(LoginPage, self).__init__(driver)
 
-        self.URL = self.BASE_URL + self.PATH
+        self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
+        self.URL = kwargs.get("url", self.ROOT_URL + self.PATH)
         self.driver.get(self.URL)
 
 

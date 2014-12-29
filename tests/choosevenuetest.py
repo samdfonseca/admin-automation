@@ -20,7 +20,7 @@ class ChooseVenueTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        admin = ChooseVenuePage
+        admin = ChooseVenuePage(self.driver)
 
 
 if __name__ == "__main__":

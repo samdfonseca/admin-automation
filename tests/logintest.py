@@ -13,6 +13,7 @@ class LoginTest(BaseTest):
 
     DATA_FILE = './data/logintest.json'
 
+
     def test_root_url_unauthenticated(self):
         # Browser is redirected from the Admin root URL to a login URL,
         # if user does have an active session.
@@ -23,7 +24,7 @@ class LoginTest(BaseTest):
 
         admin = LoginPage(self.driver, url=test_data.start_url)
 
-        self.assertTrue(admin.driver.current_url == test_data.end_url)
+        self.assertEqual(admin.driver.current_url, test_data.end_url)
 
 
     def test_root_url_authenticated(self):
@@ -64,7 +65,7 @@ class LoginTest(BaseTest):
         admin = LoginPage(self.driver)
         admin.login(test_data.user, test_data.passwd)
 
-        self.assertTrue(admin.driver.current_url == test_data.end_url)
+        self.assertEqual(admin.driver.current_url, test_data.end_url)
 
     def test_invalid_login_toast(self):
         # Login with invalid user credentials.

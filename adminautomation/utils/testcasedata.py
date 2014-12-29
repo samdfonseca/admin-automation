@@ -14,7 +14,6 @@ def read_test_case_data_file(data_file):
     with open(data_file, 'r') as f:
         contents = readjson(f)
 
-
     test_data = [(key, new_test_case_data_object(contents['tests'][key])) for key in contents['tests'].keys()]
     return dict(test_data)
 
