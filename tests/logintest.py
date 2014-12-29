@@ -1,5 +1,7 @@
 #!./runtest
 
+# Tests for logging into Admin
+
 import logging
 import sys
 import unittest
@@ -19,9 +21,9 @@ class LoginTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        login_page = LoginPage(self.driver, url=test_data.start_url)
+        admin = LoginPage(self.driver, url=test_data.start_url)
 
-        self.assertTrue(login_page.driver.current_url == test_data.end_url)
+        self.assertTrue(admin.driver.current_url == test_data.end_url)
 
 
     def test_root_url_authenticated(self):
@@ -37,7 +39,7 @@ class LoginTest(BaseTest):
                                                     force_new_session=True, headless=True)
         admin.driver.get(test_data.end_url)
 
-        self.assertTrue(admin.driver.title == test_data.end_page_title)
+        self.assertEqual(admin.driver.title, test_data.end_page_title)
 
 
     def test_login_with_valid_credentials(self):
@@ -48,10 +50,10 @@ class LoginTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        login_page = LoginPage(self.driver)
-        login_page.login(test_data.user, test_data.passwd)
+        admin = LoginPage(self.driver)
+        admin.login(test_data.user, test_data.passwd)
 
-        self.assertTrue(login_page.driver.current_url == test_data.end_url)
+        self.assertTrue(admin.driver.current_url == test_data.end_url)
 
     def test_login_with_invalid_credentials(self):
         # Login with invalid user credentials.
@@ -59,10 +61,10 @@ class LoginTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        login_page = LoginPage(self.driver)
-        login_page.login(test_data.user, test_data.passwd)
+        admin = LoginPage(self.driver)
+        admin.login(test_data.user, test_data.passwd)
 
-        self.assertTrue(login_page.driver.current_url == test_data.end_url)
+        self.assertTrue(admin.driver.current_url == test_data.end_url)
 
     def test_invalid_login_toast(self):
         # Login with invalid user credentials.
@@ -70,13 +72,14 @@ class LoginTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        login_page = LoginPage(self.driver)
-        login_page.login(test_data.user, test_data.passwd)
+        admin = LoginPage(self.driver)
+        admin.login(test_data.user, test_data.passwd)
 
-        self.assertTrue(login_page.check_for_invalid_login_toast())
+        self.assertTrue(admin.check_for_invalid_login_toast())
 
 
 if __name__ == "__main__":
+    # TODO: Better test debug logging
     logging.basicConfig(stream=sys.stderr)
     logging.getLogger("TestCaseLogger").setLevel(logging.DEBUG)
     unittest.main()

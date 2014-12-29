@@ -2,11 +2,17 @@
 venv/
 activate
 
-# cached cookies
-tests/*_cookie.pickle
+# ghostdriver log file
+tests/ghostdriver.log
+
+# cached cookies and other serialized objects
+tests/*.pickle
 
 # data files
 tests/data/*
+
+# selenium server jar
+selenium-*.jar
 
 # Created by .gitignore support plugin (hsz.mobi)
 .exvim.admin-automation
@@ -14,8 +20,6 @@ admin-automation.exvim
 files.exproject
 
 .idea
-
-*.auth
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

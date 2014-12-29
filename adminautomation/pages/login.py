@@ -1,3 +1,5 @@
+# Page object for Admin's login page
+
 from __future__ import print_function
 
 from adminautomation.pages import BasePage
@@ -7,9 +9,10 @@ from selenium.webdriver.common.keys import Keys
 
 class LoginPage(BasePage):
 
-    URL = "https://admin-integration.bypasslane.com/admin_sessions/new"
+    PATH = "/admin_sessions/new"
 
     # Expected values to check against
+    # Need to figure out a better way to do this
     CHECK_VALUES = {
         "page_title": "Admin Sessions - New",
         "form_title": "Login to your account"
@@ -19,8 +22,7 @@ class LoginPage(BasePage):
     def __init__(self, driver, **kwargs):
         super(LoginPage, self).__init__(driver)
 
-        self.URL = kwargs.get("url", self.URL)
-
+        self.URL = self.BASE_URL + self.PATH
         self.driver.get(self.URL)
 
 

@@ -1,3 +1,5 @@
+# Locator objects used by the webdriver to find page elements
+
 from selenium.webdriver.common.by import By
 
 

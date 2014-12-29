@@ -1,5 +1,7 @@
 #!./runtest
 
+# Tests for selecting a venue in Admin
+
 import logging
 import sys
 import unittest
@@ -16,13 +18,9 @@ class ChooseVenueTest(BaseTest):
         #
         # NEEDS TESTRAIL CASE
 
-        self
-        choose_venue_page = ChooseVenuePage(self.driver)
-        # choose_venue_page.expand_venues_listbox()
-        choose_venue_page.select_venue_from_list_by_name("QA Kingdom")
-        choose_venue_page.click_go_button()
-        el = self.driver.find_element_by_class_name("select2-chosen")
-        assert el.text == "QA Kingdom"
+        test_data = self.CURRENT_TEST_DATA
+
+        admin = ChooseVenuePage
 
 
 if __name__ == "__main__":

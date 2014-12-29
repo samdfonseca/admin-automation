@@ -1,16 +1,18 @@
+# Page object for Admin's venue selection page
+
 from __future__ import print_function
 
 from adminautomation.pages import BasePage
 from adminautomation.utils import ChooseVenueLocators
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
 
 class ChooseVenuePage(BasePage):
 
-    URL = "https://admin-integration.bypasslane.com/admin_sessions/choose_venue"
+    PATH = "/admin_sessions/choose_venue"
 
     # Expected values to check against
+    # TODO: Figure out a better way to do this
     CHECK_VALUES = {
         "page_title": "Admin Sessions - Choose Venue",
         "form_title": "Please Select a Venue"
@@ -20,8 +22,7 @@ class ChooseVenuePage(BasePage):
     def __init__(self, driver, **kwargs):
         super(ChooseVenuePage, self).__init__(driver)
 
-        self.URL = kwargs.get("url", self.URL)
-
+        self.URL = self.BASE_URL + self.PATH
         self.driver.get(self.URL)
 
 
@@ -78,7 +79,7 @@ class ChooseVenuePage(BasePage):
         :return: a boolean, True if visible, False if not
         """
 
-        if self.VENUE_LIST_SEARCHBOX is not None and self.VENUE_LIST is not None:
+        if self.VENUE_LIST_SEARCHBOX and self.VENUE_LIST:
             if self.VENUE_LIST_SEARCHBOX.is_displayed() and self.VENUE_LIST.is_displayed():
                 return True
 

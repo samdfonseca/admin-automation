@@ -1,3 +1,5 @@
+# The base page object to be inherited by all other page objects
+
 from __future__ import print_function
 
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
@@ -5,6 +7,10 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 
 
 class BasePage(object):
+
+    BASE_URL = "https://admin-integration.bypasslane.com"
+
+
     def __init__(self, driver, **kwargs):
         """
         Constructor for a BasePage object.
@@ -13,6 +19,7 @@ class BasePage(object):
         :return: a BasePage object
         """
 
+        self.BASE_URL = kwargs.get("base_url", self.BASE_URL)
         self.driver = driver
 
 

@@ -1,3 +1,5 @@
+# The base test class to be inherited by all other test classes
+
 import logging
 import unittest
 
@@ -10,6 +12,7 @@ class BaseTest(unittest.TestCase):
 
     TEST_DATA = None
 
+
     def setUp(self):
         self.TEST_DATA = TestCaseDataReader(self.DATA_FILE)
         self.log = logging.getLogger("TestCaseLogger")
@@ -17,7 +20,7 @@ class BaseTest(unittest.TestCase):
 
 
     def tearDown(self):
-        self.driver.close()
+        self.driver.quit()
 
 
     @property
