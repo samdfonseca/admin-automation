@@ -7,7 +7,12 @@ from selenium import webdriver
 from adminautomation.utils import TestCaseDataReader, TestCaseAuthReader
 from adminautomation.utils import attach_auth_session_to_driver
 from adminautomation.utils import AdminSessionCookie
-from adminautomation.pages.basepage import _ADMIN_ROOT_URL, _ADMIN_SESSION_COOKIE_NAME
+
+_CHROMEDRIVER_LOCATION = '../bin/chromedriver'
+_ADMIN_ROOT_URL = "https://admin-integration.bypasslane.com"
+_ADMIN_ROOT_URL_PROD = "https://admin.bypassmobile.com"
+_ADMIN_SESSION_COOKIE_NAME = "_bypass_admin_session"
+
 
 class BaseTest(unittest.TestCase):
 
@@ -27,10 +32,14 @@ class BaseTest(unittest.TestCase):
 
 
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        #self.driver = webdriver.Remote(command_executor='http://127.0.0.1:9515',
+        #                               desired_capabilities=webdriver.DesiredCapabilities.CHROME)
+        self.driver = webdriver.Chrome(executable_path=_CHROMEDRIVER_LOCATION,
+                                       service_args=["--verbose", "--log-path=chromedriver.log"])
         self.driver.get(_ADMIN_ROOT_URL)
         if self.__AUTO_AUTH:
             self.attach_authenticated_session_to_driver(self.driver, session_cookie=self.AUTH_COOKIE)
+
 
     def tearDown(self):
         while True:

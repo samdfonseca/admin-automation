@@ -24,6 +24,7 @@ class LoginTest(BaseTest):
         admin = LoginPage(self.driver, url=test_data.start_url)
 
         self.assertEqual(admin.driver.current_url, test_data.end_url)
+        print("Assert Passed")
 
 
     def test_root_url_authenticated(self):
@@ -42,7 +43,6 @@ class LoginTest(BaseTest):
         admin.driver.get(test_data.end_url)
 
         self.assertEqual(admin.driver.title, test_data.end_page_title)
-        self.driver.save_screenshot('dash.png')
 
 
     def test_login_with_valid_credentials(self):
