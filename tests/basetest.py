@@ -20,7 +20,7 @@ class BaseTest(unittest.TestCase):
     TEST_DATA = None
     AUTH_CREDENTIALS = None
     AUTH_COOKIE = None
-    __AUTO_AUTH = True
+    # __AUTO_AUTH = True
 
 
     @classmethod
@@ -37,8 +37,8 @@ class BaseTest(unittest.TestCase):
         self.driver = webdriver.Chrome(executable_path=_CHROMEDRIVER_LOCATION,
                                        service_args=["--verbose", "--log-path=chromedriver.log"])
         self.driver.get(_ADMIN_ROOT_URL)
-        if self.__AUTO_AUTH:
-            self.attach_authenticated_session_to_driver(self.driver, session_cookie=self.AUTH_COOKIE)
+        # if self.__AUTO_AUTH:
+        #     self.attach_authenticated_session_to_driver(self.driver, session_cookie=self.AUTH_COOKIE)
 
 
     def tearDown(self):
@@ -54,6 +54,6 @@ class BaseTest(unittest.TestCase):
         return self.TEST_DATA[self._testMethodName]
 
 
-    @staticmethod
-    def attach_authenticated_session_to_driver(driver, session_cookie=None, **kwargs):
+    def attach_auth_cookie(self, driver, **kwargs):
+        session_cookie = kwargs.get("session_cookie", self.AUTH_COOKIE)
         attach_auth_session_to_driver(driver, session_cookie, **kwargs)

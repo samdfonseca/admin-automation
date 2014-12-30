@@ -10,7 +10,7 @@ from adminautomation.pages import LoginPage
 class LoginTest(BaseTest):
 
     DATA_FILE = './data/logintest.json'
-    __AUTO_AUTH = False
+    # __AUTO_AUTH = False
 
 
     def test_root_url_unauthenticated(self):
@@ -24,7 +24,6 @@ class LoginTest(BaseTest):
         admin = LoginPage(self.driver, url=test_data.start_url)
 
         self.assertEqual(admin.driver.current_url, test_data.end_url)
-        print("Assert Passed")
 
 
     def test_root_url_authenticated(self):
@@ -36,7 +35,7 @@ class LoginTest(BaseTest):
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver, url=test_data.start_url)
-        self.attach_authenticated_session_to_driver(admin.driver, self.AUTH_COOKIE,
+        self.attach_auth_cookie(admin.driver, self.AUTH_COOKIE,
                                                     user=self.AUTH_CREDENTIALS["user"],
                                                     passwd=self.AUTH_CREDENTIALS["passwd"],
                                                     force_new_session=True)
@@ -56,7 +55,7 @@ class LoginTest(BaseTest):
         admin = LoginPage(self.driver)
         admin.login(test_data.user, test_data.passwd)
 
-        self.assertTrue(admin.driver.current_url == test_data.end_url)
+        self.assertEqual(admin.driver.current_url, test_data.end_url)
 
     def test_login_with_invalid_credentials(self):
         # Login with invalid user credentials.

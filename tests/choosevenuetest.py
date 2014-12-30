@@ -20,6 +20,8 @@ class ChooseVenueTest(BaseTest):
         test_data = self.CURRENT_TEST_DATA
 
         admin = ChooseVenuePage(self.driver)
+        self.attach_auth_cookie(admin.driver)
+
         admin.select_venue_from_list_by_name(test_data.venue_name)
         admin.click_go_button()
 
@@ -27,12 +29,15 @@ class ChooseVenueTest(BaseTest):
 
 
     def test_select_venue_by_venue_id(self):
+        # NEEDS TESTRAIL CASE
+
         test_data = self.CURRENT_TEST_DATA
 
         admin = ChooseVenuePage(self.driver)
+        self.attach_auth_cookie(admin.driver)
+
         admin.select_venue_by_venue_id(test_data.venue_id)
         admin.click_go_button()
-
 
         self.assertEqual(admin.driver.title, test_data.end_page_title)
 
