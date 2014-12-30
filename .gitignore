@@ -2,8 +2,8 @@
 venv/
 activate
 
-# ghostdriver log file
-tests/ghostdriver.log
+# webdriver log files
+tests/logs/
 
 # cached cookies and other serialized objects
 tests/*.pickle
