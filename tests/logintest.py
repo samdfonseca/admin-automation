@@ -35,10 +35,7 @@ class LoginTest(BaseTest):
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver, url=test_data.start_url)
-        self.attach_auth_cookie(admin.driver, self.AUTH_COOKIE,
-                                                    user=self.AUTH_CREDENTIALS["user"],
-                                                    passwd=self.AUTH_CREDENTIALS["passwd"],
-                                                    force_new_session=True)
+        self.attach_auth_cookie(admin.driver)
         admin.driver.get(test_data.end_url)
 
         self.assertEqual(admin.driver.title, test_data.end_page_title)
