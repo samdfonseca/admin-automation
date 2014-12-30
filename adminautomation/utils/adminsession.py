@@ -32,6 +32,7 @@ def get_admin_session_cookie(user, passwd, **kwargs):
             stored_cookie_mod_time = None
         else:
             # Use the cache session cookie if it was modified (updated) within the last 3 days
+            # Theses prolly a better way of doing this but it seems to work for now
             if time() - stored_cookie_mod_time < max_cache_time:
                 with open(auth_cookie_file, "r") as f:
                     cookie = pickle.load(f)
@@ -39,12 +40,12 @@ def get_admin_session_cookie(user, passwd, **kwargs):
                 return cookie
 
     if user is None or passwd is None:
-        raise TypeError("Cached cookie is not found/expired. 'user' and 'passwd' cannot be None.")
+        raise TypeError("'user' and 'passwd' cannot be None")
 
     # If not using the cached session cookie, login to a new Admin session and extract its session cookie
     if use_headless_browser:
         # Use PhantomJS if headless param is set to True (Default)
-        driver = webdriver.PhantomJS(service_args=['--ignore-ssl-errors=true'])
+        driver = webdriver.PhantomJS(service_args=['--ignore-ssl-errors=true'], service_log_path="logs/ghostdriver.log")
     else:
         driver = webdriver.Chrome()
 

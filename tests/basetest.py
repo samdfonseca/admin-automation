@@ -35,7 +35,7 @@ class BaseTest(unittest.TestCase):
         #self.driver = webdriver.Remote(command_executor='http://127.0.0.1:9515',
         #                               desired_capabilities=webdriver.DesiredCapabilities.CHROME)
         self.driver = webdriver.Chrome(executable_path=_CHROMEDRIVER_LOCATION,
-                                       service_args=["--verbose", "--log-path=chromedriver.log"])
+                                       service_args=["--verbose", "--log-path=logs/chromedriver.log"])
         self.driver.get(_ADMIN_ROOT_URL)
         # if self.__AUTO_AUTH:
         #     self.attach_authenticated_session_to_driver(self.driver, session_cookie=self.AUTH_COOKIE)
