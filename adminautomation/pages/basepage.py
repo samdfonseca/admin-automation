@@ -2,14 +2,14 @@
 
 from __future__ import print_function
 
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import StaleElementReferenceException
+from adminautomation.utils import AdminSessionCookie
 
-_ADMIN_ROOT_URL = "https://admin-integration.bypasslane.com"
-_ADMIN_SESSION_COOKIE_NAME = "_bypass_admin_session"
 
 class BasePage(object):
 
-    ROOT_URL = _ADMIN_ROOT_URL
+    ROOT_URL = "https://admin-integration.bypasslane.com"
 
 
     def __init__(self, driver, **kwargs):
@@ -20,10 +20,19 @@ class BasePage(object):
         :return: a BasePage object
         """
 
-        self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
-
         self.driver = driver
-        self.driver.get(kwargs.get("url", self.ROOT_URL + self.PATH))
+        self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
+        self.URL = kwargs.get("url", self.ROOT_URL + self.PATH)
+
+
+    def attach_session_cookie(self):
+        """
+        Replaces the current _bypass_admin_session cookie with a pre-authenticated one to avoid
+        having to login on every test.
+        """
+
+        self.driver.delete_cookie(name=AdminSessionCookie()['name'])
+        self.driver.add_cookie(AdminSessionCookie())
 
 
     def refresh_page(self):
@@ -35,7 +44,7 @@ class BasePage(object):
         self.driver.refresh()
 
 
-    def get_element(self, locator, custom_message=None):
+    def get_element(self, locator):
         """
         A generic element retriever function.
 
@@ -43,12 +52,7 @@ class BasePage(object):
         :return: a WebElement object
         """
 
-        try:
-            return self.driver.find_element(*locator)
-        except (NoSuchElementException, StaleElementReferenceException):
-            if isinstance(custom_message, basestring):
-                print(custom_message)
-            return None
+        return self.driver.find_element(*locator)
 
 
     def get_elements(self, locator, custom_message=None):
@@ -59,12 +63,7 @@ class BasePage(object):
         :return: a list of WebElement objects
         """
 
-        try:
-            return self.driver.find_elements(*locator)
-        except (NoSuchElementException, StaleElementReferenceException):
-            if isinstance(custom_message, basestring):
-                print(custom_message)
-            return None
+        return self.driver.find_elements(*locator)
 
 
     def check_value(self, check_value_name, found_value, custom_message=None):

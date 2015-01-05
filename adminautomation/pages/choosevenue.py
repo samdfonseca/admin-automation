@@ -20,12 +20,7 @@ class ChooseVenuePage(BasePage):
 
 
     def __init__(self, driver, **kwargs):
-        super(ChooseVenuePage, self).__init__(driver)
-
-        self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
-        self.URL = kwargs.get("url", self.ROOT_URL + self.PATH)
-        self.driver.get(self.URL)
-
+        super(ChooseVenuePage, self).__init__(driver, **kwargs)
 
     @property
     def VENUES_LISTBOX(self):
@@ -176,10 +171,11 @@ class ChooseVenuePage(BasePage):
                 break
             self.VENUE_LIST_SEARCHBOX.send_keys(Keys.ARROW_DOWN)
         else:
-            print("Could not find venue in list: {}".format(venue_name))
-            return
+            raise ValueError('Could not find venue: {}'.format(venue_name))
 
         item.click()
+        self.contract_venues_listbox()
+        self.click_go_button()
 
 
     def select_venue_from_list_by_row_number(self, row):
@@ -196,6 +192,13 @@ class ChooseVenuePage(BasePage):
         list_items = self.get_current_list_items()
         if row in range(len(list_items)):
             list_items[row].click()
+        elif row < 0:
+            raise IndexError("Row number cannot be negative")
+        else:
+            raise IndexError("Row number exceeds available items")
+
+        self.contract_venues_listbox()
+        self.click_go_button()
 
 
     def select_venue_by_venue_id(self, venue_id):
@@ -211,8 +214,8 @@ class ChooseVenuePage(BasePage):
                 break
             self.VENUE_LIST_SEARCHBOX.send_keys(Keys.ARROW_DOWN)
         else:
-            print("Could not find venue id in list: {}".format(venue_id))
-            return
+            raise ValueError('Could not find venue id: {}'.format(venue_id))
 
         item.click()
-
+        self.contract_venues_listbox()
+        self.click_go_button()

@@ -10,7 +10,6 @@ from adminautomation.pages import LoginPage
 class LoginTest(BaseTest):
 
     DATA_FILE = './data/logintest.json'
-    # __AUTO_AUTH = False
 
 
     def test_root_url_unauthenticated(self):
@@ -31,13 +30,16 @@ class LoginTest(BaseTest):
         # an active session stored.
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5939
-
+    
         test_data = self.CURRENT_TEST_DATA
-
-        admin = LoginPage(self.driver, url=test_data.start_url)
-        self.attach_auth_cookie(admin.driver)
+    
+        admin = LoginPage(self.driver)
+        admin.driver.get(admin.URL)
+        admin.attach_session_cookie()
+        admin.driver.get(admin.ROOT_URL)
+    
         admin.driver.get(test_data.end_url)
-
+    
         self.assertEqual(admin.driver.title, test_data.end_page_title)
 
 

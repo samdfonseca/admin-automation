@@ -1,7 +1,5 @@
 # Page object for Admin's login page
 
-from __future__ import print_function
-
 from adminautomation.pages import BasePage
 from adminautomation.utils import LoginPageLocators
 from selenium.webdriver.common.keys import Keys
@@ -20,10 +18,7 @@ class LoginPage(BasePage):
 
 
     def __init__(self, driver, **kwargs):
-        super(LoginPage, self).__init__(driver)
-
-        self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
-        self.URL = kwargs.get("url", self.ROOT_URL + self.PATH)
+        super(LoginPage, self).__init__(driver, **kwargs)
         self.driver.get(self.URL)
 
 
@@ -102,7 +97,7 @@ class LoginPage(BasePage):
         self.PASSWORD_TEXTBOX.send_keys(Keys.RETURN)
 
 
-    def login(self, email, password):
+    def login(self, email, passwd):
         """
         Simulates the standard login workflow. Submits form by clicking login button.
 
@@ -111,7 +106,7 @@ class LoginPage(BasePage):
         """
 
         self.enter_email(email)
-        self.enter_password(password)
+        self.enter_password(passwd)
         self.click_login_button()
 
 

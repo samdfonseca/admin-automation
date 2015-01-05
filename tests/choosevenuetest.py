@@ -4,6 +4,7 @@
 
 import unittest
 from tests import BaseTest
+from adminautomation.pages import LoginPage
 from adminautomation.pages import ChooseVenuePage
 
 
@@ -19,11 +20,11 @@ class ChooseVenueTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        admin = ChooseVenuePage(self.driver)
-        self.attach_auth_cookie(admin.driver)
+        admin = LoginPage(self.driver)
+        admin.login(*self.AUTH_CREDENTIALS)
 
+        admin = ChooseVenuePage(self.driver)
         admin.select_venue_from_list_by_name(test_data.venue_name)
-        admin.click_go_button()
 
         self.assertEqual(admin.driver.title, test_data.end_page_title)
 
@@ -33,11 +34,11 @@ class ChooseVenueTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        admin = ChooseVenuePage(self.driver)
-        self.attach_auth_cookie(admin.driver)
+        admin = LoginPage(self.driver)
+        admin.login(*self.AUTH_CREDENTIALS)
 
+        admin = ChooseVenuePage(self.driver)
         admin.select_venue_by_venue_id(test_data.venue_id)
-        admin.click_go_button()
 
         self.assertEqual(admin.driver.title, test_data.end_page_title)
 

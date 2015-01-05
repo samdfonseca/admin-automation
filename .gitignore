@@ -11,8 +11,8 @@ tests/*.pickle
 # data files
 tests/data/*
 
-# selenium server jar
-selenium-*.jar
+# bin files
+bin/*
 
 # Created by .gitignore support plugin (hsz.mobi)
 .exvim.admin-automation

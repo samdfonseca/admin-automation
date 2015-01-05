@@ -11,25 +11,14 @@ def read_test_case_data_file(data_file):
     :return: a sorted list of dicts
     """
 
-    with open(data_file, 'r') as f:
-        contents = readjson(f)
-
-    test_data = [(key, new_test_case_data_object(contents["tests"][key])) for key in contents["tests"].keys()]
-    return dict(test_data)
-
-
-def read_test_case_auth_file(auth_file):
-    """
-    Same as read_test_case_data_file but for auth files.
-
-    :param auth_file: the path to the target auth file as a string
-    :return: a dict with keys "user" and "passwd"
-    """
-
-    with open(auth_file, "r") as f:
-        contents = readjson(f)
-
-    return contents["credentials"]
+    try:
+        with open(data_file, 'r') as f:
+            contents = readjson(f)
+    except OSError:
+        return None
+    else:
+        test_data = [(key, new_test_case_data_object(contents["tests"][key])) for key in contents["tests"].keys()]
+        return dict(test_data)
 
 
 def new_test_case_data_object(data_dict):
@@ -40,6 +29,7 @@ def new_test_case_data_object(data_dict):
     :param data_dict: the test case data as a dict
     :return: a TestCaseData object
     """
+
     TestCaseData = namedtuple('TestCaseData', ' '.join(data_dict.keys()))
     values = data_dict.values()
 

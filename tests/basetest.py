@@ -2,51 +2,20 @@
 
 import unittest
 
+from os import remove as delete_file
 from selenium import webdriver
 
-from adminautomation.utils import TestCaseDataReader, TestCaseAuthReader
-from adminautomation.utils import attach_auth_session_to_driver
+from adminautomation.utils import TestCaseDataReader
 from adminautomation.utils import AdminSessionCookie
-
-_CHROMEDRIVER_LOCATION = '../bin/chromedriver'
-_ADMIN_ROOT_URL = "https://admin-integration.bypasslane.com"
-_ADMIN_ROOT_URL_PROD = "https://admin.bypassmobile.com"
-_ADMIN_SESSION_COOKIE_NAME = "_bypass_admin_session"
+from adminautomation.utils.drivers import get_chrome_driver as ChromeDriver
 
 
 class BaseTest(unittest.TestCase):
 
     AUTH_FILE = './data/auth.json'
+    DATA_FILE = None
+
     TEST_DATA = None
-    AUTH_CREDENTIALS = None
-    AUTH_COOKIE = None
-    # __AUTO_AUTH = True
-
-
-    @classmethod
-    def setUpClass(cls):
-        cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE)
-        cls.AUTH_CREDENTIALS = TestCaseAuthReader(cls.AUTH_FILE)
-        cls.AUTH_COOKIE = AdminSessionCookie(cls.AUTH_CREDENTIALS["user"], cls.AUTH_CREDENTIALS["passwd"],
-                                             force_new_session=True)
-
-
-    def setUp(self):
-        #self.driver = webdriver.Remote(command_executor='http://127.0.0.1:9515',
-        #                               desired_capabilities=webdriver.DesiredCapabilities.CHROME)
-        self.driver = webdriver.Chrome(executable_path=_CHROMEDRIVER_LOCATION,
-                                       service_args=["--verbose", "--log-path=logs/chromedriver.log"])
-        self.driver.get(_ADMIN_ROOT_URL)
-        # if self.__AUTO_AUTH:
-        #     self.attach_authenticated_session_to_driver(self.driver, session_cookie=self.AUTH_COOKIE)
-
-
-    def tearDown(self):
-        while True:
-            if self.driver.get_cookie(_ADMIN_SESSION_COOKIE_NAME) is None:
-                break
-            self.driver.delete_cookie(_ADMIN_SESSION_COOKIE_NAME)
-        self.driver.quit()
 
 
     @property
@@ -54,6 +23,16 @@ class BaseTest(unittest.TestCase):
         return self.TEST_DATA[self._testMethodName]
 
 
-    def attach_auth_cookie(self, driver, **kwargs):
-        session_cookie = kwargs.get("session_cookie", self.AUTH_COOKIE)
-        attach_auth_session_to_driver(driver, session_cookie, **kwargs)
+    @classmethod
+    def setUpClass(cls):
+        cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE) if cls.DATA_FILE else None
+        cls.AUTH_COOKIE = AdminSessionCookie()
+
+
+    def setUp(self):
+        self.driver = ChromeDriver()
+
+
+    def tearDown(self):
+        self.driver.quit()
+
