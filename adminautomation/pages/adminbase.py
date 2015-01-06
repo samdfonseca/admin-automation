@@ -2,17 +2,9 @@
 
 from adminautomation.pages import BasePage
 from adminautomation.utils import NavBarLocators, SidebarLocators
-from selenium.webdriver.common.keys import Keys
 
 
 class AdminPage(BasePage):
-
-    PATH = "/"
-
-    CHECK_VALUES = {
-        "page_title": "Dashboard - Index"
-    }
-
 
     @property
     def LOGO_HOME_BUTTON(self):
