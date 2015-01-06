@@ -117,4 +117,4 @@ class LoginPage(BasePage):
         :return: a bool based on if the toast is found
         """
 
-        return self.check_exists(LoginPageLocators.INVALID_LOGIN_TOAST)
+        return self.check_element_exists(LoginPageLocators.INVALID_LOGIN_TOAST)

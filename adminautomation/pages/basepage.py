@@ -52,7 +52,12 @@ class BasePage(object):
         :return: a WebElement object
         """
 
-        return self.driver.find_element(*locator)
+        try:
+            return self.driver.find_element(*locator)
+        except (NoSuchElementException, StaleElementReferenceException):
+            raise Warning('Unable to get element. (Locator: {})'.format(locator[1]))
+
+        return None
 
 
     def get_elements(self, locator, custom_message=None):
@@ -63,7 +68,12 @@ class BasePage(object):
         :return: a list of WebElement objects
         """
 
-        return self.driver.find_elements(*locator)
+        try:
+            return self.driver.find_elements(*locator)
+        except (NoSuchElementException, StaleElementReferenceException):
+            raise Warning('Unable to get elements. (Locator: {})'.format(locator[1]))
+
+        return None
 
 
     def check_value(self, check_value_name, found_value, custom_message=None):
@@ -80,9 +90,18 @@ class BasePage(object):
             print("No expected value for {}".format(check_value_name))
 
 
-    def check_exists(self, locator):
+    def check_element_exists(self, locator):
         try:
             target_item = self.get_element(locator)
+        except (NoSuchElementException, StaleElementReferenceException):
+            return False
+
+        return True
+
+
+    def check_elements_exist(self, locator):
+        try:
+            target_item = self.get_elements(locator)
         except (NoSuchElementException, StaleElementReferenceException):
             return False
 

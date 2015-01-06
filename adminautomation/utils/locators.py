@@ -1,31 +1,36 @@
 # Locator objects used by the webdriver to find page elements
+# For info on CSS Selectors see:
+# https://saucelabs.com/resources/selenium/css-selectors
+# http://www.w3.org/TR/CSS21/selector.html
+# https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors
 
 from selenium.webdriver.common.by import By
 
 
 class LoginPageLocators(object):
-    EMAIL_TEXTBOX = (By.ID, 'user_email')
-    PASSWORD_TEXTBOX = (By.ID, 'user_password')
-    LOGIN_BUTTON = (By.CSS_SELECTOR, 'button.btn')
-    FORM_TITLE = (By.CLASS_NAME, 'form-title')
-    INVALID_LOGIN_TOAST = (By.CLASS_NAME, 'toast-container')
-    INVALID_LOGIN_TOAST_MESSAGE = (By.CLASS_NAME, 'toast-message')
+    EMAIL_TEXTBOX = (By.CSS_SELECTOR, 'input#user_email')
+    PASSWORD_TEXTBOX = (By.CSS_SELECTOR, 'input#user_password')
+    LOGIN_BUTTON = (By.CSS_SELECTOR, 'button.btn:contains("Login")')
+    FORM_TITLE = (By.CSS_SELECTOR, 'h3.form-title')
+    INVALID_LOGIN_TOAST = (By.CSS_SELECTOR, 'div#toast-container')
+    INVALID_LOGIN_TOAST_MESSAGE = (By.CSS_SELECTOR, 'div.toast-message')
 
 
 class ChooseVenueLocators(object):
-    VENUES_LISTBOX = (By.ID, 's2id_change_venue')
-    VENUE_LIST_SEARCHBOX = (By.CLASS_NAME, 'select2-input')
-    VENUE_LIST = (By.CLASS_NAME, 'select2-results')
-    VENUE_LIST_ITEMS = (By.CLASS_NAME, 'select2-result')
-    VENUE_OPTIONS = (By.XPATH, '//select[@id="change_venue"]/option')
-    GO_BUTTON = (By.CSS_SELECTOR, 'button.btn')
-    FORM_TITLE = (By.CLASS_NAME, 'form-title')
+    VENUES_LISTBOX = (By.CSS_SELECTOR, 'div#s2id_change_venue')
+    VENUE_LIST_SEARCHBOX = (By.CSS_SELECTOR, 'input.select2-input')
+    VENUE_LIST = (By.CSS_SELECTOR, 'ul.select2-results')
+    VENUE_LIST_ITEMS = (By.CSS_SELECTOR, 'li.select2-result')
+    VENUE_OPTIONS = (By.CSS_SELECTOR, 'select#change_venue option')
+    GO_BUTTON = (By.CSS_SELECTOR, 'button.btn:contains("Go")')
+    FORM_TITLE = (By.CSS_SELECTOR, 'h3.form-title')
 
 
 class NavBarLocators(object):
     LOGO_HOME_BUTTON = (By.CSS_SELECTOR, 'a.navbar-brand[href="/"]')
 
     VENUES_LISTBOX = (By.CSS_SELECTOR, 'div#s2id_change_venue')
+    VENUE_LIST_DROPDOWN = (By.CSS_SELECTOR, 'div#select2-drop')
     VENUE_LIST_SEARCHBOX = (By.CSS_SELECTOR, 'input.select2-input')
     VENUE_LIST = (By.CSS_SELECTOR, 'ul.select2-results')
     VENUE_LIST_ITEMS = (By.CSS_SELECTOR, 'li.select2-result')
@@ -41,7 +46,7 @@ class SidebarLocators(object):
     DASHBOARD = (By.CSS_SELECTOR, 'li.dashboard')
 
     LOCATION_CONTROL = (By.CSS_SELECTOR, 'li.locations')
-    CATEGORIES = (By.CSS_SELECTOR, 'li.locations a[href="Categories"]')
+    CATEGORIES = (By.CSS_SELECTOR, 'li.categories')
     ITEM_CATEGORIES = (By.CSS_SELECTOR, 'a[href="/categories"]')
     MODIFIER_CATEGORIES = (By.CSS_SELECTOR, 'a[href="/modifier_categories"]')
     GROUPS = (By.CSS_SELECTOR, 'a[href="/groups"]')
