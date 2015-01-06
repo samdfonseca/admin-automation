@@ -240,4 +240,25 @@ class AdminPage(BasePage):
 
 
     @property
-    def REPORT
+    def REPORTING(self):
+        return self.get_element(SidebarLocators.REPORTING)
+
+
+    @property
+    def REPORTS(self):
+        return self.get_element(SidebarLocators.REPORT_TEMPLATES)
+
+
+    @property
+    def ORDER_TAKERS(self):
+        return self.get_element(SidebarLocators.ORDER_TAKERS)
+
+
+    @property
+    def DEVICES(self):
+        return self.get_element(SidebarLocators.DEVICES)
+
+
+    @property
+    def ALERTS(self):
+        return self.get_element(SidebarLocators.ALERTS)
