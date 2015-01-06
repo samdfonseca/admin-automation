@@ -3,6 +3,8 @@
 from adminautomation.pages import BasePage
 from adminautomation.utils import NavBarLocators, SidebarLocators
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
+from time import sleep
 
 
 class AdminPage(BasePage):
@@ -356,6 +358,22 @@ class AdminPage(BasePage):
         if "open" not in elem.get_attribute("class").split(" "):
             elem.click()
 
+        sleep(1) # Works for now. Should replace with an explicit wait.
+
+
+    def navigate_to(self, parent_tabs, target_tab):
+        """
+        Generic function for selecting a sidebar tab. Handles tab expansion and waits.
+        """
+
+        for tab in parent_tabs:
+            self.expand_sidebar_tab(tab)
+
+        try:
+            target_tab.click()
+        except WebDriverException:
+            self.navigate_to(parent_tabs, target_tab)
+
 
     def navigate_to_dashboard(self):
         """
@@ -370,9 +388,7 @@ class AdminPage(BasePage):
         Navigates to the Item Categories page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.expand_sidebar_tab(self.CATEGORIES)
-        self.ITEM_CATEGORIES.click()
+        self.navigate_to([self.LOCATION_CONTROL, self.CATEGORIES], self.ITEM_CATEGORIES)
 
 
     def navigate_to_modifier_categories(self):
@@ -380,9 +396,7 @@ class AdminPage(BasePage):
         Navigates to the Modifier Categories page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.expand_sidebar_tab(self.CATEGORIES)
-        self.MODIFIER_CATEGORIES.click()
+        self.navigate_to([self.LOCATION_CONTROL, self.CATEGORIES], self.MODIFIER_CATEGORIES)
 
 
     def navigate_to_groups(self):
@@ -390,8 +404,7 @@ class AdminPage(BasePage):
         Navigates to the Groups page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.GROUPS.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.GROUPS)
 
 
     def navigate_to_items(self):
@@ -399,8 +412,7 @@ class AdminPage(BasePage):
         Navigates to the Items page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.ITEMS.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.ITEMS)
 
 
     def navigate_to_menus(self):
@@ -408,8 +420,7 @@ class AdminPage(BasePage):
         Navigates to the Menus page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.MENUS.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.MENUS)
 
 
     def navigate_to_locations(self):
@@ -417,8 +428,7 @@ class AdminPage(BasePage):
         Navigates to the Locations page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.LOCATIONS.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.LOCATIONS)
 
 
     def navigate_to_sections(self):
@@ -426,8 +436,7 @@ class AdminPage(BasePage):
         Navigates to the Sections page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.SECTIONS.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.SECTIONS)
 
 
     def navigate_to_tables(self):
@@ -435,8 +444,7 @@ class AdminPage(BasePage):
         Navigates to the Tables page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.TABLES.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.TABLES)
 
 
     def navigate_to_variant_sets(self):
@@ -444,8 +452,7 @@ class AdminPage(BasePage):
         Navigates to the Variant Sets page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.VARIANT_SETS.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.VARIANT_SETS)
 
 
     def navigate_to_modifiers(self):
@@ -453,8 +460,7 @@ class AdminPage(BasePage):
         Navigates to the Modifiers page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.MODIFIERS.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.MODIFIERS)
 
 
     def navigate_to_addon_groups(self):
@@ -462,8 +468,7 @@ class AdminPage(BasePage):
         Navigates to the Addon Groups page.
         """
 
-        self.expand_sidebar_tab(self.LOCATION_CONTROL)
-        self.ADDON_GROUPS.click()
+        self.navigate_to([self.LOCATION_CONTROL], self.ADDON_GROUPS)
 
 
     def navigate_to_suites_accounts(self):
@@ -471,8 +476,7 @@ class AdminPage(BasePage):
         Navigates to the Suites Accounts page.
         """
 
-        self.expand_sidebar_tab(self.SUITES)
-        self.SUITES_ACCOUNTS.click()
+        self.navigate_to([self.SUITES], self.SUITES_ACCOUNTS)
 
 
     def navigate_to_suites_setup(self):
@@ -480,8 +484,7 @@ class AdminPage(BasePage):
         Navigates to the Suites Setup page.
         """
 
-        self.expand_sidebar_tab(self.SUITES)
-        self.SUITES_SETUP.click()
+        self.navigate_to([self.SUITES], self.SUITES_SETUP)
 
 
     def navigate_to_suites_preorder(self):
@@ -489,8 +492,7 @@ class AdminPage(BasePage):
         Navigates to the Suites Pre-Order page.
         """
 
-        self.expand_sidebar_tab(self.SUITES)
-        self.SUITES_PREORDER.click()
+        self.navigate_to([self.SUITES], self.SUITES_PREORDER)
 
 
     def navigate_to_events_calendar(self):
@@ -498,8 +500,7 @@ class AdminPage(BasePage):
         Navigates to the Events Calendar page.
         """
 
-        self.expand_sidebar_tab(self.EVENTS)
-        self.EVENTS_CALENDAR.click()
+        self.navigate_to([self.EVENTS], self.EVENTS_CALENDAR)
 
 
     def navigate_to_event_templates(self):
@@ -507,8 +508,7 @@ class AdminPage(BasePage):
         Navigates to the Event Templates page.
         """
 
-        self.expand_sidebar_tab(self.EVENTS)
-        self.EVENTS_TEMPLATES.click()
+        self.navigate_to([self.EVENTS], self.EVENTS_TEMPLATES)
 
 
     def navigate_to_orders(self):
@@ -516,8 +516,7 @@ class AdminPage(BasePage):
         Navigates to the Orders page.
         """
 
-        self.expand_sidebar_tab(self.EVENTS)
-        self.ORDERS.click()
+        self.navigate_to([self.EVENTS], self.ORDERS)
 
 
     def navigate_to_tips(self):
@@ -525,8 +524,7 @@ class AdminPage(BasePage):
         Navigates to the Tips page.
         """
 
-        self.expand_sidebar_tab(self.EVENTS)
-        self.TIPS.click()
+        self.navigate_to([self.EVENTS], self.TIPS)
 
 
     def navigate_to_cash_room(self):
@@ -534,8 +532,7 @@ class AdminPage(BasePage):
         Navigates to the Cash Room page.
         """
 
-        self.expand_sidebar_tab(self.EVENTS)
-        self.CASHROOM.click()
+        self.navigate_to([self.EVENTS], self.CASHROOM)
 
 
     def nagivate_to_status(self):
@@ -543,8 +540,7 @@ class AdminPage(BasePage):
         Navigates to the Status page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.STATUS.click()
+        self.navigate_to([self.INVENTORY], self.STATUS)
 
 
     def navigate_to_inventory_categories(self):
@@ -552,8 +548,7 @@ class AdminPage(BasePage):
         Navigates to the Inventory Categories page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.INVENTORY_CATEGORIES.click()
+        self.navigate_to([self.INVENTORY], self.INVENTORY_CATEGORIES)
 
 
     def navigate_to_inventory_transfers(self):
@@ -561,8 +556,7 @@ class AdminPage(BasePage):
         Navigates to the Inventory Transfers page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.INVENTORY_TRANSFERS.click()
+        self.navigate_to([self.INVENTORY], self.INVENTORY_TRANSFERS)
 
 
     def navigate_to_inventory_movements(self):
@@ -570,8 +564,7 @@ class AdminPage(BasePage):
         Navigates to the Inventory Movements page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.INVENTORY_MOVEMENTS.click()
+        self.navigate_to([self.INVENTORY], self.INVENTORY_MOVEMENTS)
 
 
     def navigate_to_standsheets(self):
@@ -579,8 +572,7 @@ class AdminPage(BasePage):
         Navigates to the Standsheets page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.STANDSHEETS.click()
+        self.navigate_to([self.INVENTORY], self.STANDSHEETS)
 
 
     def navigate_to_stock_items(self):
@@ -588,8 +580,7 @@ class AdminPage(BasePage):
         Navigates to the Stock Items page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.STOCK_ITEMS.click()
+        self.navigate_to([self.INVENTORY], self.STOCK_ITEMS)
 
 
     def navigate_to_recipes(self):
@@ -597,8 +588,7 @@ class AdminPage(BasePage):
         Navigates to the Recipes page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.RECIPES.click()
+        self.navigate_to([self.INVENTORY], self.RECIPES)
 
 
     def navigate_to_vendors(self):
@@ -606,8 +596,7 @@ class AdminPage(BasePage):
         Navigates to the Vendors page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.VENDORS.click()
+        self.navigate_to([self.INVENTORY], self.VENDORS)
 
 
     def navigate_to_inventory_audits(self):
@@ -615,8 +604,7 @@ class AdminPage(BasePage):
         Navigates to the Inventory Audits page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.INVENTORY_AUDITS.click()
+        self.navigate_to([self.INVENTORY], self.INVENTORY_AUDITS)
 
 
     def navigate_to_purchasing_and_receiving(self):
@@ -624,8 +612,7 @@ class AdminPage(BasePage):
         Navigates to the Purchasing & Receiving page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.PURCHASE_AND_RECEIVING.click()
+        self.navigate_to([self.INVENTORY], self.PURCHASE_AND_RECEIVING)
 
 
     def navigate_to_warehouses(self):
@@ -633,8 +620,7 @@ class AdminPage(BasePage):
         Navigates to the Warehouses page.
         """
 
-        self.expand_sidebar_tab(self.INVENTORY)
-        self.WAREHOUSES.click()
+        self.navigate_to([self.INVENTORY], self.WAREHOUSES)
 
 
     def navigate_to_reports(self):
@@ -642,8 +628,7 @@ class AdminPage(BasePage):
         Navigates to the Reports page.
         """
 
-        self.expand_sidebar_tab(self.REPORTING)
-        self.REPORTS.click()
+        self.navigate_to([self.REPORTING], self.REPORTS)
 
 
     def navigate_to_report_templates(self):
@@ -651,8 +636,7 @@ class AdminPage(BasePage):
         Navigates to the Report Templates page.
         """
 
-        self.expand_sidebar_tab(self.REPORTING)
-        self.REPORT_TEMPLATES.click()
+        self.navigate_to([self.REPORTING], self.REPORT_TEMPLATES)
 
 
     def navigate_to_order_takers(self):

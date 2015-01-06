@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 class LoginPageLocators(object):
     EMAIL_TEXTBOX = (By.CSS_SELECTOR, 'input#user_email')
     PASSWORD_TEXTBOX = (By.CSS_SELECTOR, 'input#user_password')
-    LOGIN_BUTTON = (By.CSS_SELECTOR, 'button.btn:contains("Login")')
+    LOGIN_BUTTON = (By.CSS_SELECTOR, 'button.btn')
     FORM_TITLE = (By.CSS_SELECTOR, 'h3.form-title')
     INVALID_LOGIN_TOAST = (By.CSS_SELECTOR, 'div#toast-container')
     INVALID_LOGIN_TOAST_MESSAGE = (By.CSS_SELECTOR, 'div.toast-message')
@@ -22,7 +22,7 @@ class ChooseVenueLocators(object):
     VENUE_LIST = (By.CSS_SELECTOR, 'ul.select2-results')
     VENUE_LIST_ITEMS = (By.CSS_SELECTOR, 'li.select2-result')
     VENUE_OPTIONS = (By.CSS_SELECTOR, 'select#change_venue option')
-    GO_BUTTON = (By.CSS_SELECTOR, 'button.btn:contains("Go")')
+    GO_BUTTON = (By.CSS_SELECTOR, 'button.btn')
     FORM_TITLE = (By.CSS_SELECTOR, 'h3.form-title')
 
 

@@ -44,17 +44,17 @@ class ChooseVenuePage(BasePage):
 
     @property
     def VENUE_LIST(self):
-        return self.get_element(ChooseVenueLocators.VENUE_LIST, "Cannot locate VENUE_LIST")
+        return self.get_element(ChooseVenueLocators.VENUE_LIST)
 
 
     @property
     def VENUE_LIST_ITEMS(self):
-        return self.get_elements(ChooseVenueLocators.VENUE_LIST_ITEMS, "Cannot locate VENUE_LIST_ITEMS")
+        return self.get_elements(ChooseVenueLocators.VENUE_LIST_ITEMS)
 
 
     @property
     def VENUE_LIST_SEARCHBOX(self):
-        return self.get_element(ChooseVenueLocators.VENUE_LIST_SEARCHBOX, "Cannot locate VENUE_LIST_SEARCHBOX")
+        return self.get_element(ChooseVenueLocators.VENUE_LIST_SEARCHBOX)
 
 
     def is_form_title_match(self, custom_message=None):
