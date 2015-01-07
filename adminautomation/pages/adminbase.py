@@ -1,7 +1,7 @@
 # Base page for all logged-in Admin pages
 
 from adminautomation.pages import BasePage
-from adminautomation.utils import NavBarLocators, SidebarLocators
+from adminautomation.utils.locators import NavBarLocators, SidebarLocators, AdminPageLocators
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from time import sleep
@@ -267,6 +267,21 @@ class AdminPage(BasePage):
     @property
     def ALERTS(self):
         return self.get_element(SidebarLocators.ALERTS)
+
+
+    @property
+    def PAGE_TITLE(self):
+        return self.get_element(AdminPageLocators.PAGE_TITLE)
+
+
+    @property
+    def BREADCRUMB_LINKS(self):
+        return self.get_elements(AdminPageLocators.BREADCRUMB_LINKS)
+
+
+    @property
+    def PORTLET_TITLE(self):
+        return self.get_element(AdminPageLocators.PORTLET_TITLE)
 
 
     def return_to_home_by_navbar_logo(self):

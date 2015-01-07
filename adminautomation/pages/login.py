@@ -1,7 +1,7 @@
 # Page object for Admin's login page
 
 from adminautomation.pages import BasePage
-from adminautomation.utils import LoginPageLocators
+from adminautomation.utils.locators import LoginPageLocators
 from selenium.webdriver.common.keys import Keys
 
 
