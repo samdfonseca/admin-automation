@@ -297,7 +297,10 @@ class AdminPage(BasePage):
         Opens the venues list to make the venues list and venue searchbox available.
         """
 
-        if self.VENUE_LIST_DROPDOWN is None:
+        try:
+            if self.VENUE_LIST_DROPDOWN is None:
+                self.VENUES_LISTBOX.click()
+        except Warning:
             self.VENUES_LISTBOX.click()
 
 
@@ -338,15 +341,22 @@ class AdminPage(BasePage):
         """
 
         self.expand_venues_list()
-        list_items = self.VENUE_LIST_ITEMS
-        for item in list_items:
-            if item.text == venue:
+        target_item = filter(lambda item: item.text == venue, self.VENUE_LIST_ITEMS)[0]
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", target_item)
+        while True:
+            sleep(1)
+            if target_item.is_displayed():
                 break
-            self.VENUE_LIST_SEARCHBOX.send_keys(Keys.ARROW_DOWN)
-        else:
-            raise ValueError('Could not file venue: {}'.format(venue))
-
-        item.click()
+        target_item.click()
+        # list_items = self.VENUE_LIST_ITEMS
+        # for item in list_items:
+        #     if item.text == venue:
+        #         break
+        #     self.VENUE_LIST_SEARCHBOX.send_keys(Keys.ARROW_DOWN)
+        # else:
+        #     raise ValueError('Could not file venue: {}'.format(venue))
+        #
+        # item.click()
 
 
     def push_updates_to_devices(self):

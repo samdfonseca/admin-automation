@@ -21,6 +21,7 @@ class BasePage(object):
         """
 
         self.driver = driver
+        self.driver.maximize_window()
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
         self.URL = kwargs.get("url", self.ROOT_URL + self.PATH)
 

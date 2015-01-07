@@ -106,6 +106,7 @@ class SuiteAccountsLocators(object):
     SUITE_ACCOUNTS_SEARCHBOX = (By.CSS_SELECTOR, 'div#suite-accounts-list_filter input[type="search"]')
 
     DATATABLE = (By.CSS_SELECTOR, 'table#suite-accounts-list')
+    DATATABLE_HEADERS = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td')
     DATATABLE_ACCOUNT_NAME_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Account Name")')
     DATATABLE_SUITE_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Suite")')
     DATATABLE_SUITE_HOLDER_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Suite Holder")')
@@ -125,7 +126,7 @@ class SuiteAccountsLocators(object):
     PAGINATION_BUTTONS = (By.CSS_SELECTOR, 'div#suite-accounts-list_paginate ul.pagination li')
 
 
-class NewSuiteAccountLocators(object):
+class ModifySuiteAccountLocators(object):
     PORTLET_TITLE = (By.CSS_SELECTOR, 'div.portlet-title div.caption')
     CANCEL_BUTTON = (By.CSS_SELECTOR, 'a#cancel')
     SAVE_BUTTON = (By.CSS_SELECTOR, 'div#save')

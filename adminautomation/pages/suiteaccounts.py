@@ -37,33 +37,38 @@ class SuiteAccountsPage(AdminPage):
 
 
     @property
+    def DATATABLE_HEADERS(self):
+        return self.get_elements(SuiteAccountsLocators.DATATABLE_HEADERS)
+
+
+    @property
     def DATATABLE_ACCOUNT_NAME_HEADER(self):
-        return self.get_element(SuiteAccountsLocators.DATATABLE_ACCOUNT_NAME_HEADER)
+        return filter(lambda elem: elem.text == "Account Name", self.DATATABLE_HEADERS)[0]
 
 
     @property
     def DATATABLE_SUITE_HEADER(self):
-        return self.get_element(SuiteAccountsLocators.DATATABLE_SUITE_HEADER)
+        return filter(lambda elem: elem.text == "Suite", self.DATATABLE_HEADERS)[0]
 
 
     @property
     def DATATABLE_SUITE_HOLDER_HEADER(self):
-        return self.get_element(SuiteAccountsLocators.DATATABLE_SUITE_HOLDER_HEADER)
+        return filter(lambda elem: elem.text == "Suite Holder", self.DATATABLE_HEADERS)[0]
 
 
     @property
     def DATATABLE_PHONE_HEADER(self):
-        return self.get_element(SuiteAccountsLocators.DATATABLE_PHONE_HEADER)
+        return filter(lambda elem: elem.text == "Phone", self.DATATABLE_HEADERS)[0]
 
 
     @property
     def DATATABLE_EMAIL_HEADER(self):
-        return self.get_element(SuiteAccountsLocators.DATATABLE_EMAIL_HEADER)
+        return filter(lambda elem: elem.text == "Email", self.DATATABLE_HEADERS)[0]
 
 
     @property
     def DATATABLE_EDIT_HEADER(self):
-        return self.get_element(SuiteAccountsLocators.DATATABLE_EDIT_HEADER)
+        return filter(lambda elem: elem.text == "Edit", self.DATATABLE_HEADERS)[0]
 
 
     @property
@@ -82,7 +87,7 @@ class SuiteAccountsPage(AdminPage):
 
 
     def change_items_per_page(self, target_option):
-        Select(self.ITEMS_PER_PAGE_SELECTOR.select_by_visible).select_by_visible_text(str(target_option))
+        Select(self.ITEMS_PER_PAGE_SELECTOR).select_by_visible_text(str(target_option))
 
 
     def clear_suite_account_searchbox(self):
@@ -90,13 +95,13 @@ class SuiteAccountsPage(AdminPage):
 
 
     def search_for_suite_account(self, query):
-        self.clear_venue_searchbox()
+        self.clear_suite_account_searchbox()
         self.SUITE_ACCOUNT_SEARCHBOX.send_keys(query)
 
 
     def sort_by_header_ascending(self, header):
         # Raises an exception if headers parent element is not a thead
-        if header.parent.tag_name != "thead":
+        if header.find_element_by_xpath("../..").tag_name != "thead":
             raise Exception('Not a valid datatable header element.')
 
         if header.get_attribute("class") != "sorting_asc":
@@ -105,7 +110,7 @@ class SuiteAccountsPage(AdminPage):
 
     def sort_by_header_descending(self, header):
         # Raises an exception if headers parent element is not a thead
-        if header.parent.tag_name != "thead":
+        if header.find_element_by_xpath("../..").tag_name != "thead":
             raise Exception('Not a valid datatable header element.')
 
         if header.get_attribute("class") != "sorting_desc":
