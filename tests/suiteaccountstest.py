@@ -17,7 +17,9 @@ class SuiteAccountsTest(BaseTest):
 
         test_data = self.CURRENT_TEST_DATA
 
-        admin = SuiteAccountsPage(self.driver, skip_login=True, root_url="https://admin.alpha.bypasslane.com")
+        admin = SuiteAccountsPage(self.driver, skip_login=True)
+        admin.attach_session_cookie()
+        admin.driver.get(admin.URL)
 
         admin.search_for_suite_account(test_data.search_query)
 

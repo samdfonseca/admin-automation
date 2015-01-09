@@ -12,6 +12,7 @@ class SuiteAccountsPage(AdminPage):
 
     PATH = "/suite_accounts"
 
+
     @property
     def NEW_SUITE_ACCOUNT_BUTTON(self):
         return self.get_element(SuiteAccountsLocators.NEW_SUITE_ACCOUNT_BUTTON)
