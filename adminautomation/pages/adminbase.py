@@ -1,13 +1,32 @@
 # Base page for all logged-in Admin pages
 
-from adminautomation.pages import BasePage
+from adminautomation.pages import BasePage, LoginPage
 from adminautomation.utils.locators import NavBarLocators, SidebarLocators, AdminPageLocators
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from time import sleep
+from urlparse import urljoin
 
 
 class AdminPage(BasePage):
+
+    def __init__(self, driver, **kwargs):
+        self.SKIP_LOGIN = kwargs.get("skip_login", False)
+        self.AUTO_LOGIN = kwargs.get("auto_login", True)
+
+        super(AdminPage, self).__init__(driver, **kwargs)
+
+        login_url = urljoin(self.ROOT_URL, LoginPage.PATH)
+        if self.driver.current_url == login_url and self.SKIP_LOGIN is True:
+            self.attach_session_cookie()
+            self.go_to_page_url()
+        elif self.driver.current_url == login_url and self.AUTO_LOGIN is True:
+            admin = LoginPage(self.driver)
+            admin.login(kwargs.get("user"), kwargs.get("passwd"))
+            admin.go_to_page_url()
+        elif self.driver.current_url != self.URL:
+            self.go_to_page_url()
+
 
     @property
     def LOGO_HOME_BUTTON(self):

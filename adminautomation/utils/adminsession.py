@@ -9,7 +9,7 @@ from urlparse import urlparse, urlunparse
 
 
 ADMIN_SCHEME = 'https'
-ADMIN_NETLOC = 'admin-integration.bypasslane.com'
+ADMIN_NETLOC = 'admin.alpha.bypasslane.com'
 SESSION_COOKIE_NAME = '_bypass_admin_session'
 
 class PersistentSessionCookie(object):
@@ -56,9 +56,20 @@ def _build_update_venue_request(venue_id, authenticity_token, path='admin_sessio
 def _get_selenium_style_cookie(response):
     cookie = {'domain': urlparse(response.url).netloc,
               'name': SESSION_COOKIE_NAME,
-              'path': response.headers['set-cookie'].split('; ')[1].split('=')[1],
-              'secure': False if response.headers['set-cookie'].split('; ')[2] is 'HttpOnly' else True,
+              'path': '/',
               'value': response.cookies[SESSION_COOKIE_NAME]}
+#     try:
+#         cookie = {'domain': urlparse(response.url).netloc,
+#                   'name': SESSION_COOKIE_NAME,
+#                   'path': response.headers['set-cookie'].split('; ')[1].split('=')[1],
+#                   'secure': False if response.headers['set-cookie'].split('; ')[2] is 'HttpOnly' else True,
+#                   'value': response.cookies[SESSION_COOKIE_NAME]}
+#
+#         cookie = {'domain': urlparse(response.url).netloc,
+#                   'name': SESSION_COOKIE_NAME,
+#                   'value': response.cookies[SESSION_COOKIE_NAME]}
+#     except KeyError:
+#         raise KeyError("Unable to find key. Request URL: {0}  Response headers: {1}".format(response.url,response.headers))
 
     return cookie
 

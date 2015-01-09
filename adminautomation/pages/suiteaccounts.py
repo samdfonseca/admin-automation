@@ -2,6 +2,7 @@
 
 from adminautomation.pages import AdminPage
 from adminautomation.utils.locators import SuiteAccountsLocators
+from adminautomation.stuctures import SuiteAccountRow
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.alert import Alert
@@ -73,7 +74,8 @@ class SuiteAccountsPage(AdminPage):
 
     @property
     def DATATABLE_ROWS(self):
-        return self.get_element(SuiteAccountsLocators.DATATABLE_ROWS)
+        trs = self.get_element(SuiteAccountsLocators.DATATABLE_ROWS)
+        return map(SuiteAccountRow, trs)
 
 
     @property
@@ -104,19 +106,21 @@ class SuiteAccountsPage(AdminPage):
         if header.find_element_by_xpath("../..").tag_name != "thead":
             raise Exception('Not a valid datatable header element.')
 
-        if header.get_attribute("class") != "sorting_asc":
+        if "sorting_asc" not in header.get_attribute("class").split(" "):
             header.click()
 
 
+    @staticmethod
     def sort_by_header_descending(self, header):
         # Raises an exception if headers parent element is not a thead
         if header.find_element_by_xpath("../..").tag_name != "thead":
             raise Exception('Not a valid datatable header element.')
 
-        if header.get_attribute("class") != "sorting_desc":
+        if "sorting_asc" in header.get_attribute("class").split(" "):
             header.click()
-            if header.get_attribute("class") != "sorting_desc":
-                header.click()
+        elif "sorting" in header.get_attribute("class").split(" "):
+            header.click()
+            header.click()
 
 
     def select_pagination_button_by_text(self, button_text):
@@ -124,11 +128,13 @@ class SuiteAccountsPage(AdminPage):
         match_button.click()
 
 
+    @staticmethod
     def select_edit_suite_account_in_row(self, row):
         selector = SuiteAccountsLocators.DATATABLE_ROW_EDIT
         row.find_element(*selector).click()
 
 
+    @staticmethod
     def select_delete_suite_account_in_row(self, row):
         selector = SuiteAccountsLocators.DATATABLE_ROW_DELETE
         row.find_element(*selector).click()
@@ -136,4 +142,12 @@ class SuiteAccountsPage(AdminPage):
 
     def accept_delete_suite_account_alert(self):
         Alert(self.driver).accept()
+
+
+    def get_accounts_by_name(self, account_name):
+        return filter(lambda row: row.ACCOUNT_NAME == account_name)
+
+
+    def get_accounts_by_email(self, email):
+        return filter(lambda row: row.EMAIL == email)
 

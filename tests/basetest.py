@@ -11,6 +11,7 @@ from adminautomation.utils.drivers import get_chrome_driver as ChromeDriver
 
 
 class BaseTest(unittest.TestCase):
+    # Ideally this would be an Abstract Base Class but it works fine as is for now
 
     AUTH_FILE = './data/auth.json'
     DATA_FILE = None

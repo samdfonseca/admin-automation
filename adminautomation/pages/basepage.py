@@ -1,13 +1,17 @@
 # The base page object to be inherited by all other page objects
 
 from __future__ import print_function
+from urlparse import urljoin
+import logging
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
+
 from adminautomation.utils import AdminSessionCookie
 
 
 class BasePage(object):
+    # Ideally this would be an Abstract Base Class but it works fine as is for now
 
     ROOT_URL = "https://admin-integration.bypasslane.com"
 
@@ -20,10 +24,24 @@ class BasePage(object):
         :return: a BasePage object
         """
 
+
+        self.logger = logging.getLogger("adminautomation.pages.{}".format(self.__class__.__name__))
+        self.logger.setLevel(logging.DEBUG)
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.DEBUG)
+        console_handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
+        self.logger.addHandler(console_handler)
+
+
         self.driver = driver
+        self.logger.debug("Using webdriver w/ desired capabilities: {}".format(self.driver.desired_capabilities))
         self.driver.maximize_window()
+        self.logger.debug("Maximizing browser window. New size: {}".format(self.driver.get_window_size()))
+
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
-        self.URL = kwargs.get("url", self.ROOT_URL + self.PATH)
+        self.logger.debug("Page's ROOT_URL: {}".format(self.ROOT_URL))
+        self.URL = kwargs.get("url", urljoin(self.ROOT_URL, self.PATH))
+        self.logger.debug("Page's URL: {}".format(self.URL))
 
 
     def attach_session_cookie(self):
@@ -34,6 +52,14 @@ class BasePage(object):
 
         self.driver.delete_cookie(name=AdminSessionCookie()['name'])
         self.driver.add_cookie(AdminSessionCookie())
+
+
+    def go_to_page_url(self):
+        """
+        Go to the url assigned to the pages URL attribute.
+        """
+
+        self.driver.get(self.URL)
 
 
     def refresh_page(self):
