@@ -74,7 +74,7 @@ class SuiteAccountsPage(AdminPage):
 
     @property
     def DATATABLE_ROWS(self):
-        trs = self.get_element(SuiteAccountsLocators.DATATABLE_ROWS)
+        trs = self.get_elements(SuiteAccountsLocators.DATATABLE_ROWS)
         return map(SuiteAccountRow, trs)
 
 
@@ -145,9 +145,9 @@ class SuiteAccountsPage(AdminPage):
 
 
     def get_accounts_by_name(self, account_name):
-        return filter(lambda row: row.ACCOUNT_NAME == account_name)
+        return filter(lambda row: row.ACCOUNT_NAME == account_name, self.DATATABLE_ROWS)
 
 
     def get_accounts_by_email(self, email):
-        return filter(lambda row: row.EMAIL == email)
+        return filter(lambda row: row.EMAIL == email, self.DATATABLE_ROWS)
 

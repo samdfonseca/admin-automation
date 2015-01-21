@@ -1,6 +1,7 @@
 from adminautomation.utils.locators import SuiteAccountsLocators as Locators
 
 class SuiteAccountRow(object):
+    # Not sure if having sub-page objects are a good idea. May complicate things.
     def __init__(self, table_row):
         self._ROW = table_row
         self.ACCOUNT_NAME = self._get_cell_text(Locators.DATATABLE_ROW_ACCOUNT_NAME)
@@ -9,8 +10,10 @@ class SuiteAccountRow(object):
         self.PHONE = self._get_cell_text(Locators.DATATABLE_ROW_PHONE)
         self.EMAIL = self._get_cell_text(Locators.DATATABLE_ROW_EMAIL)
 
-        self._EDIT_LINK = table_row.find_element(*Locators.DATATABLE_ROW_EDIT).find_element_by_css_selector("a.edit")
-        self._DELETE_LINK = table_row.find_element(*Locators.DATATABLE_ROW_EDIT).find_element_by_css_selector("a.destroy")
+        # self._EDIT_LINK = table_row.find_element(*Locators.DATATABLE_ROW_EDIT).find_element_by_css_selector("a.edit")
+        # self._DELETE_LINK = table_row.find_element(*Locators.DATATABLE_ROW_EDIT).find_element_by_css_selector("a.destroy")
+        self._EDIT_LINK = table_row.find_element(*Locators.DATATABLE_ROW_EDIT)
+        self._DELETE_LINK = table_row.find_element(*Locators.DATATABLE_ROW_DELETE)
 
 
     def _get_cell_text(self, locator):

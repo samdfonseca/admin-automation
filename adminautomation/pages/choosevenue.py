@@ -165,15 +165,15 @@ class ChooseVenuePage(BasePage):
         """
 
         self.expand_venues_listbox()
-        list_items = self.get_current_list_items()
-        for item in list_items:
-            if item.text == venue_name:
-                break
-            self.VENUE_LIST_SEARCHBOX.send_keys(Keys.ARROW_DOWN)
-        else:
-            raise ValueError('Could not find venue: {}'.format(venue_name))
+        target_item = filter(lambda item: item.text == venue_name, self.VENUE_LIST_ITEMS)[0]
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", target_item)
 
-        item.click()
+        while True:
+            self.sleep(1)
+            if target_item.is_displayed():
+                break
+
+        target_item.click()
         self.contract_venues_listbox()
         self.click_go_button()
 

@@ -8,16 +8,20 @@ from urllib import urlencode
 from urlparse import urlparse, urlunparse
 
 
-ADMIN_SCHEME = 'https'
-ADMIN_NETLOC = 'admin.alpha.bypasslane.com'
-SESSION_COOKIE_NAME = '_bypass_admin_session'
+# Hides the InsecureRequestWarning received on integration
+requests.packages.urllib3.disable_warnings()
+
 
 class PersistentSessionCookie(object):
     COOKIE = None
 
 
-def build_url(path):
-    return urlunparse((ADMIN_SCHEME, ADMIN_NETLOC, path, '', '', ''))
+def build_url(root_url, path):
+    parsed_root_url = urlparse(root_url)
+    full_url = urlunparse((parsed_root_url.scheme, parsed_root_url.netloc, path, '', '', ''))
+    # print("Built URL:", full_url)
+
+    return full_url
 
 
 def get_authenticity_token(response):
@@ -27,15 +31,15 @@ def get_authenticity_token(response):
     return element['value']
 
 
-def _build_login_page_request(path='admin_sessions/new'):
-    url = build_url(path)
+def _build_login_page_request(root_url, path='admin_sessions/new'):
+    url = build_url(root_url, path)
     request = requests.Request('GET', url)
     
     return request
 
 
-def _build_login_request(user, passwd, authenticity_token, path='admin_sessions'):
-    url = build_url(path)
+def _build_login_request(user, passwd, authenticity_token, root_url, path='admin_sessions'):
+    url = build_url(root_url, path)
     data = {'authenticity_token': authenticity_token,
             'user[email]': user,
             'user[password]': passwd}
@@ -44,8 +48,8 @@ def _build_login_request(user, passwd, authenticity_token, path='admin_sessions'
     return request
 
 
-def _build_update_venue_request(venue_id, authenticity_token, path='admin_sessions/update_venue'):
-    url = build_url(path)
+def _build_update_venue_request(venue_id, authenticity_token, root_url, path='admin_sessions/update_venue'):
+    url = build_url(root_url, path)
     data = {'authenticity_token': authenticity_token,
             'change_venue': venue_id}
     request = requests.Request('POST', url, data=urlencode(data))
@@ -53,57 +57,62 @@ def _build_update_venue_request(venue_id, authenticity_token, path='admin_sessio
     return request
 
 
-def _get_selenium_style_cookie(response):
-    cookie = {'domain': urlparse(response.url).netloc,
-              'name': SESSION_COOKIE_NAME,
-              'path': '/',
-              'value': response.cookies[SESSION_COOKIE_NAME]}
-#     try:
-#         cookie = {'domain': urlparse(response.url).netloc,
-#                   'name': SESSION_COOKIE_NAME,
-#                   'path': response.headers['set-cookie'].split('; ')[1].split('=')[1],
-#                   'secure': False if response.headers['set-cookie'].split('; ')[2] is 'HttpOnly' else True,
-#                   'value': response.cookies[SESSION_COOKIE_NAME]}
-#
-#         cookie = {'domain': urlparse(response.url).netloc,
-#                   'name': SESSION_COOKIE_NAME,
-#                   'value': response.cookies[SESSION_COOKIE_NAME]}
-#     except KeyError:
-#         raise KeyError("Unable to find key. Request URL: {0}  Response headers: {1}".format(response.url,response.headers))
+def _get_selenium_style_cookie(session, root_url):
+    cookie_name = "_session_id"
+    cookie_domain = urlparse(root_url).netloc
+    cookie_path = "/"
+    # print(session.cookies)
+    cookie_value = session.cookies[cookie_name]
+
+    cookie = {'domain': cookie_domain,
+              'name': cookie_name,
+              'path': cookie_path,
+              'value': cookie_value}
 
     return cookie
 
 
-def _get_session_cookie(user, passwd, venue_id):
+def _get_session_cookie(user, passwd, venue_id, root_url):
     session = requests.Session()
     
     # Get login page
-    request = session.prepare_request(_build_login_page_request())
+    request = session.prepare_request(_build_login_page_request(root_url))
     response = session.send(request, verify=False)
+    # print("Login Page Cookies:", response.cookies)
 
     # Perform login request
     authenticity_token = get_authenticity_token(response)
-    request = session.prepare_request(_build_login_request(user, passwd, authenticity_token))
+    request = session.prepare_request(_build_login_request(user, passwd, authenticity_token, root_url))
     response = session.send(request, verify=False)
+    # print("Login Request Cookies:", response.cookies)
 
     # Perform update venue request
     authenticity_token = get_authenticity_token(response)
-    request = session.prepare_request(_build_update_venue_request(venue_id, authenticity_token))
+    request = session.prepare_request(_build_update_venue_request(venue_id, authenticity_token, root_url))
     response = session.send(request, verify=False)
+    # print("Update Venue Cookies:", response.cookies)
 
-    cookie = _get_selenium_style_cookie(response)
+    # print("Session Cookies:", session.cookies)
+
+    cookie = _get_selenium_style_cookie(session, root_url)
 
     return cookie
 
 
-def get_session_cookie():
+def get_session_cookie(**kwargs):
+    auth_file = kwargs.get("auth_file", './tests/data/auth.json')
+
     if PersistentSessionCookie.COOKIE is None:
-        with open(abspath(dirname(__file__) + '/../../tests/data/auth.json')) as f:
+        # with open(abspath(dirname(__file__) + '/../../tests/data/auth.json')) as f:
+        with open(auth_file) as f:
             auth_info = readjson(f)
 
-        PersistentSessionCookie.COOKIE = _get_session_cookie(auth_info['user'],
-                                                      auth_info['passwd'],
-                                                      auth_info['default_venue'])
+        user = kwargs.get('user', auth_info['user'])
+        passwd = kwargs.get('passwd', auth_info['passwd'])
+        venue = kwargs.get('venue', auth_info['default_venue'])
+        root_url = kwargs.get('root_url', auth_info['root_url'])
+
+        PersistentSessionCookie.COOKIE = _get_session_cookie(user, passwd, venue, root_url)
 
     return PersistentSessionCookie.COOKIE
 

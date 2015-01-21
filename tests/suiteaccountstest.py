@@ -8,16 +8,17 @@ from adminautomation.utils.drivers import get_phantomjs_driver as PhantomJSDrive
 
 class SuiteAccountsTest(BaseTest):
 
-    DATA_FILE = "./data/suiteaccountstest.json"
+    DATA_FILE = "./tests/data/suiteaccountstest.json"
 
 
     def test_search_account_name_full_match(self):
+        """Search for a Suite Account - Full Match"""
         # Enters a query into the search box and checks that the datatable displays an account
         # with a matching Account Name. Search query should be a full account name.
 
         test_data = self.CURRENT_TEST_DATA
 
-        admin = SuiteAccountsPage(self.driver, skip_login=True, root_url="https://admin.alpha.bypasslane.com")
+        admin = SuiteAccountsPage(self.driver, skip_login=True)
 
         admin.search_for_suite_account(test_data.search_query)
 

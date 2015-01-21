@@ -1,0 +1,3 @@
+TODO
+- Separate page object library into new project?
+- Put together setup.py file

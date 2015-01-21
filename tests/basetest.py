@@ -8,15 +8,16 @@ from selenium import webdriver
 from adminautomation.utils import TestCaseDataReader
 from adminautomation.utils import AdminSessionCookie
 from adminautomation.utils.drivers import get_chrome_driver as ChromeDriver
+from adminautomation.utils.drivers import get_phantomjs_driver as PhantomJSDriver
 
 
 class BaseTest(unittest.TestCase):
     # Ideally this would be an Abstract Base Class but it works fine as is for now
 
-    AUTH_FILE = './data/auth.json'
+    # AUTH_FILE = './data/auth.json'
     DATA_FILE = None
-
     TEST_DATA = None
+    USE_HEADLESS_WEBDRIVER = False
 
 
     @property
@@ -31,7 +32,10 @@ class BaseTest(unittest.TestCase):
 
 
     def setUp(self):
-        self.driver = ChromeDriver()
+        if self.USE_HEADLESS_WEBDRIVER:
+            self.driver = PhantomJSDriver()
+        else:
+            self.driver = ChromeDriver()
 
 
     def tearDown(self):

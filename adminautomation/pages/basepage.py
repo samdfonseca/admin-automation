@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from urlparse import urljoin
-import logging
+from time import sleep
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
@@ -24,24 +24,11 @@ class BasePage(object):
         :return: a BasePage object
         """
 
-
-        self.logger = logging.getLogger("adminautomation.pages.{}".format(self.__class__.__name__))
-        self.logger.setLevel(logging.DEBUG)
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
-        console_handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-        self.logger.addHandler(console_handler)
-
-
         self.driver = driver
-        self.logger.debug("Using webdriver w/ desired capabilities: {}".format(self.driver.desired_capabilities))
         self.driver.maximize_window()
-        self.logger.debug("Maximizing browser window. New size: {}".format(self.driver.get_window_size()))
 
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
-        self.logger.debug("Page's ROOT_URL: {}".format(self.ROOT_URL))
         self.URL = kwargs.get("url", urljoin(self.ROOT_URL, self.PATH))
-        self.logger.debug("Page's URL: {}".format(self.URL))
 
 
     def attach_session_cookie(self):
@@ -146,23 +133,8 @@ class BasePage(object):
         self.check_value("page_title", found_title, custom_message=custom_message)
 
 
-    # def attach_authenticated_session(self, user, passwd, **kwargs):
-    #     """
-    #     Replaces the _bypass_admin_session cookie with a pre-authenticated session cookie.
-    #
-    #     :param cookie:
-    #     """
-    #
-    #     try:
-    #         if not modules.get("AdminAuthCookie"):
-    #             from adminautomation.utils import AdminAuthCookie
-    #     except ImportError:
-    #         pass
-    #
-    #     session_cookie_name = kwargs.get('session_cookie_name', '_bypass_admin_session')
-    #
-    #     authed_cookie = AdminAuthCookie(user, passwd, **kwargs)
-    #
-    #     self.driver.delete_cookie(session_cookie_name)
-    #     self.driver.add_cookie(authed_cookie)
+    @staticmethod
+    def sleep(seconds):
+        sleep(seconds)
+
 

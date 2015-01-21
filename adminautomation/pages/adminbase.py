@@ -15,6 +15,7 @@ class AdminPage(BasePage):
         self.AUTO_LOGIN = kwargs.get("auto_login", True)
 
         super(AdminPage, self).__init__(driver, **kwargs)
+        self.driver.get(self.ROOT_URL)
 
         login_url = urljoin(self.ROOT_URL, LoginPage.PATH)
         if self.driver.current_url == login_url and self.SKIP_LOGIN is True:
