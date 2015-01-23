@@ -14,6 +14,7 @@ class ChooseVenueTest(BaseTest):
 
 
     def test_select_venue_by_name(self):
+        """Select Venue by Name"""
         # Simulates a user clicking the venues drop down box then selecting a venue by name.
         #
         # NEEDS TESTRAIL CASE
@@ -72,7 +73,7 @@ class ChooseVenueTest(BaseTest):
 
 
     def test_search_for_venue_partial_match(self):
-        """Search for a Venue - Full Match"""
+        """Search for a Venue - Partial Match"""
         # Simulates the user entering a query into the searchbox from the venue list dropdown.
         #
         # NEEDS TESTRAIL CASE
