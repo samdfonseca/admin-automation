@@ -124,10 +124,10 @@ class LoginTest(BaseTest):
 
 
     def test_login_with_no_credentials(self):
-        """Login with Empty Credentials"""
+        """Login with Empty Credentials - 8198"""
         # Attempt to login without entering any credentials
         #
-        # NEEDS TESTRAIL CASE
+        # https://bypassmobile.testrail.com/index.php?/cases/view/8198
 
         test_data = self.CURRENT_TEST_DATA
 
