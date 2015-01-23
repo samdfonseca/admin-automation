@@ -123,5 +123,19 @@ class LoginTest(BaseTest):
         self.assertEqual(admin.driver.current_url, test_data.end_url)
 
 
+    def test_login_with_no_credentials(self):
+        """Login with Empty Credentials"""
+        # Attempt to login without entering any credentials
+        #
+        # NEEDS TESTRAIL CASE
+
+        test_data = self.CURRENT_TEST_DATA
+
+        admin = LoginPage(self.driver)
+        admin.login("","")
+
+        self.assertEqual(admin.driver.current_url, test_data.end_url)
+
+
 if __name__ == "__main__":
     unittest.main()
