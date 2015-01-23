@@ -37,8 +37,9 @@ class BasePage(object):
         having to login on every test.
         """
 
-        self.driver.delete_cookie(name=AdminSessionCookie()['name'])
-        self.driver.add_cookie(AdminSessionCookie())
+        cookie = AdminSessionCookie()
+        self.driver.delete_cookie(name=cookie['name'])
+        self.driver.add_cookie(cookie)
 
 
     def go_to_page_url(self):
