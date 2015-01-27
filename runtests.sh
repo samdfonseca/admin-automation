@@ -1,5 +1,7 @@
 #!/bin/bash
 
-nosetests -v tests/logintest.py
-nosetests -v tests/choosevenuetest.py
-nosetests -v tests/suiteaccountstest.py
+NOSE_OPTS="-c nose.cfg"
+
+nosetests ${NOSE_OPTS} tests/logintest.py
+nosetests ${NOSE_OPTS} tests/choosevenuetest.py
+nosetests ${NOSE_OPTS} tests/suiteaccountstest.py
