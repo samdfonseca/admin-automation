@@ -134,7 +134,7 @@ class LoginTest(BaseTest):
         admin = LoginPage(self.driver)
         admin.login("","")
 
-        self.assertEqual(admin.driver.current_url, test_data.end_url+'AAA')
+        self.assertEqual(admin.driver.current_url, test_data.end_url)
 
 
 if __name__ == "__main__":

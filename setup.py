@@ -4,7 +4,7 @@ except ImportError:
     from distutils.core import setup
 
 
-__version__ = '0.1.20150126'
+__version__ = '0.1.20150127'
 
 with open('requirements.txt') as f:
     depends = map(str.strip, f.readlines())

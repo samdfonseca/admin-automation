@@ -39,5 +39,6 @@ class BaseTest(unittest.TestCase):
 
 
     def tearDown(self):
+        # self.driver.save_screenshot('tests/img/{}.png'.format(self._testMethodName))
         self.driver.quit()
 

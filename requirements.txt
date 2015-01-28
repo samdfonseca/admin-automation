@@ -4,4 +4,3 @@ simplejson>=3.6.5
 wsgiref>=0.1.2
 beautifulsoup4>=4.3.2
 requests>=2.5.1
-nosecolor>=0.1
