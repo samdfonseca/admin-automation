@@ -1,9 +1,9 @@
 #!./runtest
 
 import unittest
-from tests import BaseTest
+from basetest import BaseTest
 from adminautomation.pages import SuiteAccountsPage
-from adminautomation.utils.drivers import get_phantomjs_driver as PhantomJSDriver
+# from adminautomation.utils.drivers import get_phantomjs_driver as PhantomJSDriver
 
 
 class SuiteAccountsTest(BaseTest):
