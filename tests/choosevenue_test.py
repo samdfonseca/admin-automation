@@ -3,7 +3,7 @@
 # Tests for selecting a venue in Admin
 
 import unittest
-from tests import BaseTest
+from basetest import BaseTest
 from adminautomation.pages import LoginPage
 from adminautomation.pages import ChooseVenuePage
 

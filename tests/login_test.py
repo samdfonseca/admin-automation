@@ -4,7 +4,7 @@
 # https://bypassmobile.testrail.com/index.php?/suites/view/19&group_id=742
 
 import unittest
-from tests import BaseTest
+from basetest import BaseTest
 from adminautomation.pages import LoginPage
 
 
