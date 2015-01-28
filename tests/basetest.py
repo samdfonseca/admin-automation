@@ -2,7 +2,6 @@
 
 import unittest
 
-from os import remove as delete_file
 from selenium import webdriver
 
 from adminautomation.utils import TestCaseDataReader
