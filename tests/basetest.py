@@ -2,12 +2,12 @@
 
 import unittest
 
-from selenium import webdriver
+from tests import trclient
 
 from adminautomation.utils import TestCaseDataReader
 from adminautomation.utils import AdminSessionCookie
-from adminautomation.utils.drivers import get_chrome_driver as ChromeDriver
-from adminautomation.utils.drivers import get_phantomjs_driver as PhantomJSDriver
+from adminautomation.utils.drivers import get_chrome_driver
+from adminautomation.utils.drivers import get_phantomjs_driver
 
 
 class BaseTest(unittest.TestCase):
@@ -17,25 +17,23 @@ class BaseTest(unittest.TestCase):
     DATA_FILE = None
     TEST_DATA = None
     USE_HEADLESS_WEBDRIVER = False
-
+    TESTRAIL_CLIENT = None
 
     @property
     def CURRENT_TEST_DATA(self):
         return self.TEST_DATA[self._testMethodName]
 
-
     @classmethod
     def setUpClass(cls):
         cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE) if cls.DATA_FILE else None
         cls.AUTH_COOKIE = AdminSessionCookie()
-
+        cls.TESTRAIL_CLIENT = trclient
 
     def setUp(self):
         if self.USE_HEADLESS_WEBDRIVER:
-            self.driver = PhantomJSDriver()
+            self.driver = get_phantomjs_driver()
         else:
-            self.driver = ChromeDriver()
-
+            self.driver = get_chrome_driver()
 
     def tearDown(self):
         # self.driver.save_screenshot('tests/img/{}.png'.format(self._testMethodName))

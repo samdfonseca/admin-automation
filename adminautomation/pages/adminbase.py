@@ -8,7 +8,7 @@ from time import sleep
 from urlparse import urljoin
 
 
-class AdminPage(BasePage):
+class AdminPage(object):
 
     def __init__(self, driver, **kwargs):
         self.SKIP_LOGIN = kwargs.get("skip_login", False)
