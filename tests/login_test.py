@@ -12,21 +12,19 @@ class LoginTest(BaseTest):
 
     DATA_FILE = './tests/data/logintest.json'
 
-
     def test_root_url_unauthenticated(self):
         """Root URL Unauthenticated - 5933"""
         # Browser is redirected from the Admin root URL to a login URL,
         # if user does have an active session.
-
+        #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5933
 
-
+        test_case_id = 5933
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver, url=test_data.start_url)
 
         self.assertEqual(admin.driver.current_url, test_data.end_url)
-
 
     def test_root_url_authenticated(self):
         """Root URL Authenticated - 5939"""
@@ -34,7 +32,8 @@ class LoginTest(BaseTest):
         # an active session stored.
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5939
-    
+
+        test_case_id = 5939
         test_data = self.CURRENT_TEST_DATA
     
         admin = LoginPage(self.driver)
@@ -43,9 +42,8 @@ class LoginTest(BaseTest):
         admin.driver.get(admin.ROOT_URL)
     
         admin.driver.get(test_data.end_url)
-    
-        self.assertEqual(admin.driver.title, test_data.end_page_title)
 
+        self.assertEqual(admin.driver.title, test_data.end_page_title)
 
     def test_login_with_valid_credentials(self):
         """Login with Valid Credentials - 5934"""
@@ -54,13 +52,13 @@ class LoginTest(BaseTest):
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5934
 
+        test_case_id = 5934
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver)
         admin.login(test_data.user, test_data.passwd)
 
         self.assertEqual(admin.driver.current_url, test_data.end_url)
-
 
     def test_login_with_invalid_username(self):
         """Login with Invalid Username - 5935"""
@@ -69,13 +67,13 @@ class LoginTest(BaseTest):
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5935
 
+        test_case_id = 5935
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver)
         admin.login(test_data.user, test_data.passwd)
 
         self.assertEqual(admin.driver.current_url, test_data.end_url)
-
 
     def test_login_with_invalid_password(self):
         """Login with Invalid Password - 5937"""
@@ -84,13 +82,13 @@ class LoginTest(BaseTest):
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5937
 
+        test_case_id = 5937
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver)
         admin.login(test_data.user, test_data.passwd)
 
         self.assertEqual(admin.driver.current_url, test_data.end_url)
-
 
     def test_invalid_login_toast(self):
         """Invalid Login Toast - 6883"""
@@ -99,6 +97,7 @@ class LoginTest(BaseTest):
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/6883
 
+        test_case_id = 6883
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver)
@@ -107,7 +106,6 @@ class LoginTest(BaseTest):
 
         self.assertTrue(admin.check_for_invalid_login_toast())
 
-
     def test_login_with_all_caps_username(self):
         """Login with All Caps Username - 5938"""
         # Login with a valid username but replace all lowercase letters with capitalized ones
@@ -115,6 +113,7 @@ class LoginTest(BaseTest):
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/5938
 
+        test_case_id = 5938
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver)
@@ -122,17 +121,17 @@ class LoginTest(BaseTest):
 
         self.assertEqual(admin.driver.current_url, test_data.end_url)
 
-
     def test_login_with_no_credentials(self):
         """Login with Empty Credentials - 8198"""
         # Attempt to login without entering any credentials
         #
         # https://bypassmobile.testrail.com/index.php?/cases/view/8198
 
+        test_case_id = 8198
         test_data = self.CURRENT_TEST_DATA
 
         admin = LoginPage(self.driver)
-        admin.login("","")
+        admin.login("", "")
 
         self.assertEqual(admin.driver.current_url, test_data.end_url)
 

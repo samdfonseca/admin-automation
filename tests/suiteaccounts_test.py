@@ -15,6 +15,8 @@ class SuiteAccountsTest(BaseTest):
         """Search for a Suite Account - Full Match"""
         # Enters a query into the search box and checks that the datatable displays an account
         # with a matching Account Name. Search query should be a full account name.
+        #
+        # NEEDS TESTRAIL CASE
 
         test_data = self.CURRENT_TEST_DATA
 
