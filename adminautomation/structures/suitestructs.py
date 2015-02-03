@@ -1,12 +1,15 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.support.select import Select
 from adminautomation.utils.locators import SuiteAccountsLocators, ModifySuiteAccountLocators
+from time import sleep
 
 
 class SuiteAccountRow(object):
     # Not sure if having sub-page objects are a good idea. May complicate things.
     def __init__(self, table_row):
-        self._ROW = table_row
+        self.ROW = table_row
         self.ACCOUNT_NAME = self._get_cell_text(SuiteAccountsLocators.DATATABLE_ROW_ACCOUNT_NAME)
         self.SUITE = self._get_cell_text(SuiteAccountsLocators.DATATABLE_ROW_SUITE)
         self.SUITE_HOLDER = self._get_cell_text(SuiteAccountsLocators.DATATABLE_ROW_SUITE_HOLDER)
@@ -19,7 +22,7 @@ class SuiteAccountRow(object):
         self.ID = self._DELETE_LINK.get_attribute("href").split("/")[-1]  # The number at the end of the delete link url
 
     def _get_cell_text(self, locator):
-        return self._ROW.find_element(*locator).text
+        return self.ROW.find_element(*locator).text
 
     def delete_account(self):
         self._DELETE_LINK.click()
@@ -61,13 +64,17 @@ class NewSuiteAccountForm(object):
         return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_INPUT)
 
     @property
-    def SUITE_SELECTOR(self):
+    def SUITE_INPUT_SELECTOR(self):
         return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_INPUT_SELECTOR)
 
     @property
     def SUITE_INPUT_DROPDOWN(self):
-        self.SUITE_INPUT.click()
-        return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_INPUT_DROPDOWN)
+        try:
+            self.SUITE_INPUT.click()
+        except WebDriverException:
+            pass
+        return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(ModifySuiteAccountLocators.SUITE_INPUT_DROPDOWN))
+        # return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_INPUT_DROPDOWN)
 
     @property
     def SUITE_INPUT_DROPDOWN_SEARCHBOX(self):
@@ -99,8 +106,12 @@ class NewSuiteAccountForm(object):
 
     @property
     def SUITE_HOLDER_DROPDOWN(self):
-        self.SUITE_HOLDER_INPUT.click()
-        return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_HOLDER_DROPDOWN)
+        try:
+            self.SUITE_HOLDER_INPUT.click()
+        except WebDriverException:
+            pass
+        return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(ModifySuiteAccountLocators.SUITE_HOLDER_DROPDOWN))
+        # return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_HOLDER_DROPDOWN)
 
     @property
     def SUITE_HOLDER_DROPDOWN_SEARCHBOX(self):
@@ -124,8 +135,12 @@ class NewSuiteAccountForm(object):
 
     @property
     def SUITE_ADMIN_DROPDOWN(self):
-        self.SUITE_ADMIN_INPUT.click()
-        return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_ADMIN_DROPDOWN)
+        try:
+            self.SUITE_ADMIN_INPUT.click()
+        except WebDriverException:
+            pass
+        return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(ModifySuiteAccountLocators.SUITE_ADMIN_DROPDOWN))
+        # return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_ADMIN_DROPDOWN)
 
     @property
     def SUITE_ACCOUNT_DROPDOWN_SEARCHBOX(self):
@@ -192,7 +207,7 @@ class NewSuiteAccountForm(object):
         self.SUITE_TYPE_INPUT.send_keys(suite_type)
 
     def fill_suite(self, suite):
-        self.SUITE_INPUT_SELECTOR.select_by_visible_text(suite)
+        Select(self.SUITE_INPUT_SELECTOR).select_by_visible_text(suite)
 
     def fill_billing_address(self, address):
         self.BILLING_ADDRESS_INPUT.clear()
@@ -203,10 +218,10 @@ class NewSuiteAccountForm(object):
         self.NOTES_INPUT.send_keys(notes)
 
     def fill_suite_holder(self, suite_holder):
-        self.SUITE_HOLDER_SELECTOR.select_by_visible_text(suite_holder)
+        Select(self.SUITE_HOLDER_SELECTOR).select_by_visible_text(suite_holder)
 
     def fill_suite_admin(self, suite_admin):
-        self.SUITE_ADMIN_SELECTOR.select_by_visible_text(suite_admin)
+        Select(self.SUITE_ADMIN_SELECTOR).select_by_visible_text(suite_admin)
 
     def add_authorized_signer(self, signer):
         self.AUTHORIZED_SIGNERS_INPUT.clear()
@@ -218,9 +233,15 @@ class NewSuiteAccountForm(object):
 
     def cancel_form(self):
         self.CANCEL_BUTTON.click()
+        sleep(1)
 
 
-class NewCustomerDialoag(object):
+
+class EditSuiteAccountForm(NewSuiteAccountForm):
+    pass
+
+
+class NewCustomerDialog(object):
     def __init__(self, driver):
         self.driver = driver
 
@@ -251,3 +272,7 @@ class NewCustomerDialoag(object):
     @property
     def SAVE_CHANGES_BUTTON(self):
         return self.DIALOG.find_element(*ModifySuiteAccountLocators.NEW_CUSTOMER_SAVE_CHANGES_BUTTON)
+
+
+class EditCustomerDialog(NewCustomerDialog):
+    pass

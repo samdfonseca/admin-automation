@@ -138,43 +138,42 @@ class ModifySuiteAccountLocators(object):
     CANCEL_BUTTON = (By.CSS_SELECTOR, 'a#cancel')
     SAVE_BUTTON = (By.CSS_SELECTOR, 'div#save')
 
-    SUITE_ACCOUNT_NAME_LABEL = (By.CSS_SELECTOR, 'label:contains("Suite Account Name")')
-    SUITE_ACCOUNT_NAME_INPUT = (By.CSS_SELECTOR, 'label:contains("Suite Account Name") + div > input')
-    SUITE_TYPE_LABEL = (By.CSS_SELECTOR, 'label:contains("Suite Type")')
-    SUITE_TYPE_INPUT = (By.CSS_SELECTOR, 'label:contains("Suite Type") + div > input')
-    SUITE_LABEL = (By.CSS_SELECTOR, 'label:contains("Suite")')
-    BILLING_ADDRESS_LABEL = (By.CSS_SELECTOR, 'label:contains("Billing Address")')
-    BILLING_ADDRESS_INPUT = (By.CSS_SELECTOR, 'label:contains("Billing Address") + div > input')
-    NOTES_LABEL = (By.CSS_SELECTOR, 'label:contains("Notes")')
-    NOTES_INPUT = (By.CSS_SELECTOR, 'label:contains("Notes") + div > textarea')
+    SUITE_ACCOUNT_NAME_INPUT = (By.CSS_SELECTOR, 'input[ng-model="suite_account.name"]')
+    SUITE_TYPE_INPUT = (By.CSS_SELECTOR, 'input[ng-model="suite_account.suite_type"]')
+    BILLING_ADDRESS_INPUT = (By.CSS_SELECTOR, 'textarea[ng-model="suite_account.address"]')
+    NOTES_INPUT = (By.CSS_SELECTOR, 'textarea[ng-model="suite_account.notes"]')
 
-    SUITE_INPUT = (By.CSS_SELECTOR, 'label:contains("Suite") + div a.select2-choice')
-    SUITE_INPUT_SELECTOR = (By.CSS_SELECTOR, 'label:contains("Suite") + div select')
+    SUITE_INPUT = (By.CSS_SELECTOR, 'div#suite-account form div.form-group:nth-of-type(3) a.select2-choice')
+    SUITE_INPUT_SELECTOR = (By.CSS_SELECTOR, 'select[ng-model="suite_account.suite_id"]')
     SUITE_INPUT_DROPDOWN = (By.CSS_SELECTOR, 'body > div#select2-drop')
     SUITE_INPUT_DROPDOWN_SEARCHBOX = (By.CSS_SELECTOR, 'body > div#select2-drop > div.select2-search > input')
-    SUITE_INPUT_DROPDOWN_ITEMS = (By.CSS_SELECTOR,
-                                  'body > div#select2-drop ul.select2-results div.select2-result-label')
+    SUITE_INPUT_DROPDOWN_ITEMS = (By.CSS_SELECTOR, 'body > div#select2-drop ul.select2-results '
+                                                   'div.select2-result-label')
 
     SUITE_HOLDER_LABEL = (By.CSS_SELECTOR, 'div.suite-holder h4')
-    SUITE_HOLDER_NEW_CUSTOMER_BUTTON = (By.CSS_SELECTOR, 'div.suite-holder button:contains("New Customer")')
+    SUITE_HOLDER_NEW_CUSTOMER_BUTTON = (By.CSS_SELECTOR, 'div.suite-holder > div[ng-hide="suite_account.suite_holder"] '
+                                                         '> button')
     SUITE_HOLDER_INPUT = (By.CSS_SELECTOR, 'div.suite-holder a.select2-choice')
-    SUITE_HOLDER_SELECTOR = (By.CSS_SELECTOR, 'div.suite-holder select')
+    SUITE_HOLDER_SELECTOR = (By.CSS_SELECTOR, 'div.suite-holder span[ng-show="suiteOwners"] '
+                                              'select[ng-model="suite_account.suite_holder"]')
     SUITE_HOLDER_DROPDOWN = (By.CSS_SELECTOR, 'body > div#select2-drop')
-    SUITE_HOLDER_DROPDOWN_SEARCHBOX = (By.CSS_SELECTOR, 'body > div#select2-drop > div.select2-search > input')
-    SUITE_HOLDER_DROPDOWN_ITEMS = (By.CSS_SELECTOR,
-                                   'body > div#select2-drop ul.select2-results div.select2-result-label')
+    SUITE_HOLDER_DROPDOWN_SEARCHBOX = (By.CSS_SELECTOR, 'body > div#select2-drop div.select2-search > input')
+    SUITE_HOLDER_DROPDOWN_ITEMS = (By.CSS_SELECTOR, 'body > div#select2-drop ul.select2-results '
+                                                    'div.select2-result-label span.select2-match')
 
     SUITE_ADMIN_LABEL = (By.CSS_SELECTOR, 'div.suite-admin h4')
-    SUITE_ADMIN_NEW_CUSTOMER_BUTTON = (By.CSS_SELECTOR, 'div.suite-admin button:contains("New Customer")')
-    SUITE_ADMIN_INPUT = (By.CSS_SELECTOR, 'div.suite-admin a.select2-choice')
-    SUITE_ADMIN_SELECTOR = (By.CSS_SELECTOR, 'div.suite-admin select')
+    SUITE_ADMIN_NEW_CUSTOMER_BUTTON = (By.CSS_SELECTOR, 'div.suite-admin div[ng-hide="suite_account.suite_admin"] '
+                                                        '> button')
+    SUITE_ADMIN_INPUT = (By.CSS_SELECTOR, 'div.suite-admin div[ng-hide="suite_account.suite_admin"] a.select2-choice')
+    SUITE_ADMIN_SELECTOR = (By.CSS_SELECTOR, 'div.suite-admin div[ng-show="suiteOwners"] '
+                                             'select[ng-model="suite_account.suite_admin"]')
     SUITE_ADMIN_DROPDOWN = (By.CSS_SELECTOR, 'body > div#select2-drop')
-    SUITE_ADMIN_DROPDOWN_SEARCHBOX = (By.CSS_SELECTOR, 'body > div#select2-drop > div.select2-search > input')
-    SUITE_ADMIN_DROPDOWN_ITEMS = (By.CSS_SELECTOR,
-                                  'body > div#select2-drop ul.select2-results div.select2-result-label')
+    SUITE_ADMIN_DROPDOWN_SEARCHBOX = (By.CSS_SELECTOR, 'body > div#select2-drop div.select2-search > input')
+    SUITE_ADMIN_DROPDOWN_ITEMS = (By.CSS_SELECTOR, 'body > div#select2-drop ul.select2-results '
+                                                   'div.select2-result-label span.select2-match')
 
     AUTHORIZED_SIGNERS_LABEL = (By.CSS_SELECTOR, 'div.authorized-signers h4')
-    AUTHORIZED_SIGNERS_INPUT = (By.CSS_SELECTOR, 'div.authorized-signers input')
+    AUTHORIZED_SIGNERS_INPUT = (By.CSS_SELECTOR, 'div.authorized-signers input[ng-model="signer"]')
     AUTHORIZED_SIGNERS_ADD_SIGNERS_BUTTON = (By.CSS_SELECTOR, 'div.authorized-signers div#add.btn')
 
     NEW_CUSTOMER_DIALOG = (By.CSS_SELECTOR, 'body > div.modal.fade.in > div.modal-dialog')
