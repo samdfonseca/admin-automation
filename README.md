@@ -5,7 +5,7 @@
   - Google Chrome
   - [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home)
   - [PhantomJS](http://phantomjs.org/)
-  - [Selenium Server](http://repo1.maven.org/maven2/org/seleniumhq/selenium/selenium-server/)
+  - [Selenium Server](http://www.seleniumhq.org/download/)
 
 ### Setup
 - Setup virtualenv.
