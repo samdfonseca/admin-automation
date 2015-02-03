@@ -2,7 +2,7 @@
 
 from adminautomation.pages import AdminPage, BasePage
 from adminautomation.utils.locators import SuiteAccountsLocators
-from adminautomation.structures.suitestructs import (SuiteAccountRow, NewSuiteAccountForm, EditSuiteAccountForm,
+from adminautomation.structures.suiteaccountstructs import (SuiteAccountRow, NewSuiteAccountForm, EditSuiteAccountForm,
                                                      NewCustomerDialog, EditCustomerDialog)
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
