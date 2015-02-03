@@ -134,6 +134,7 @@ class SuiteAccountsLocators(object):
 
 class ModifySuiteAccountLocators(object):
     PORTLET_TITLE = (By.CSS_SELECTOR, 'div.portlet-title div.caption')
+    FORM = (By.CSS_SELECTOR, 'div#suite-account')
     CANCEL_BUTTON = (By.CSS_SELECTOR, 'a#cancel')
     SAVE_BUTTON = (By.CSS_SELECTOR, 'div#save')
 
@@ -142,15 +143,22 @@ class ModifySuiteAccountLocators(object):
     SUITE_TYPE_LABEL = (By.CSS_SELECTOR, 'label:contains("Suite Type")')
     SUITE_TYPE_INPUT = (By.CSS_SELECTOR, 'label:contains("Suite Type") + div > input')
     SUITE_LABEL = (By.CSS_SELECTOR, 'label:contains("Suite")')
-    SUITE_INPUT = (By.CSS_SELECTOR, 'label:contains("Suite") + div > input')
     BILLING_ADDRESS_LABEL = (By.CSS_SELECTOR, 'label:contains("Billing Address")')
     BILLING_ADDRESS_INPUT = (By.CSS_SELECTOR, 'label:contains("Billing Address") + div > input')
     NOTES_LABEL = (By.CSS_SELECTOR, 'label:contains("Notes")')
     NOTES_INPUT = (By.CSS_SELECTOR, 'label:contains("Notes") + div > textarea')
 
+    SUITE_INPUT = (By.CSS_SELECTOR, 'label:contains("Suite") + div a.select2-choice')
+    SUITE_INPUT_SELECTOR = (By.CSS_SELECTOR, 'label:contains("Suite") + div select')
+    SUITE_INPUT_DROPDOWN = (By.CSS_SELECTOR, 'body > div#select2-drop')
+    SUITE_INPUT_DROPDOWN_SEARCHBOX = (By.CSS_SELECTOR, 'body > div#select2-drop > div.select2-search > input')
+    SUITE_INPUT_DROPDOWN_ITEMS = (By.CSS_SELECTOR,
+                                  'body > div#select2-drop ul.select2-results div.select2-result-label')
+
     SUITE_HOLDER_LABEL = (By.CSS_SELECTOR, 'div.suite-holder h4')
     SUITE_HOLDER_NEW_CUSTOMER_BUTTON = (By.CSS_SELECTOR, 'div.suite-holder button:contains("New Customer")')
-    SUITE_HOLDER_SELECTOR = (By.CSS_SELECTOR, 'div.suite-holder a.select2-choice')
+    SUITE_HOLDER_INPUT = (By.CSS_SELECTOR, 'div.suite-holder a.select2-choice')
+    SUITE_HOLDER_SELECTOR = (By.CSS_SELECTOR, 'div.suite-holder select')
     SUITE_HOLDER_DROPDOWN = (By.CSS_SELECTOR, 'body > div#select2-drop')
     SUITE_HOLDER_DROPDOWN_SEARCHBOX = (By.CSS_SELECTOR, 'body > div#select2-drop > div.select2-search > input')
     SUITE_HOLDER_DROPDOWN_ITEMS = (By.CSS_SELECTOR,
@@ -158,7 +166,8 @@ class ModifySuiteAccountLocators(object):
 
     SUITE_ADMIN_LABEL = (By.CSS_SELECTOR, 'div.suite-admin h4')
     SUITE_ADMIN_NEW_CUSTOMER_BUTTON = (By.CSS_SELECTOR, 'div.suite-admin button:contains("New Customer")')
-    SUITE_ADMIN_SELECTOR = (By.CSS_SELECTOR, 'div.suite-admin a.select2-choice')
+    SUITE_ADMIN_INPUT = (By.CSS_SELECTOR, 'div.suite-admin a.select2-choice')
+    SUITE_ADMIN_SELECTOR = (By.CSS_SELECTOR, 'div.suite-admin select')
     SUITE_ADMIN_DROPDOWN = (By.CSS_SELECTOR, 'body > div#select2-drop')
     SUITE_ADMIN_DROPDOWN_SEARCHBOX = (By.CSS_SELECTOR, 'body > div#select2-drop > div.select2-search > input')
     SUITE_ADMIN_DROPDOWN_ITEMS = (By.CSS_SELECTOR,
@@ -179,5 +188,4 @@ class ModifySuiteAccountLocators(object):
     NEW_CUSTOMER_OFFICE_PHONE_INPUT = (By.CSS_SELECTOR, 'input[ng-model="customer.office_phone"]')
     NEW_CUSTOMER_CANCEL_BUTTON = (By.CSS_SELECTOR, 'footer.modal-footer div.btn:contains("Cancel")')
     NEW_CUSTOMER_SAVE_CHANGES_BUTTON = (By.CSS_SELECTOR, 'footer.modal-footer div.btn:contains("Save Changes")')
-
 

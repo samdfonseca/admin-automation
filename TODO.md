@@ -4,3 +4,4 @@
 - [ ] Create locator class?
 - [ ] Split locators up into seperate modules
 - [ ] Investigate using pytest and splinter, http://pytest-splinter.readthedocs.org/en/latest/
+- [ ] Add helper function to handle dropdown selectors
