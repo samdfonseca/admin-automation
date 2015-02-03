@@ -1,6 +1,6 @@
 
 
-from adminautomation.pages import AdminPage
+from adminautomation.pages import AdminPage, BasePage
 from adminautomation.utils.locators import SuiteAccountsLocators
 from adminautomation.stuctures import SuiteAccountRow
 from selenium.webdriver.common.keys import Keys
@@ -8,7 +8,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.alert import Alert
 
 
-class SuiteAccountsPage(AdminPage):
+class SuiteAccountsPage(AdminPage, BasePage):
 
     PATH = "/suite_accounts"
 
