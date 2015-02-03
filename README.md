@@ -34,7 +34,7 @@
 - Setup selenium server. (Only if using local machine to run tests)
 
 ```
-~/admin-automation $ cd bin
+~/admin-automation $ mkdir bin && cd bin
 ~/admin-automation/bin $ wget http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
 ~/admin-automation/bin $ wget http://chromedriver.storage.googleapis.com/2.14/chromedriver_mac32.zip
 ~/admin-automation/bin $ unzip chromedriver_mac32.zip && rm chromedriver_mac32.zip
