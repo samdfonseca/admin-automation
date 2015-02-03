@@ -2,7 +2,8 @@
 
 from adminautomation.pages import AdminPage, BasePage
 from adminautomation.utils.locators import SuiteAccountsLocators
-from adminautomation.stuctures.suitestructs import SuiteAccountRow, NewSuiteAccountForm, NewCustomerDialoag
+from adminautomation.structures.suitestructs import (SuiteAccountRow, NewSuiteAccountForm, EditSuiteAccountForm,
+                                                     NewCustomerDialog, EditCustomerDialog)
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.alert import Alert
@@ -113,6 +114,11 @@ class SuiteAccountsPage(AdminPage, BasePage):
         selector = SuiteAccountsLocators.DATATABLE_ROW_EDIT
         row.find_element(*selector).click()
 
+    def get_edit_suite_account_form_by_id(self, account_id):
+        account = self.get_account_by_id(account_id)
+        self.select_edit_suite_account_in_row(account.ROW)
+        return NewSuiteAccountForm(self.driver)
+
     @staticmethod
     def select_delete_suite_account_in_row(row):
         selector = SuiteAccountsLocators.DATATABLE_ROW_DELETE
@@ -120,6 +126,11 @@ class SuiteAccountsPage(AdminPage, BasePage):
 
     def accept_delete_suite_account_alert(self):
         Alert(self.driver).accept()
+
+    def delete_suite_account_by_id(self, account_id):
+        account = self.get_account_by_id(account_id)
+        self.select_delete_suite_account_in_row(account.ROW)
+        self.accept_delete_suite_account_alert()
 
     def get_accounts_by_name(self, account_name):
         return filter(lambda row: row.ACCOUNT_NAME == account_name, self.DATATABLE_ROWS)
