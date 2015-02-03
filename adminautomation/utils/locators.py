@@ -92,6 +92,12 @@ class SidebarLocators(object):
     DEVICES = (By.CSS_SELECTOR, 'li.terminals')
     ALERTS = (By.CSS_SELECTOR, 'li.alerts')
 
+    BUCKS = (By.CSS_SELECTOR, 'li.bucks')
+    BUCKS_CARD_SEARCH = (By.CSS_SELECTOR, 'li.bucks a[href="/bucks#/"]')
+    BUCKS_ADD_NEW_CARD = (By.CSS_SELECTOR, 'li.bucks a[href="/bucks#/add_card"]')
+    BUCKS_ALLOCATE_CARDS = (By.CSS_SELECTOR, 'li.bucks a[href="/bucks#/allocate"]')
+    BUCKS_IMPORT_EXPORT = (By.CSS_SELECTOR, 'li.bucks a[href="/bucks#/import"]')
+
 
 class AdminPageLocators(object):
     PAGE_TITLE = (By.CSS_SELECTOR, 'h3.page-title')
