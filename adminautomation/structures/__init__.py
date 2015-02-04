@@ -1,6 +1,6 @@
 __author__ = 'samfonseca'
 
-from suitestructs import SuiteAccountRow
+from suiteaccountstructs import SuiteAccountRow
 
 
 __all__ = [

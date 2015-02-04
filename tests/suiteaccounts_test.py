@@ -177,6 +177,16 @@ class SuiteAccountsTest(BaseTest):
         form = admin.get_new_suite_account_form()
         self.assertEqual(form.PORTLET_TITLE.text, test_data.target_form_title)
 
+    def test_new_suite_account_form_cancel_button(self):
+
+        test_data = self.CURRENT_TEST_DATA
+
+        admin = SuiteAccountsPage(self.driver, skip_login=True)
+        form = admin.get_new_suite_account_form()
+        self.assertEqual(form.PORTLET_TITLE.text, test_data.intermediate_form_title)
+        form.cancel_form()
+        self.assertEqual(admin.PORTLET_TITLE.text, test_data.target_form_title)
+
 
 if __name__ == "__main__":
     unittest.main()
