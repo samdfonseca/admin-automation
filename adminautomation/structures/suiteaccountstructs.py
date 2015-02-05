@@ -140,7 +140,6 @@ class NewSuiteAccountForm(object):
         except WebDriverException:
             pass
         return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(ModifySuiteAccountLocators.SUITE_ADMIN_DROPDOWN))
-        # return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_ADMIN_DROPDOWN)
 
     @property
     def SUITE_ACCOUNT_DROPDOWN_SEARCHBOX(self):
@@ -234,7 +233,6 @@ class NewSuiteAccountForm(object):
     def cancel_form(self):
         self.CANCEL_BUTTON.click()
         sleep(1)
-
 
 
 class EditSuiteAccountForm(NewSuiteAccountForm):
