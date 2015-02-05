@@ -65,7 +65,7 @@ class NewSuiteAccountForm(object):
 
     @property
     def SUITE_INPUT_SELECTOR(self):
-        return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_INPUT_SELECTOR)
+        return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_SELECTOR)
 
     @property
     def SUITE_INPUT_DROPDOWN(self):
@@ -73,16 +73,16 @@ class NewSuiteAccountForm(object):
             self.SUITE_INPUT.click()
         except WebDriverException:
             pass
-        return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(ModifySuiteAccountLocators.SUITE_INPUT_DROPDOWN))
+        return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(ModifySuiteAccountLocators.SUITE_DROPDOWN))
         # return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_INPUT_DROPDOWN)
 
     @property
     def SUITE_INPUT_DROPDOWN_SEARCHBOX(self):
-        return self.SUITE_INPUT_DROPDOWN.find_element(*ModifySuiteAccountLocators.SUITE_INPUT_DROPDOWN_SEARCHBOX)
+        return self.SUITE_INPUT_DROPDOWN.find_element(*ModifySuiteAccountLocators.SUITE_DROPDOWN_SEARCHBOX)
 
     @property
     def SUITE_INPUT_DROPDOWN_ITEMS(self):
-        return self.SUITE_INPUT_DROPDOWN.find_elements(*ModifySuiteAccountLocators.SUITE_INPUT_DROPDOWN_ITEMS)
+        return self.SUITE_INPUT_DROPDOWN.find_elements(*ModifySuiteAccountLocators.SUITE_DROPDOWN_ITEMS)
 
     @property
     def BILLING_ADDRESS_INPUT(self):

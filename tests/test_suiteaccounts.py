@@ -67,8 +67,8 @@ class SuiteAccountsTest(BaseTest):
         test_data = self.CURRENT_TEST_DATA
 
         admin = SuiteAccountsPage(self.driver, skip_login=True)
-        admin.search_for_suite_account(test_data.search_query)
         # target = admin.get_account_by_id(test_data.search_query)
+        admin.search_for_suite_account(test_data.search_query)
         target = admin.get_account_by_id(test_data.target_account_id)
         self.assertNotIsInstance(target, type(None))
         self.assertEqual(target.ID, test_data.target_account_id)
