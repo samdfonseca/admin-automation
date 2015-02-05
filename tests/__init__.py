@@ -1,12 +1,10 @@
 
-from os import getenv
-from testrailwrapper.testrailclient import TestRailClient
-
-
 trclient = None
 
 
 def setup_package():
+    from os import getenv
+    from testrailwrapper.testrailclient import TestRailClient
     global trclient
     testrail_url = getenv('TESTRAIL_URL', 'https://bypassmobile.testrail.com')
     testrail_user = getenv('TESTRAIL_USER')
