@@ -1,4 +1,4 @@
-# Base page for all logged-in Admin pages
+Base page for all logged-in Admin pages
 
 from adminautomation.pages import BasePage, LoginPage
 from adminautomation.utils.locators import NavBarLocators, SidebarLocators, AdminPageLocators, DropDownSelectorLocators
@@ -654,18 +654,18 @@ class AdminPage(object):
 
         self.navigate_to([self.BUCKS], self.BUCKS_IMPORT_EXPORT)
 
-    def _get_dropdown_selector_by_text(self, text, index_when_multiple_match=0):
-        """
-        Gets the 'select2-container' element based on the current text. If multiple selectors have the same text,
-        the index_when_multiple_match argument is used to return that item.
-        :param text: The text in the dropdown selector to return.
-        :param index_when_multiple_match: The list index of the item to return if multiple selectors match text.
-        :return: A DropDownSelector item.
-        """
+    #def _get_dropdown_selector_by_text(self, text, index_when_multiple_match=0):
+    #    """
+    #    Gets the 'select2-container' element based on the current text. If multiple selectors have the same text,
+    #    the index_when_multiple_match argument is used to return that item.
+    #    :param text: The text in the dropdown selector to return.
+    #    :param index_when_multiple_match: The list index of the item to return if multiple selectors match text.
+    #    :return: A DropDownSelector item.
+    #    """
 
-        elems = self.get_elements(DropDownSelectorLocators.INPUT_BOX_CONTRACTED)
-        matched_elems =
-        if len(elems) > 1:
-            return elems[index_when_multiple_match]
-        else:
-            return elems
+    #    elems = self.get_elements(DropDownSelectorLocators.INPUT_BOX_CONTRACTED)
+    #    matched_elems =
+    #    if len(elems) > 1:
+    #        return elems[index_when_multiple_match]
+    #    else:
+    #        return elems
