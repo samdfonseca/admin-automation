@@ -1,4 +1,4 @@
-Base page for all logged-in Admin pages
+# Basepage for all logged-in Admin pages
 
 from adminautomation.pages import BasePage, LoginPage
 from adminautomation.utils.locators import NavBarLocators, SidebarLocators, AdminPageLocators, DropDownSelectorLocators
