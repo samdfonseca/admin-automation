@@ -2,7 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.select import Select
-from adminautomation.utils.locators import SuiteAccountsLocators, ModifySuiteAccountLocators
+from adminautomation.utils.locators import SuiteAccountsLocators, ModifySuiteAccountLocators, AdminPageLocators
 from time import sleep
 
 
@@ -140,7 +140,6 @@ class NewSuiteAccountForm(object):
         except WebDriverException:
             pass
         return WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(ModifySuiteAccountLocators.SUITE_ADMIN_DROPDOWN))
-        # return self.FORM.find_element(*ModifySuiteAccountLocators.SUITE_ADMIN_DROPDOWN)
 
     @property
     def SUITE_ACCOUNT_DROPDOWN_SEARCHBOX(self):
@@ -233,8 +232,8 @@ class NewSuiteAccountForm(object):
 
     def cancel_form(self):
         self.CANCEL_BUTTON.click()
-        sleep(1)
-
+        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(AdminPageLocators.PORTLET_TITLE))
+        #sleep(1)
 
 
 class EditSuiteAccountForm(NewSuiteAccountForm):

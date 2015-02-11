@@ -228,3 +228,10 @@ class ModifySuiteAccountLocators(object):
     NEW_CUSTOMER_SAVE_CHANGES_BUTTON = (By.CSS_SELECTOR, 'footer.modal-footer '
                                                          'div.btn:contains("Save Changes")')
 
+
+class DropDownSelectorLocators(object):
+    INPUT_BOX_CONTRACTED = (By.CSS_SELECTOR, 'div.select2-container')
+    CHOSEN_SPAN = (By.CSS_SELECTOR, 'a.select2-choice >'
+                                    'span.select2-chosen')
+    SELECT = (By.CSS_SELECTOR, 'select.select2-offscreen')
+
