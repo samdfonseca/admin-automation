@@ -1,13 +1,21 @@
-# Locator objects used by the webdriver to find page elements
+# Locator BaseLocators used by the webdriver to find page elements
 # For info on CSS Selectors see:
 # https://saucelabs.com/resources/selenium/css-selectors
 # http://www.w3.org/TR/CSS21/selector.html
 # https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors
 
+from collections import namedtuple
 from selenium.webdriver.common.by import By
 
 
-class LoginPageLocators(object):
+BaseLocator = namedtuple('BaseLocator', 'by, value')
+
+
+class BaseLocatorGroup(object):
+    pass
+
+
+class LoginPageLocators(BaseLocatorGroup):
     EMAIL_TEXTBOX = (By.CSS_SELECTOR, 'input#user_email')
     PASSWORD_TEXTBOX = (By.CSS_SELECTOR, 'input#user_password')
     LOGIN_BUTTON = (By.CSS_SELECTOR, 'button.btn')
@@ -16,7 +24,7 @@ class LoginPageLocators(object):
     INVALID_LOGIN_TOAST_MESSAGE = (By.CSS_SELECTOR, 'div.toast-message')
 
 
-class ChooseVenueLocators(object):
+class ChooseVenueLocators(BaseLocatorGroup):
     VENUES_LISTBOX = (By.CSS_SELECTOR, 'div#s2id_change_venue')
     VENUE_LIST_SEARCHBOX = (By.CSS_SELECTOR, 'input.select2-input')
     VENUE_LIST = (By.CSS_SELECTOR, 'ul.select2-results')
@@ -26,7 +34,7 @@ class ChooseVenueLocators(object):
     FORM_TITLE = (By.CSS_SELECTOR, 'h3.form-title')
 
 
-class NavBarLocators(object):
+class NavBarLocators(BaseLocatorGroup):
     LOGO_HOME_BUTTON = (By.CSS_SELECTOR, 'a.navbar-brand[href="/"]')
 
     VENUES_LISTBOX = (By.CSS_SELECTOR, 'div#s2id_change_venue')
@@ -42,7 +50,7 @@ class NavBarLocators(object):
     LOGOUT_BUTTON = (By.CSS_SELECTOR, 'a[href="/admin_sessions"]')
 
 
-class SidebarLocators(object):
+class SidebarLocators(BaseLocatorGroup):
     DASHBOARD = (By.CSS_SELECTOR, 'li.dashboard')
 
     LOCATION_CONTROL = (By.CSS_SELECTOR, 'li.locations')
@@ -99,13 +107,13 @@ class SidebarLocators(object):
     BUCKS_IMPORT_EXPORT = (By.CSS_SELECTOR, 'li.bucks a[href="/bucks#/import"]')
 
 
-class AdminPageLocators(object):
+class AdminPageLocators(BaseLocatorGroup):
     PAGE_TITLE = (By.CSS_SELECTOR, 'h3.page-title')
     BREADCRUMB_LINKS = (By.CSS_SELECTOR, 'ul.breadcrumb a')
     PORTLET_TITLE = (By.CSS_SELECTOR, 'div.portlet-title div.caption')
 
 
-class SuiteAccountsLocators(object):
+class SuiteAccountsLocators(BaseLocatorGroup):
     NEW_SUITE_ACCOUNT_BUTTON = (By.CSS_SELECTOR, 'a.new-suite-account')
     ITEMS_PER_PAGE_SELECTOR = (By.CSS_SELECTOR, 'select[name="suite-accounts-list_length"]')
     ITEMS_PER_PAGE_OPTIONS = (By.CSS_SELECTOR, 'select[name="suite-accounts-list_length"] option')
@@ -113,12 +121,13 @@ class SuiteAccountsLocators(object):
 
     DATATABLE = (By.CSS_SELECTOR, 'table#suite-accounts-list')
     DATATABLE_HEADERS = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td')
-    DATATABLE_ACCOUNT_NAME_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Account Name")')
-    DATATABLE_SUITE_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Suite")')
-    DATATABLE_SUITE_HOLDER_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Suite Holder")')
-    DATATABLE_PHONE_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Phone")')
-    DATATABLE_EMAIL_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Email")')
-    DATATABLE_EDIT_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Edit")')
+    # Remove unused selectors
+    # DATATABLE_ACCOUNT_NAME_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Account Name")')
+    # DATATABLE_SUITE_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Suite")')
+    # DATATABLE_SUITE_HOLDER_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Suite Holder")')
+    # DATATABLE_PHONE_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Phone")')
+    # DATATABLE_EMAIL_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Email")')
+    # DATATABLE_EDIT_HEADER = (By.CSS_SELECTOR, 'table#suite-accounts-list thead td:contains("Edit")')
     DATATABLE_ROWS = (By.CSS_SELECTOR, 'table#suite-accounts-list tbody tr')
     DATATABLE_ROW_ACCOUNT_NAME = (By.CSS_SELECTOR, 'td:nth-of-type(1)')
     DATATABLE_ROW_SUITE = (By.CSS_SELECTOR, 'td:nth-of-type(2)')
@@ -129,10 +138,11 @@ class SuiteAccountsLocators(object):
     DATATABLE_ROW_DELETE = (By.CSS_SELECTOR, 'td:nth-of-type(6) a.destroy')
 
     DATATABLE_FOOTER = (By.CSS_SELECTOR, 'div#suite-accounts-list_info')
-    PAGINATION_BUTTONS = (By.CSS_SELECTOR, 'div#suite-accounts-list_paginate ul.pagination li')
+    PAGINATION_BUTTONS = (By.CSS_SELECTOR, '.pagination'
+                                           'li')
 
 
-class ModifySuiteAccountLocators(object):
+class ModifySuiteAccountLocators(BaseLocatorGroup):
     PORTLET_TITLE = (By.CSS_SELECTOR, 'div.portlet-title '
                                       'div.caption')
     FORM = (By.CSS_SELECTOR, 'div#suite-account')
@@ -229,9 +239,50 @@ class ModifySuiteAccountLocators(object):
                                                          'div.btn:contains("Save Changes")')
 
 
-class DropDownSelectorLocators(object):
-    INPUT_BOX_CONTRACTED = (By.CSS_SELECTOR, 'div.select2-container')
-    CHOSEN_SPAN = (By.CSS_SELECTOR, 'a.select2-choice >'
-                                    'span.select2-chosen')
-    SELECT = (By.CSS_SELECTOR, 'select.select2-offscreen')
+# class DropDownSelectorLocators(BaseLocatorGroup):
+#     INPUT_BOX_CONTRACTED = (By.CSS_SELECTOR, 'div.select2-container')
+#     CHOSEN_SPAN = (By.CSS_SELECTOR, 'a.select2-choice >'
+#                                     'span.select2-chosen')
+#     SELECT = (By.CSS_SELECTOR, 'select.select2-offscreen')
+#     SEARCH_INPUT = (By.CSS_SELECTOR, 'div.select2-search >'
+#                                      'input.select2-input')
+
+
+class OrderLocators(BaseLocatorGroup):
+    RELOAD_TABLE_BUTTON = (By.CSS_SELECTOR, 'div.orders-buttons'
+                                         'div.btn:nth-child(1)')
+    NEW_ORDER_BUTTON = (By.CSS_SELECTOR, 'div.orders-buttons'
+                                         'div.btn:nth-child(2)')
+
+    DATATABLE = (By.CSS_SELECTOR, 'table#order_list')
+    DATATABLE_HEADERS = (By.CSS_SELECTOR, 'table#order_list'
+                                          'th.header')
+    DATATABLE_FILTERS = (By.CSS_SELECTOR, 'table#order_list'
+                                          'th.filter')
+    DATATABLE_ROWS = (By.CSS_SELECTOR, 'table#order_list'
+                                       'tbody'
+                                       'tr')
+    DATATABLE_ROW_ORDER_ID = (By.CSS_SELECTOR, 'td[data-title-text="ID"]')
+    DATATABLE_ROW_ORDER_DAILY_ID = (By.CSS_SELECTOR, 'td[data-title-text="Daily ID"]')
+    DATATABLE_ROW_CREATED = (By.CSS_SELECTOR, 'td[data-title-text="Created"]')
+    DATATABLE_ROW_STATE = (By.CSS_SELECTOR, 'td[data-title-text="State"]')
+    DATATABLE_ROW_LOCATION = (By.CSS_SELECTOR, 'td[data-title-text="Location"]')
+    DATATABLE_ROW_TOTAL = (By.CSS_SELECTOR, 'td[data-title-text="Total"]')
+    DATATABLE_ROW_SECTION = (By.CSS_SELECTOR, 'td[data-title-text="Section"]')
+    DATATABLE_ROW_ROW = (By.CSS_SELECTOR, 'td[data-title-text="Row"]')
+    DATATABLE_ROW_SEAT = (By.CSS_SELECTOR, 'td[data-title-text="Seat"]')
+    DATATABLE_ROW_NAME = (By.CSS_SELECTOR, 'td[data-title-text="Name"]')
+    DATATABLE_ROW_CC_LAST_FOUR = (By.CSS_SELECTOR, 'td[data-title-text="CC Last Four"]')
+    DATATABLE_ROW_ORDER_TAKER = (By.CSS_SELECTOR, 'td[data-title-text="Order Taker"]')
+
+    DATATABLE_FOOTER = (By.CSS_SELECTOR, '.ng-table-counts')
+    ITEMS_PER_PAGE_SELECTOR = (By.CSS_SELECTOR, '.ng-table-counts'
+                                                'select')
+    TOTAL_ITEMS_STRONG = (By.CSS_SELECTOR, '.ng-table-counts'
+                                           'strong')
+    PAGINATION_BUTTONS = (By.CSS_SELECTOR, '.pagination'
+                                           'li'
+                                           'a')
+
+
 
