@@ -52,4 +52,6 @@ class PaginationButtons(object):
     def get_previous_page_button(self, previous_page_button_locator=('css selector', 'a[ng-switch-when="prev"]')):
         return self.button_group_element.find_element(*previous_page_button_locator)
 
+    def get_button_by_text(self, button_text):
+        return filter(lambda button: button.text == str(button_text), self.BUTTONS)[0]
 
