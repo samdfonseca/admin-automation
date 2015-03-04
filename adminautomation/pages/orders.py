@@ -164,18 +164,16 @@ class OrdersPage(AdminPage, BasePage):
 
     def filter_by(self, column_title, filter_value):
         filter_elem = self.DATATABLE_FILTERS[self.DATATABLE_COLUMN_MAP[column_title]]
-        if filter_elem.find_elements_by_tag_name('select'):
-            input_elem = Select(filter_elem.find_element_by_tag_name('select')).select_by_visible_text(filter_value)
+        input_elem = filter_elem.find_elements('css selector', 'input,select')[0]
+        if input_elem.tag_name == 'select':
             try:
-                input_elem.select_by_visible_text(filter_value)
+                Select(input_elem).select_by_visible_text(filter_value)
             except NoSuchElementException:
                 # warnings.warn('Filter option not available.', UserWarning)
                 pass
         else:
-            input_elem = filter_elem.find_element_by_tag_name('input')
             input_elem.send_keys(str(filter_value))
-        # Click somewhere outside the filter to remove focus from the input
-        self.PORTLET_TITLE.click()
+        self.PORTLET_TITLE.click()  # Click somewhere outside the filter to remove focus from the input
 
     def get_order_id_links_by_link_text(self, order_id):
         return self.get_elements(('link text', str(order_id)))
