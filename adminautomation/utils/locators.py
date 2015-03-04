@@ -280,9 +280,7 @@ class OrderLocators(BaseLocatorGroup):
                                                 'select')
     TOTAL_ITEMS_STRONG = (By.CSS_SELECTOR, '.ng-table-counts'
                                            'strong')
-    PAGINATION_BUTTONS = (By.CSS_SELECTOR, '.pagination'
-                                           'li'
-                                           'a')
+    PAGINATION_BUTTON_GROUP = (By.CSS_SELECTOR, 'ul.pagination')
 
 
 
