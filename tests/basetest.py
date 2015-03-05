@@ -39,3 +39,9 @@ class BaseTest(unittest.TestCase):
         # self.driver.save_screenshot('tests/img/{}.png'.format(self._testMethodName))
         self.driver.quit()
 
+
+class BaseLoginTest(BaseTest):
+    @classmethod
+    def setupClass(cls):
+        cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE) if cls.DATA_FILE else None
+        cls.TESTRAIL_CLIENT = trclient
