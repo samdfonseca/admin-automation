@@ -4,11 +4,11 @@
 # https://bypassmobile.testrail.com/index.php?/suites/view/19&group_id=742
 
 import unittest
-from basetest import BaseTest
+from basetest import BaseLoginTest
 from adminautomation.pages import LoginPage
 
 
-class LoginTest(BaseTest):
+class LoginTest(BaseLoginTest):
 
     DATA_FILE = './tests/data/logintest.json'
 
