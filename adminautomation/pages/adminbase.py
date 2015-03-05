@@ -1,7 +1,7 @@
 # Basepage for all logged-in Admin pages
 
 from adminautomation.pages import BasePage, LoginPage
-from adminautomation.utils.locators import NavBarLocators, SidebarLocators, AdminPageLocators, DropDownSelectorLocators
+from adminautomation.utils.locators import NavBarLocators, SidebarLocators, AdminPageLocators
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from time import sleep
