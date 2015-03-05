@@ -1,9 +1,12 @@
-
+# Page object for the Suite Accounts page
 
 from adminautomation.pages import AdminPage, BasePage
 from adminautomation.utils.locators import SuiteAccountsLocators
-from adminautomation.structures.suiteaccountstructs import (SuiteAccountRow, NewSuiteAccountForm, EditSuiteAccountForm,
-                                                     NewCustomerDialog, EditCustomerDialog)
+from adminautomation.structures.suiteaccountstructs import (SuiteAccountRow,
+                                                            NewSuiteAccountForm,
+                                                            EditSuiteAccountForm,
+                                                            NewCustomerDialog,
+                                                            EditCustomerDialog)
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.alert import Alert
