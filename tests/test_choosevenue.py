@@ -6,11 +6,20 @@ import unittest
 from basetest import BaseTest
 from adminautomation.pages import LoginPage
 from adminautomation.pages import ChooseVenuePage
+from adminautomation.utils.adminsession import log_session_out
 
 
 class ChooseVenueTest(BaseTest):
 
     DATA_FILE = './tests/data/choosevenuetest.json'
+
+    @classmethod
+    def tearDownClass(cls):
+        session_id = cls.AUTH_COOKIE['value']
+        root_url = cls.AUTH_COOKIE['domain']
+        log_session_out(root_url, session_id)
+        super(ChooseVenueTest, cls).tearDownClass()
+
 
     def test_select_venue_by_name(self):
         """Select Venue by Name"""
