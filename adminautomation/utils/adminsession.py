@@ -117,4 +117,9 @@ def get_session_cookie(**kwargs):
     return PersistentSessionCookie.COOKIE
 
 
+def log_session_out(root_url, session_id):
+    root_url = 'https://{}'.format(root_url) if not root_url.startswith('https://') else root_url
+    requests.post('{}/admin_sessions'.format(root_url), cookies={'_session_id': session_id},
+                  data={'_method': 'delete'}, verify=False)
+    PersistentSessionCookie.COOKIE = None
 
