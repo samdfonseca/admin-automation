@@ -61,8 +61,8 @@ class OrdersPage(AdminPage, BasePage):
         return self.get_elements(OrderLocators.DATATABLE_ORDER_DAILY_IDS)
 
     @property
-    def DATATABLE_CREATED(self):
-        return self.get_elements(OrderLocators.DATATABLE_CREATED)
+    def DATATABLE_CREATEDS(self):
+        return self.get_elements(OrderLocators.DATATABLE_CREATEDS)
 
     @property
     def DATATABLE_STATES(self):
