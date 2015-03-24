@@ -29,7 +29,7 @@ class OrdersPage(AdminPage, BasePage):
                             'Order Taker': 11}
 
     @property
-    def RELOAD_TABLE_BUTTON(self):
+    def RELOAD_TABLE_BUTTON(self):        
         return self.get_element(OrderLocators.RELOAD_TABLE_BUTTON)
 
     @property
@@ -49,56 +49,56 @@ class OrdersPage(AdminPage, BasePage):
         return self.get_elements(OrderLocators.DATATABLE_FILTERS)
 
     @property
-    def DATATABLE_ROWS(self):
+    def DATATABLE_TABLE_ROWS(self):
         return self.get_elements(OrderLocators.DATATABLE_ROWS)
 
     @property
     def DATATABLE_ORDER_IDS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_ORDER_ID)
+        return self.get_elements(OrderLocators.DATATABLE_ORDER_IDS)
 
     @property
     def DATATABLE_ORDER_DAILY_IDS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_ORDER_DAILY_ID)
+        return self.get_elements(OrderLocators.DATATABLE_ORDER_DAILY_IDS)
 
     @property
     def DATATABLE_CREATED(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_CREATED)
+        return self.get_elements(OrderLocators.DATATABLE_CREATED)
 
     @property
     def DATATABLE_STATES(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_STATE)
+        return self.get_elements(OrderLocators.DATATABLE_STATES)
 
     @property
     def DATATABLE_LOCATIONS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_LOCATION)
+        return self.get_elements(OrderLocators.DATATABLE_LOCATIONS)
 
     @property
     def DATATABLE_TOTALS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_TOTAL)
+        return self.get_elements(OrderLocators.DATATABLE_TOTALS)
 
     @property
     def DATATABLE_SECTIONS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_SECTION)
+        return self.get_elements(OrderLocators.DATATABLE_SECTIONS)
 
     @property
     def DATATABLE_ROWS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_ROW)
+        return self.get_elements(OrderLocators.DATATABLE_ROWS)
 
     @property
     def DATATABLE_SEATS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_SEAT)
+        return self.get_elements(OrderLocators.DATATABLE_SEATS)
 
     @property
     def DATATABLE_NAMES(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_NAME)
+        return self.get_elements(OrderLocators.DATATABLE_NAMES)
 
     @property
     def DATATABLE_CC_LAST_FOURS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_CC_LAST_FOUR)
+        return self.get_elements(OrderLocators.DATATABLE_CC_LAST_FOURS)
 
     @property
     def DATATABLE_ORDER_TAKERS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROW_ORDER_TAKER)
+        return self.get_elements(OrderLocators.DATATABLE_ORDER_TAKERS)
 
     @property
     def DATATABLE_FOOTER(self):

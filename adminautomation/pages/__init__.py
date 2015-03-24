@@ -4,6 +4,7 @@ from .login import LoginPage
 from .adminbase import AdminPage
 from .dashboard import DashboardPage
 from .suiteaccounts import SuiteAccountsPage
+from .orders import OrdersPage
 
 __all__ = [
     'BasePage',
@@ -11,4 +12,5 @@ __all__ = [
     'LoginPage',
     'AdminPage',
     'DashboardPage',
-    'SuiteAccountsPage']
+    'SuiteAccountsPage',
+    'OrdersPage']

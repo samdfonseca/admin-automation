@@ -1,3 +1,5 @@
+.env
+
 # virtualenv
 venv/
 activate

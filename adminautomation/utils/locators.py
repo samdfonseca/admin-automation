@@ -249,8 +249,7 @@ class ModifySuiteAccountLocators(BaseLocatorGroup):
 
 
 class OrderLocators(BaseLocatorGroup):
-    RELOAD_TABLE_BUTTON = (By.CSS_SELECTOR, 'div.orders-buttons'
-                                         'div.btn:nth-child(1)')
+    RELOAD_TABLE_BUTTON = (By.CSS_SELECTOR, 'div.icon-refresh')
     NEW_ORDER_BUTTON = (By.CSS_SELECTOR, 'div.orders-buttons'
                                          'div.btn:nth-child(2)')
 
@@ -259,7 +258,7 @@ class OrderLocators(BaseLocatorGroup):
                                           'th.header')
     DATATABLE_FILTERS = (By.CSS_SELECTOR, 'table#order_list'
                                           'th.filter')
-    DATATABLE_ROWS = (By.CSS_SELECTOR, 'table#order_list'
+    DATATABLE_TABLE_ROWS = (By.CSS_SELECTOR, 'table#order_list'
                                        'tbody'
                                        'tr')
     DATATABLE_ORDER_IDS = (By.CSS_SELECTOR, 'td[data-title-text="ID"]')
