@@ -15,6 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class OrdersPage(AdminPage, BasePage):
 
     PATH = "/orders"
+    # This sucks. Need to get rid of it. Breaks page object pattern.
     DATATABLE_COLUMN_MAP = {'ID': 0,
                             'Daily ID': 1,
                             'Created': 2,
