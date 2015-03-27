@@ -1,4 +1,3 @@
-from adminautomation.structures import optional_element
 from selenium.webdriver.support.select import Select
 
 
