@@ -1,2 +1,2 @@
-from adminautomation.locators.locators import *
+from .locators import *
 from .inventorystatuslocators import InventoryStatusLocators

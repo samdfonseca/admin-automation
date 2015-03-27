@@ -4,19 +4,7 @@
 # http://www.w3.org/TR/CSS21/selector.html
 # https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors
 
-from functools import partial
 from selenium.webdriver.common.by import By
-
-
-class BaseLocator(tuple):
-    def __new__(cls, by, value):
-        return tuple.__new__(cls, (by, value))
-
-    def __add__(self, value):
-        self[1] += value
-        return self
-
-css = partial(BaseLocator, 'css')
 
 
 class BaseLocatorGroup(object):
