@@ -244,7 +244,7 @@ class ModifySuiteAccountLocators(BaseLocatorGroup):
 #                                      'input.select2-input')
 
 
-class OrderLocators(BaseLocatorGroup):
+class OrdersLocators(BaseLocatorGroup):
     RELOAD_TABLE_BUTTON = (By.CSS_SELECTOR, 'div.icon-refresh')
     NEW_ORDER_BUTTON = (By.CSS_SELECTOR, 'div.orders-buttons'
                                          'div.btn:nth-child(2)')

@@ -2,7 +2,7 @@
 
 # import warnings
 from adminautomation.pages import AdminPage, BasePage
-from adminautomation.utils.locators import OrderLocators
+from adminautomation.utils.locators import OrdersLocators
 from adminautomation.structures.genericstructs import PaginationButtons
 
 from selenium.webdriver.common.keys import Keys
@@ -15,6 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class OrdersPage(AdminPage, BasePage):
 
     PATH = "/orders"
+    locators = OrdersLocators
 
     @property
     def RELOAD_TABLE_BUTTON(self):        
