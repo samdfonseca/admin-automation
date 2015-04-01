@@ -1,9 +1,9 @@
 
 
-from adminautomation.pages import AdminPage
+from adminautomation.pages import AdminPage, BasePage
 
 
-class DashboardPage(AdminPage):
+class DashboardPage(AdminPage, BasePage):
 
     PATH = ""
 

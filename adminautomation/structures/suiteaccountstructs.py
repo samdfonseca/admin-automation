@@ -3,7 +3,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.select import Select
 from adminautomation.utils.locators import SuiteAccountsLocators, ModifySuiteAccountLocators, AdminPageLocators
-from time import sleep
 
 
 class SuiteAccountRow(object):
