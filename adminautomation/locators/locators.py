@@ -235,15 +235,6 @@ class ModifySuiteAccountLocators(BaseLocatorGroup):
                                                          'div.btn:contains("Save Changes")')
 
 
-# class DropDownSelectorLocators(BaseLocatorGroup):
-#     INPUT_BOX_CONTRACTED = (By.CSS_SELECTOR, 'div.select2-container')
-#     CHOSEN_SPAN = (By.CSS_SELECTOR, 'a.select2-choice >'
-#                                     'span.select2-chosen')
-#     SELECT = (By.CSS_SELECTOR, 'select.select2-offscreen')
-#     SEARCH_INPUT = (By.CSS_SELECTOR, 'div.select2-search >'
-#                                      'input.select2-input')
-
-
 class OrdersLocators(BaseLocatorGroup):
     RELOAD_TABLE_BUTTON = (By.CSS_SELECTOR, 'div.icon-refresh')
     NEW_ORDER_BUTTON = (By.CSS_SELECTOR, 'div.orders-buttons'
