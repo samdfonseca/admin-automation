@@ -15,19 +15,6 @@ from selenium.webdriver.support import expected_conditions as EC
 class OrdersPage(AdminPage, BasePage):
 
     PATH = "/orders"
-    # This sucks. Need to get rid of it. Breaks page object pattern.
-    DATATABLE_COLUMN_MAP = {'ID': 0,
-                            'Daily ID': 1,
-                            'Created': 2,
-                            'State': 3,
-                            'Location': 4,
-                            'Total': 5,
-                            'Section': 6,
-                            'Row': 7,
-                            'Seat': 8,
-                            'Name': 9,
-                            'CC Last Four': 10,
-                            'Order Taker': 11}
 
     @property
     def RELOAD_TABLE_BUTTON(self):        
@@ -164,7 +151,8 @@ class OrdersPage(AdminPage, BasePage):
         self.PAGINATION_BUTTONS.get_button_by_text(button_text).click()
 
     def filter_by(self, column_title, filter_value):
-        filter_elem = self.DATATABLE_FILTERS[self.DATATABLE_COLUMN_MAP[column_title]]
+        datatable_column_map = map(lambda header: header.text, self.DATATABLE_HEADERS)
+        filter_elem = self.DATATABLE_FILTERS[datatable_column_map.index(column_title)]
         input_elem = filter_elem.find_elements('css selector', 'input,select')[0]
         if input_elem.tag_name == 'select':
             try:
