@@ -1,4 +1,3 @@
-import unittest
 from basetest import BaseTest
 from adminautomation.pages import OrdersPage
 

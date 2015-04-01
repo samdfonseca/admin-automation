@@ -1,14 +1,10 @@
 
 
-from adminautomation.pages import AdminPage
+from adminautomation.pages import AdminPage, BasePage
 
 
-class DashboardPage(AdminPage):
+class DashboardPage(AdminPage, BasePage):
 
     PATH = ""
-
-    CHECK_VALUES = {
-        "page_title": "Dashboard - Index"
-    }
 
     # TODO: Add in dashboard functionality
