@@ -1,15 +1,12 @@
 # Page object for the Orders page
 
 # import warnings
-from adminautomation.pages import AdminPage, BasePage
-from adminautomation.utils.locators import OrdersLocators
-from adminautomation.structures.genericstructs import PaginationButtons
-
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
+from adminautomation.pages import AdminPage, BasePage
+from adminautomation.locators import OrdersLocators
+from adminautomation.structures.genericstructs import PaginationButtons
 
 
 class OrdersPage(AdminPage, BasePage):
@@ -19,92 +16,92 @@ class OrdersPage(AdminPage, BasePage):
 
     @property
     def RELOAD_TABLE_BUTTON(self):        
-        return self.get_element(OrderLocators.RELOAD_TABLE_BUTTON)
+        return self.get_element(self.locators.RELOAD_TABLE_BUTTON)
 
     @property
     def NEW_ORDER_BUTTON(self):
-        return self.get_element(OrderLocators.NEW_ORDER_BUTTON)
+        return self.get_element(self.locators.NEW_ORDER_BUTTON)
 
     @property
     def DATATABLE(self):
-        return self.get_element(OrderLocators.DATATABLE)
+        return self.get_element(self.locators.DATATABLE)
 
     @property
     def DATATABLE_HEADERS(self):
-        return self.get_elements(OrderLocators.DATATABLE_HEADERS)
+        return self.get_elements(self.locators.DATATABLE_HEADERS)
 
     @property
     def DATATABLE_FILTERS(self):
-        return self.get_elements(OrderLocators.DATATABLE_FILTERS)
+        return self.get_elements(self.locators.DATATABLE_FILTERS)
 
     @property
     def DATATABLE_TABLE_ROWS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROWS)
+        return self.get_elements(self.locators.DATATABLE_ROWS)
 
     @property
     def DATATABLE_ORDER_IDS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ORDER_IDS)
+        return self.get_elements(self.locators.DATATABLE_ORDER_IDS)
 
     @property
     def DATATABLE_ORDER_DAILY_IDS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ORDER_DAILY_IDS)
+        return self.get_elements(self.locators.DATATABLE_ORDER_DAILY_IDS)
 
     @property
     def DATATABLE_CREATEDS(self):
-        return self.get_elements(OrderLocators.DATATABLE_CREATEDS)
+        return self.get_elements(self.locators.DATATABLE_CREATEDS)
 
     @property
     def DATATABLE_STATES(self):
-        return self.get_elements(OrderLocators.DATATABLE_STATES)
+        return self.get_elements(self.locators.DATATABLE_STATES)
 
     @property
     def DATATABLE_LOCATIONS(self):
-        return self.get_elements(OrderLocators.DATATABLE_LOCATIONS)
+        return self.get_elements(self.locators.DATATABLE_LOCATIONS)
 
     @property
     def DATATABLE_TOTALS(self):
-        return self.get_elements(OrderLocators.DATATABLE_TOTALS)
+        return self.get_elements(self.locators.DATATABLE_TOTALS)
 
     @property
     def DATATABLE_SECTIONS(self):
-        return self.get_elements(OrderLocators.DATATABLE_SECTIONS)
+        return self.get_elements(self.locators.DATATABLE_SECTIONS)
 
     @property
     def DATATABLE_ROWS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ROWS)
+        return self.get_elements(self.locators.DATATABLE_ROWS)
 
     @property
     def DATATABLE_SEATS(self):
-        return self.get_elements(OrderLocators.DATATABLE_SEATS)
+        return self.get_elements(self.locators.DATATABLE_SEATS)
 
     @property
     def DATATABLE_NAMES(self):
-        return self.get_elements(OrderLocators.DATATABLE_NAMES)
+        return self.get_elements(self.locators.DATATABLE_NAMES)
 
     @property
     def DATATABLE_CC_LAST_FOURS(self):
-        return self.get_elements(OrderLocators.DATATABLE_CC_LAST_FOURS)
+        return self.get_elements(self.locators.DATATABLE_CC_LAST_FOURS)
 
     @property
     def DATATABLE_ORDER_TAKERS(self):
-        return self.get_elements(OrderLocators.DATATABLE_ORDER_TAKERS)
+        return self.get_elements(self.locators.DATATABLE_ORDER_TAKERS)
 
     @property
     def DATATABLE_FOOTER(self):
-        return self.get_element(OrderLocators.DATATABLE_FOOTER)
+        return self.get_element(self.locators.DATATABLE_FOOTER)
 
     @property
     def ITEMS_PER_PAGE_SELECTOR(self):
-        elem = self.get_element(OrderLocators.ITEMS_PER_PAGE_SELECTOR)
+        elem = self.get_element(self.locators.ITEMS_PER_PAGE_SELECTOR)
         return Select(elem)
 
     @property
     def TOTAL_ITEMS_STRONG(self):
-        return self.get_element(OrderLocators.TOTAL_ITEMS_STRONG)
+        return self.get_element(self.locators.TOTAL_ITEMS_STRONG)
 
     @property
     def PAGINATION_BUTTONS(self):
-        return PaginationButtons(self.get_element(OrderLocators.PAGINATION_BUTTON_GROUP))
+        return PaginationButtons(self.get_element(self.locators.PAGINATION_BUTTON_GROUP))
 
     def reload_table(self):
         self.RELOAD_TABLE_BUTTON.click()
@@ -159,7 +156,6 @@ class OrdersPage(AdminPage, BasePage):
             try:
                 Select(input_elem).select_by_visible_text(filter_value)
             except NoSuchElementException:
-                # warnings.warn('Filter option not available.', UserWarning)
                 pass
         else:
             input_elem.send_keys(str(filter_value))
