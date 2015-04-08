@@ -106,12 +106,15 @@ class BasePage(object):
 
 
     def wait_for_text_in_element(self, locator, text, timeout=10):
-        try:
-            WebDriverWait(self.driver, timeout).until(
-                EC.text_to_be_present_in_element(locator, text)
-            )
-        finally:
-            raise Warning('Unable to get element. (Locator: {})'.format(locator[1]))
+        return WebDriverWait(self.driver, timeout).until(
+            EC.text_to_be_present_in_element(locator, text)
+        )
+
+
+    def wait_for_page_title(self, title, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(
+            EC.title_is(title)
+        )
 
 
     def check_value(self, check_value_name, found_value, custom_message=None):

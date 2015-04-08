@@ -12,7 +12,9 @@ def new_cash_order(**kwargs):
     auth_server = kwargs.get('auth_server', 'http://auth-integration.bypasslane.com')
     user = kwargs.get('user', os.getenv('ADMIN_USER'))
     password = kwargs.get('password', os.getenv('ADMIN_PASSWORD'))
-    session_token = kwargs.get('session_token', get_session_token(user, password, auth_server))
+    session_token = kwargs.get('session_token', get_session_token(user=user,
+                                                                  password=password,
+                                                                  auth_server=auth_server))
     venue_id = kwargs.get('venue_id', '86')
     order_taker_id = kwargs.get('order_taker_id', '8097')
     location_id = kwargs.get('location_id', '2554')
