@@ -15,7 +15,7 @@ class OrdersPage(AdminPage, BasePage):
     locators = OrdersLocators
 
     @property
-    def RELOAD_TABLE_BUTTON(self):        
+    def RELOAD_TABLE_BUTTON(self):
         return self.get_element(self.locators.RELOAD_TABLE_BUTTON)
 
     @property
@@ -36,7 +36,7 @@ class OrdersPage(AdminPage, BasePage):
 
     @property
     def DATATABLE_TABLE_ROWS(self):
-        return self.get_elements(self.locators.DATATABLE_ROWS)
+        return self.get_elements(self.locators.DATATABLE_TABLE_ROWS)
 
     @property
     def DATATABLE_ORDER_IDS(self):
