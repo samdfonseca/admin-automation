@@ -6,6 +6,11 @@ test-report/
 config_env.sh
 .env
 
+# sqlite
+*.db
+*.sqlite
+*.sqlite3
+
 # virtualenv
 venv/
 activate
