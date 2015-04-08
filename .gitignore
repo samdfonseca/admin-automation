@@ -3,6 +3,7 @@ nosetests.xml
 
 test-report/
 
+config_env.sh
 .env
 
 # virtualenv
