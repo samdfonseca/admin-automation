@@ -6,6 +6,8 @@ from time import sleep
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from adminautomation.utils import AdminSessionCookie
 
@@ -59,7 +61,7 @@ class BasePage(object):
         self.driver.refresh()
 
 
-    def get_element(self, locator):
+    def get_element(self, locator, **kwargs):
         """
         A generic element retriever function.
 
@@ -68,14 +70,14 @@ class BasePage(object):
         """
 
         try:
-            return self.driver.find_element(*locator)
+            self.wait_for_element(locator)
+            return self.driver.find_element(*locator, **kwargs)
         except (NoSuchElementException, StaleElementReferenceException):
             raise Warning('Unable to get element. (Locator: {})'.format(locator[1]))
-
         return None
 
 
-    def get_elements(self, locator, custom_message=None):
+    def get_elements(self, locator, **kwargs):
         """
         A generic elements retriever function.
 
@@ -84,11 +86,32 @@ class BasePage(object):
         """
 
         try:
-            return self.driver.find_elements(*locator)
+            self.wait_for_elements(locator)
+            return self.driver.find_elements(*locator, **kwargs)
         except (NoSuchElementException, StaleElementReferenceException):
             raise Warning('Unable to get elements. (Locator: {})'.format(locator[1]))
-
         return None
+
+
+    def wait_for_element(self, locator, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+
+
+    def wait_for_elements(self, locator, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_all_elements_located(locator)
+            )
+
+
+    def wait_for_text_in_element(self, locator, text, timeout=10):
+        try:
+            WebDriverWait(self.driver, timeout).until(
+                EC.text_to_be_present_in_element(locator, text)
+            )
+        finally:
+            raise Warning('Unable to get element. (Locator: {})'.format(locator[1]))
 
 
     def check_value(self, check_value_name, found_value, custom_message=None):
