@@ -1,6 +1,6 @@
 # Basepage for all logged-in Admin pages
 
-from adminautomation.pages import LoginPage
+from adminautomation.pages import BasePage, LoginPage
 from adminautomation.utils.locators import NavBarLocators, SidebarLocators, AdminPageLocators
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
@@ -8,7 +8,7 @@ from time import sleep
 from urlparse import urljoin
 
 
-class AdminPage(object):
+class AdminPage(BasePage):
 
     def __init__(self, driver, **kwargs):
         self.SKIP_LOGIN = kwargs.get("skip_login", False)
