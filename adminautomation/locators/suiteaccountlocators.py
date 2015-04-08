@@ -10,7 +10,7 @@ class SuiteAccountsLocators(BaseLocatorGroup):
 
     DATATABLE = css('table#suite-accounts-list')
     DATATABLE_HEADERS = css('table#suite-accounts-list thead td')
-    DATATABLE_ROWS = css('table#suite-accounts-list tbody tr')
+    DATATABLE_TABLE_ROWS = css('table#suite-accounts-list tbody tr')
     DATATABLE_ROW_ACCOUNT_NAME = css('td:nth-of-type(1)')
     DATATABLE_ROW_SUITE = css('td:nth-of-type(2)')
     DATATABLE_ROW_SUITE_HOLDER = css('td:nth-of-type(3)')
@@ -20,8 +20,7 @@ class SuiteAccountsLocators(BaseLocatorGroup):
     DATATABLE_ROW_DELETE = css('td:nth-of-type(6) a.destroy')
 
     DATATABLE_FOOTER = css('div#suite-accounts-list_info')
-    PAGINATION_BUTTONS = css('.pagination'
-                             'li')
+    PAGINATION_BUTTONS = css('ul.pagination')
 
 
 class ModifySuiteAccountLocators(BaseLocatorGroup):

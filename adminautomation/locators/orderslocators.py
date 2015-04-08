@@ -28,9 +28,9 @@ class OrdersLocators(BaseLocatorGroup):
     DATATABLE_CC_LAST_FOURS = css('td[data-title-text="CC Last Four"]')
     DATATABLE_ORDER_TAKERS = css('td[data-title-text="Order Taker"]')
 
-    DATATABLE_FOOTER = css('.ng-table-counts')
-    ITEMS_PER_PAGE_SELECTOR = css('.ng-table-counts '
+    DATATABLE_FOOTER = css('span.ng-table-counts')
+    ITEMS_PER_PAGE_SELECTOR = css('span.ng-table-counts '
                                   'select')
-    TOTAL_ITEMS_STRONG = css('.ng-table-counts '
+    TOTAL_ITEMS_STRONG = css('span.ng-table-counts '
                              'strong')
     PAGINATION_BUTTON_GROUP = css('ul.pagination')
