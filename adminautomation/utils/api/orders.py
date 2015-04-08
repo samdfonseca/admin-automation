@@ -1,5 +1,6 @@
 import requests
 import os
+import json
 from uuid import uuid4 as uuid
 from urlparse import urljoin
 
@@ -46,5 +47,8 @@ def new_cash_order(**kwargs):
     }
     url = urljoin(base_url, 'api/venue/concessions/{0}/orders.json'.format(location_id))
     resp = requests.post(url, json=request_data, headers=headers)
-    return resp
+    # Raises HTTPError, if one occurred.
+    resp.raise_for_status()
+    order = json.loads(resp.content)
+    return order
 
