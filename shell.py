@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env ipython -i
 from __future__ import print_function
 
 import json
@@ -115,12 +115,6 @@ class EditableBufferInteractiveConsole(InteractiveConsole):
             line = lines[-1]
         return line
 
-if __doc__ is None:
-    c = EditableBufferInteractiveConsole(locals=locals())
-    c.interact(banner='')
-
-sys.exit()
-
 try:
     from dateutil.parser import parser as parse_date
 except ImportError:
@@ -130,8 +124,11 @@ try:
     from jedi.utils import setup_readline
     setup_readline()
 except ImportError:
-    if libedit in readline.__doc__:
-        readline.parse_and_bind('bind ^I rl_complete')
-    else:
-        readline.parse_and_bind('tab: complete')
+    readline.parse_and_bind('tab: complete')
+
+if __doc__ is None:
+    c = EditableBufferInteractiveConsole(locals=locals())
+    c.interact(banner='')
+
+sys.exit()
 
