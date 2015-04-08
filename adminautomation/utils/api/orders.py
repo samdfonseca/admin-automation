@@ -15,7 +15,7 @@ def new_cash_order(**kwargs):
     session_token = kwargs.get('session_token', get_session_token(user, password, auth_server))
     venue_id = kwargs.get('venue_id', '86')
     order_taker_id = kwargs.get('order_taker_id', '8097')
-    location_id = kwargs.get('location_id', '792')
+    location_id = kwargs.get('location_id', '2554')
     item_id = kwargs.get('item_id', '23888')
     unit_price = kwargs.get('unit_price', 10)
     quantity = kwargs.get('quantity', 1)
