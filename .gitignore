@@ -6,6 +6,8 @@ test-report/
 config_env.sh
 .env
 
+testthetests/.testauth
+
 # sqlite
 *.db
 *.sqlite
