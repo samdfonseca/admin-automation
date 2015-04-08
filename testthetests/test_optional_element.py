@@ -1,9 +1,11 @@
 import unittest
+from nose import DeprecatedTest
 from adminautomation.pages import InventoryStatusPage
 from adminautomation.locators.by import BaseLocator
 from selenium import webdriver
 
-class TestInventoryStatusPage(unittest.TestCase):
+class TestOptionalElement(unittest.TestCase):
+    @DeprecatedTest
     def test_not_unused_element(self):
         self.assertIsInstance(self.page.locators.ITEMS_PER_PAGE_SELECTOR, BaseLocator)
 
