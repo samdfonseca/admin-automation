@@ -14,6 +14,10 @@ class OrdersPage(AdminPage, BasePage):
     PATH = "/orders"
     locators = OrdersLocators
 
+    def __init__(self, *args, **kwargs):
+        super(OrdersPage, self).__init__(*args, **kwargs)
+        self.wait_for_elements(self.locators.DATATABLE_ORDER_IDS)
+
     @property
     def RELOAD_TABLE_BUTTON(self):
         return self.get_element(self.locators.RELOAD_TABLE_BUTTON)
