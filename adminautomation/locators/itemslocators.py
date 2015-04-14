@@ -21,3 +21,5 @@ class ItemsLocators(BaseLocatorGroup):
     TOTAL_ITEMS_STRONG = css('span.ng-table-counts '
                              'strong')
     PAGINATION_BUTTONS = css('ul.pagination')
+
+    EDIT_LINK_PARTIAL_HREF = css('a[href="/items/{0}/edit"]')
