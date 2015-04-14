@@ -29,6 +29,12 @@ class BaseLocator(tuple):
         else:
             raise UnrecognizedLocatorValueException
 
+    def __str__(self):
+        return self[1]
+
+    def format(self, *args):
+        return BaseLocator(self[0], self[1].format(*args))
+
 
 css = partial(BaseLocator, By.CSS_SELECTOR)
 xpath = partial(BaseLocator, By.XPATH)
