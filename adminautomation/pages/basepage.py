@@ -104,16 +104,38 @@ class BasePage(object):
         return None
 
 
+    def _wait_until(self, until_function, locator, timeout):
+        return WebDriverWait(self.driver, timeout).until(
+            until_function(locator)
+        )
+
+
     def wait_for_element(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(
-                EC.presence_of_element_located(locator)
-            )
+            EC.presence_of_element_located(locator)
+        )
+
+
+    def wait_for_element_to_not_exist(self, locator, timeout=10):
+        return WebDriverWait(self.driver, timeout).until_not(
+            EC.presence_of_element_located(locator)
+        )
+
+
+    def wait_for_element_invisibility(self, *args):
+        return self._wait_until(EC.invisibility_of_element_located, *args)
 
 
     def wait_for_elements(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(
-                EC.presence_of_all_elements_located(locator)
-            )
+            EC.presence_of_all_elements_located(locator)
+        )
+
+
+    def wait_for_elements_to_not_exist(self, locator, timeout=10):
+        return WebDriverWait(self.driver, timeout).until_not(
+            EC.presence_of_all_elements_located(locator)
+        )
 
 
     def wait_for_text_in_element(self, locator, text, timeout=10):
