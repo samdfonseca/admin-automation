@@ -7,6 +7,10 @@ class ItemsPage(AdminPage, DataTablePage):
     PATH = '/items'
     locators = ItemsLocators
 
+    def __init__(self, driver, **kwargs):
+        super(ItemsPage, self).__init__(driver, **kwargs)
+        self.wait_for_page_to_fully_load()
+
     @property
     def NEW_ITEM_BUTTON(self):
         return self.get_element(self.locators.NEW_ITEM_BUTTON)
