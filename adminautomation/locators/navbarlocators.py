@@ -10,7 +10,7 @@ class NavBarLocators(BaseLocatorGroup):
     VENUE_LIST_SEARCHBOX = css('input.select2-input')
     VENUE_LIST = css('ul.select2-results')
     VENUE_LIST_ITEMS = css('li.select2-result')
-    CURRENT_VENUE_ITEM = css('span.select2-chosen')
+    CURRENT_VENUE_OPTION = css('select#change_venue option[selected="selected"]')
 
     PUSH_UPDATES_NOTIFICATION = css('li#push-menus span.notification')
     PUSH_UPDATES_BUTTON = css('a[href="/menu_push"]')
