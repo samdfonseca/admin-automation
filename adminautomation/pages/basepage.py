@@ -61,6 +61,17 @@ class BasePage(object):
         self.driver.refresh()
 
 
+    def go_to_url(self, *args):
+        """
+        Navigates the driver to a given url. Params match urlparse.urljoin.
+        :param base: The base url as a string
+        :param url: The optional relative url as a string
+        :param allow_fragments: Optional boolean to allow url fragments
+        """
+        url = urljoin(*args)
+        self.driver.get(url)
+
+
     def get_element(self, locator, **kwargs):
         """
         A generic element retriever function.
