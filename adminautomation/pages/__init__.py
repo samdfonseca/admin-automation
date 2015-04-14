@@ -7,6 +7,7 @@ from .dashboard import DashboardPage
 from .suiteaccounts import SuiteAccountsPage
 from .orders import OrdersPage
 from .inventorystatus import InventoryStatusPage
+from .items import ItemsPage
 
 __all__ = [
     'BasePage',
@@ -18,4 +19,5 @@ __all__ = [
     'OrdersPage',
     'InventoryStatusPage',
     'DataTablePage',
+    'ItemsPage',
 ]
