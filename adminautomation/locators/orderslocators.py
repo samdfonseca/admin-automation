@@ -34,3 +34,5 @@ class OrdersLocators(BaseLocatorGroup):
     TOTAL_ITEMS_STRONG = css('span.ng-table-counts '
                              'strong')
     PAGINATION_BUTTON_GROUP = css('ul.pagination')
+
+    LOADING_TOAST = css('div#toast-container')

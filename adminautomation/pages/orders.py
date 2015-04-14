@@ -16,7 +16,7 @@ class OrdersPage(AdminPage, BasePage):
 
     def __init__(self, *args, **kwargs):
         super(OrdersPage, self).__init__(*args, **kwargs)
-        self.wait_for_elements(self.locators.DATATABLE_ORDER_IDS)
+        self.wait_for_elements(self.locators.DATATABLE_ORDER_IDS, timeout=30)
 
     @property
     def RELOAD_TABLE_BUTTON(self):
@@ -107,8 +107,13 @@ class OrdersPage(AdminPage, BasePage):
     def PAGINATION_BUTTONS(self):
         return PaginationButtons(self.get_element(self.locators.PAGINATION_BUTTON_GROUP))
 
+    @property
+    def LOADING_TOAST(self):
+        return self.get_element(self.locators.LOADING_TOAST)
+
     def reload_table(self):
         self.RELOAD_TABLE_BUTTON.click()
+        self.wait_for_element_to_not_exist(self.locators.LOADING_TOAST)
 
     def open_new_order_virtual_terminal(self):
         self.NEW_ORDER_BUTTON.click()

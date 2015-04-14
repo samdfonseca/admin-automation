@@ -16,12 +16,13 @@ class OrdersTest(BaseTest):
         test_data = self.CURRENT_TEST_DATA
 
         admin = OrdersPage(self.driver, skip_login=True)
-        admin.driver.implicitly_wait(10)
-        pre_refresh_ids = [id_elem.text for id_elem in admin.DATATABLE_ORDER_IDS]
+        pre_refresh_top_id = admin.DATATABLE_ORDER_IDS[0].text
+        pre_refresh_bottom_id = admin.DATATABLE_ORDER_IDS[-1].text
         admin.reload_table()
-        admin.sleep(2)
-        post_refresh_ids = [id_elem.text for id_elem in admin.DATATABLE_ORDER_IDS]
-        assert_that(post_refresh_ids, is_(pre_refresh_ids))
+        post_refresh_top_id = admin.DATATABLE_ORDER_IDS[0].text
+        post_refresh_bottom_id = admin.DATATABLE_ORDER_IDS[-1].text
+        assert_that(post_refresh_top_id, is_(pre_refresh_top_id))
+        assert_that(post_refresh_bottom_id, is_(pre_refresh_bottom_id))
 
     def test_reload_table_button_new_order(self):
         test_data = self.CURRENT_TEST_DATA
