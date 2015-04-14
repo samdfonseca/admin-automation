@@ -1,6 +1,7 @@
-#!./runtest
-
 import unittest
+from urlparse import urljoin
+from time import time
+import requests
 from basetest import BaseTest
 from adminautomation.pages import SuiteAccountsPage
 # from adminautomation.utils.drivers import get_phantomjs_driver as PhantomJSDriver
@@ -9,6 +10,39 @@ from adminautomation.pages import SuiteAccountsPage
 class SuiteAccountsTest(BaseTest):
 
     DATA_FILE = "./tests/data/suiteaccountstest.json"
+
+
+    # @classmethod
+    # def setUpClass(cls):
+    #     request_data = {
+    #         "suite_account": {
+    #             "authorized_signers": [],
+    #             "name": "test{0}".format(str(int(time()))),
+    #             "suite_id": "3265",
+    #             "suite_holder": {
+    #                 "id": 1,
+    #                 "name": "Doge User",
+    #                 "phone_number": "512-555-5555",
+    #                 "office_phone": "null",
+    #                 "email": "doge@hotmail.com"
+    #             },
+    #             "suite_admin": {
+    #                 "id": 1,
+    #                 "name": "Doge User",
+    #                 "phone_number": "512-555-5555",
+    #                 "office_phone": "null",
+    #                 "email": "doge@hotmail.com"
+    #             },
+    #             "suite_admin_id": 1,
+    #             "suite_holder_id": 1
+    #         }
+    #     }
+    #     headers = {
+    #         '_session_id': cls.AUTH_COOKIE['value'],
+    #     }
+    #     url = urljoin(cls.SESSION_INFO['root_url'], 'suite_accounts.json')
+    #     resp = requests.post(url=url, headers=headers, json=request_data)
+    #     resp.raise_for_status()
 
 
     def test_search_account_name_full_match(self):
