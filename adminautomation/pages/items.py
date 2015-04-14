@@ -1,11 +1,18 @@
 from adminautomation.pages import AdminPage, DataTablePage
 from adminautomation.locators import ItemsLocators
+from adminautomation.locators.by import link_text
+from adminautomation.utils.api.items import get_items_list
 
 
 class ItemsPage(AdminPage, DataTablePage):
 
     PATH = '/items'
     locators = ItemsLocators
+
+    def __init__(self, driver, **kwargs):
+        super(ItemsPage, self).__init__(driver, **kwargs)
+        self.wait_for_page_to_fully_load()
+        self.items = get_items_list(venue_id=self.CURRENT_VENUE_ID)
 
     @property
     def NEW_ITEM_BUTTON(self):
@@ -20,6 +27,7 @@ class ItemsPage(AdminPage, DataTablePage):
         self.wait_for_page_title('Items - New', timeout=30)
 
     def search_for_item(self, query):
+        self.ITEMS_SEARCHBOX.clear()
         self.ITEMS_SEARCHBOX.send_keys(query)
 
     def sort_header_ascending(self, header_text):
@@ -40,3 +48,17 @@ class ItemsPage(AdminPage, DataTablePage):
         timeout = kwargs.get('timeout', 30)
         self.wait_for_elements(ref_element_locator, timeout=timeout)
 
+    def get_item_row_by_name(self, item_name):
+        self.wait_for_element(link_text(item_name))
+        return self.filter_rows_by_value('Name', item_name)[0]
+
+    def edit_item_by_name(self, item_name):
+        item_id = filter(lambda i: i['name'] == item_name, self.items)[0]['id']
+        base = self.driver.current_url.replace('#', '')
+        base += '/' if not base.endswith('/') else ''
+        url = '{0}/edit'.format(item_id)
+        self.go_to_url(base, url)
+
+    def click_edit_item_link_by_name(self, item_name):
+        item_id = filter(lambda i: i['name'] == item_name, self.items)[0]['id']
+        self.get_element(self.locators.EDIT_LINK_PARTIAL_HREF.format(item_id)).click()

@@ -1,3 +1,6 @@
+class BaseLocatorGroup(object):
+    pass
+
 from .adminlocators import AdminPageLocators
 from .choosevenuelocators import ChooseVenueLocators
 from .inventorystatuslocators import InventoryStatusLocators
@@ -7,7 +10,3 @@ from .navbarlocators import NavBarLocators
 from .orderslocators import OrdersLocators
 from .sidebarlocators import SidebarLocators
 from .suiteaccountlocators import SuiteAccountsLocators, ModifySuiteAccountLocators
-
-
-class BaseLocatorGroup(object):
-    pass

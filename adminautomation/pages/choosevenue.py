@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 from adminautomation.pages import BasePage
-from adminautomation.utils.locators import ChooseVenueLocators
+from adminautomation.locators import ChooseVenueLocators
 from selenium.webdriver.common.keys import Keys
 
 

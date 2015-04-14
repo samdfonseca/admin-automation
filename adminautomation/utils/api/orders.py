@@ -15,10 +15,10 @@ def new_cash_order(**kwargs):
     session_token = kwargs.get('session_token', get_session_token(user=user,
                                                                   password=password,
                                                                   auth_server=auth_server))
-    venue_id = kwargs.get('venue_id', '86')
-    order_taker_id = kwargs.get('order_taker_id', '8097')
-    location_id = kwargs.get('location_id', '2554')
-    item_id = kwargs.get('item_id', '23888')
+    venue_id = str(kwargs.get('venue_id', '86'))
+    order_taker_id = str(kwargs.get('order_taker_id', '8097'))
+    location_id = str(kwargs.get('location_id', '2554'))
+    item_id = str(kwargs.get('item_id', '23888'))
     unit_price = kwargs.get('unit_price', 10)
     quantity = kwargs.get('quantity', 1)
 
@@ -48,7 +48,7 @@ def new_cash_order(**kwargs):
         'X-BYPASS-ADMIN-VENUE': venue_id
     }
     url = urljoin(base_url, 'api/venue/concessions/{0}/orders.json'.format(location_id))
-    resp = requests.post(url, json=request_data, headers=headers)
+    resp = requests.post(url, json=request_data, headers=headers, verify=False)
     # Raises HTTPError, if one occurred.
     resp.raise_for_status()
     order = json.loads(resp.content)

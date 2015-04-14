@@ -1,5 +1,3 @@
-#!./runtest
-
 # Tests for logging into Admin
 # https://bypassmobile.testrail.com/index.php?/suites/view/19&group_id=742
 

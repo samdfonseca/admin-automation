@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# A hacky was of getting the adminautomation package into the search path
-
-PYPATH=$(python -c "import sys; print ':'.join(sys.path)[1:]")
-DIRNAME=$(dirname $PWD)
-export PYTHONPATH="$DIRNAME:$PYPATH"
-
-nosetests -sv $1

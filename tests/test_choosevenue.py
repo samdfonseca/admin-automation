@@ -1,5 +1,3 @@
-#!./runtest
-
 # Tests for selecting a venue in Admin
 
 import unittest

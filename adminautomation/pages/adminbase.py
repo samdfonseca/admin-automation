@@ -1,7 +1,7 @@
 # Basepage for all logged-in Admin pages
 
 from adminautomation.pages import BasePage, LoginPage
-from adminautomation.utils.locators import NavBarLocators, SidebarLocators, AdminPageLocators
+from adminautomation.locators import NavBarLocators, SidebarLocators, AdminPageLocators
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from time import sleep
@@ -53,8 +53,16 @@ class AdminPage(BasePage):
         return self.get_elements(NavBarLocators.VENUE_LIST_ITEMS)
 
     @property
-    def CURRENT_VENUE_ITEM(self):
-        return self.get_element(NavBarLocators.CURRENT_VENUE_ITEM)
+    def CURRENT_VENUE_OPTION(self):
+        return self.get_element(NavBarLocators.CURRENT_VENUE_OPTION)
+
+    @property
+    def CURRENT_VENUE_ID(self):
+        return self.CURRENT_VENUE_OPTION.get_attribute('value')
+
+    @property
+    def CURRENT_VENUE_NAME(self):
+        return self.CURRENT_VENUE_OPTION.text
 
     @property
     def PUSH_UPDATES_NOTIFICATION(self):
