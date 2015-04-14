@@ -90,3 +90,5 @@ docs/_build/
 
 # PyBuilder
 target/
+pocket_change_config.py
+node_modules
