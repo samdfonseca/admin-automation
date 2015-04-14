@@ -23,3 +23,5 @@ class ItemsLocators(BaseLocatorGroup):
     PAGINATION_BUTTONS = css('ul.pagination')
 
     EDIT_LINK_PARTIAL_HREF = css('a[href="/items/{0}/edit"]')
+    ROW_ITEM_NAME_LINK = css('td[data-title-text="Name"] '
+                             'a')

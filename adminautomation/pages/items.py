@@ -1,7 +1,7 @@
 from adminautomation.pages import AdminPage, DataTablePage
 from adminautomation.locators import ItemsLocators
 from adminautomation.locators.by import link_text
-from adminautomation.utils.api import items as items_api
+from adminautomation.utils.api.items import get_items_list
 
 
 class ItemsPage(AdminPage, DataTablePage):
@@ -12,7 +12,7 @@ class ItemsPage(AdminPage, DataTablePage):
     def __init__(self, driver, **kwargs):
         super(ItemsPage, self).__init__(driver, **kwargs)
         self.wait_for_page_to_fully_load()
-        self.items = items_api.get_item_dict(venue_id=self.CURRENT_VENUE_ID)
+        self.items = get_items_list(venue_id=self.CURRENT_VENUE_ID)
 
     @property
     def NEW_ITEM_BUTTON(self):
