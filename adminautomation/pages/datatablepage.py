@@ -55,6 +55,6 @@ class DataTablePage(object):
         return self.get_elements(self.locators.DATATABLE + css('td[data-title-text="{0}"]'.format(header_text)))
 
     def filter_rows_by_value(self, header_text, filter_value):
-        locator = css('td[data-title-text"{0}"]'.format(header_text))
+        locator = css('td[data-title-text="{0}"]'.format(header_text))
         return filter(lambda row: row.find_element(*locator).text == filter_value, self.DATATABLE_TABLE_ROWS)
 
