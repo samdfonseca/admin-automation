@@ -49,8 +49,7 @@ class ItemsTest(BaseTest):
 
     def test_search_for_item_full_match(self):
         admin = ItemsPage(self.driver, skip_login=True)
-
-
+        
         self.search_for_item(self.CURRENT_TEST_DATA)
 
     def test_sort_items_by_name_ascending(self):

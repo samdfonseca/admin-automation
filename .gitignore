@@ -92,3 +92,4 @@ docs/_build/
 target/
 pocket_change_config.py
 node_modules
+.noseids

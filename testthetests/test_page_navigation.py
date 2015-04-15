@@ -1,6 +1,8 @@
 import os
 import unittest
 from random import randrange
+from selenium.common.exceptions import StaleElementReferenceException
+
 from adminautomation.pages import LoginPage, ChooseVenuePage
 from adminautomation.pages import DashboardPage
 from adminautomation.utils.drivers import get_chrome_driver
@@ -9,7 +11,7 @@ from adminautomation.utils.drivers import get_chrome_driver
 class TestRandomPageNavigationTest(unittest.TestCase):
 
     navigation_methods = map(lambda call: getattr(DashboardPage, call),
-                             filter(lambda attr: attr.startswith('navigate_to'),
+                             filter(lambda attr: attr.startswith('navigate_to') and attr != 'navigate_to',
                                     filter(lambda attr: callable(getattr(DashboardPage, attr)), dir(DashboardPage))))
 
     def setUp(self):
@@ -23,10 +25,16 @@ class TestRandomPageNavigationTest(unittest.TestCase):
 
         self.page = DashboardPage(self.driver)
 
+    def tearDown(self):
+        self.driver.quit()
+
     def test_random_page_navigation(self):
         navigation_methods = self.navigation_methods
         while True:
             if not navigation_methods:
                 break
             jump = navigation_methods.pop(randrange(len(navigation_methods)))
-            jump(self.page)
+            try:
+                jump(self.page)
+            except StaleElementReferenceException:
+                pass

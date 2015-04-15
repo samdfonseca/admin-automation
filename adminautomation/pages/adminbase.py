@@ -3,7 +3,7 @@
 from adminautomation.pages import BasePage, LoginPage
 from adminautomation.locators import NavBarLocators, SidebarLocators, AdminPageLocators
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, StaleElementReferenceException
 from time import sleep
 from urlparse import urljoin
 
@@ -369,18 +369,22 @@ class AdminPage(BasePage):
 
         sleep(1) # Works for now. Should replace with an explicit wait.
 
-    def navigate_to(self, parent_tabs, target_tab):
+    def navigate_to(self, *args, **kwargs):
         """
         Generic function for selecting a sidebar tab. Handles tab expansion and waits.
         """
 
-        for tab in parent_tabs:
-            self.expand_sidebar_tab(tab)
+        if not args:
+            raise TypeError('AdminPage.navigate_to() takes at least 2 arguments (1 given)')
+
+        for item in args[:-1]:
+            self.expand_sidebar_tab(item)
 
         try:
-            target_tab.click()
+            args[-1].click()
         except WebDriverException:
-            self.navigate_to(parent_tabs, target_tab)
+            if kwargs.get('retry', False):
+                self.navigate_to(*args, **kwargs)
 
     def navigate_to_dashboard(self):
         """
@@ -394,224 +398,224 @@ class AdminPage(BasePage):
         Navigates to the Item Categories page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL, self.CATEGORIES], self.ITEM_CATEGORIES)
+        self.navigate_to(self.LOCATION_CONTROL, self.CATEGORIES, self.ITEM_CATEGORIES)
 
     def navigate_to_modifier_categories(self):
         """
         Navigates to the Modifier Categories page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL, self.CATEGORIES], self.MODIFIER_CATEGORIES)
+        self.navigate_to(self.LOCATION_CONTROL, self.CATEGORIES, self.MODIFIER_CATEGORIES)
 
     def navigate_to_groups(self):
         """
         Navigates to the Groups page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.GROUPS)
+        self.navigate_to(self.LOCATION_CONTROL, self.GROUPS)
 
     def navigate_to_items(self):
         """
         Navigates to the Items page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.ITEMS)
+        self.navigate_to(self.LOCATION_CONTROL, self.ITEMS)
 
     def navigate_to_menus(self):
         """
         Navigates to the Menus page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.MENUS)
+        self.navigate_to(self.LOCATION_CONTROL, self.MENUS)
 
     def navigate_to_locations(self):
         """
         Navigates to the Locations page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.LOCATIONS)
+        self.navigate_to(self.LOCATION_CONTROL, self.LOCATIONS)
 
     def navigate_to_sections(self):
         """
         Navigates to the Sections page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.SECTIONS)
+        self.navigate_to(self.LOCATION_CONTROL, self.SECTIONS)
 
     def navigate_to_tables(self):
         """
         Navigates to the Tables page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.TABLES)
+        self.navigate_to(self.LOCATION_CONTROL, self.TABLES)
 
     def navigate_to_variant_sets(self):
         """
         Navigates to the Variant Sets page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.VARIANT_SETS)
+        self.navigate_to(self.LOCATION_CONTROL, self.VARIANT_SETS)
 
     def navigate_to_modifiers(self):
         """
         Navigates to the Modifiers page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.MODIFIERS)
+        self.navigate_to(self.LOCATION_CONTROL, self.MODIFIERS)
 
     def navigate_to_addon_groups(self):
         """
         Navigates to the Addon Groups page.
         """
 
-        self.navigate_to([self.LOCATION_CONTROL], self.ADDON_GROUPS)
+        self.navigate_to(self.LOCATION_CONTROL, self.ADDON_GROUPS)
 
     def navigate_to_suites_accounts(self):
         """
         Navigates to the Suites Accounts page.
         """
 
-        self.navigate_to([self.SUITES], self.SUITES_ACCOUNTS)
+        self.navigate_to(self.SUITES, self.SUITES_ACCOUNTS)
 
     def navigate_to_suites_setup(self):
         """
         Navigates to the Suites Setup page.
         """
 
-        self.navigate_to([self.SUITES], self.SUITES_SETUP)
+        self.navigate_to(self.SUITES, self.SUITES_SETUP)
 
     def navigate_to_suites_preorder(self):
         """
         Navigates to the Suites Pre-Order page.
         """
 
-        self.navigate_to([self.SUITES], self.SUITES_PREORDER)
+        self.navigate_to(self.SUITES, self.SUITES_PREORDER)
 
     def navigate_to_events_calendar(self):
         """
         Navigates to the Events Calendar page.
         """
 
-        self.navigate_to([self.EVENTS], self.EVENTS_CALENDAR)
+        self.navigate_to(self.EVENTS, self.EVENTS_CALENDAR)
 
     def navigate_to_event_templates(self):
         """
         Navigates to the Event Templates page.
         """
 
-        self.navigate_to([self.EVENTS], self.EVENTS_TEMPLATES)
+        self.navigate_to(self.EVENTS, self.EVENTS_TEMPLATES)
 
     def navigate_to_orders(self):
         """
         Navigates to the Orders page.
         """
 
-        self.navigate_to([self.EVENTS], self.ORDERS)
+        self.navigate_to(self.EVENTS, self.ORDERS)
 
     def navigate_to_tips(self):
         """
         Navigates to the Tips page.
         """
 
-        self.navigate_to([self.EVENTS], self.TIPS)
+        self.navigate_to(self.EVENTS, self.TIPS)
 
     def navigate_to_cash_room(self):
         """
         Navigates to the Cash Room page.
         """
 
-        self.navigate_to([self.EVENTS], self.CASHROOM)
+        self.navigate_to(self.EVENTS, self.CASHROOM)
 
     def navigate_to_status(self):
         """
         Navigates to the Status page.
         """
 
-        self.navigate_to([self.INVENTORY], self.STATUS)
+        self.navigate_to(self.INVENTORY, self.STATUS)
 
     def navigate_to_inventory_categories(self):
         """
         Navigates to the Inventory Categories page.
         """
 
-        self.navigate_to([self.INVENTORY], self.INVENTORY_CATEGORIES)
+        self.navigate_to(self.INVENTORY, self.INVENTORY_CATEGORIES)
 
     def navigate_to_inventory_transfers(self):
         """
         Navigates to the Inventory Transfers page.
         """
 
-        self.navigate_to([self.INVENTORY], self.INVENTORY_TRANSFERS)
+        self.navigate_to(self.INVENTORY, self.INVENTORY_TRANSFERS)
 
     def navigate_to_inventory_movements(self):
         """
         Navigates to the Inventory Movements page.
         """
 
-        self.navigate_to([self.INVENTORY], self.INVENTORY_MOVEMENTS)
+        self.navigate_to(self.INVENTORY, self.INVENTORY_MOVEMENTS)
 
     def navigate_to_standsheets(self):
         """
         Navigates to the Standsheets page.
         """
 
-        self.navigate_to([self.INVENTORY], self.STANDSHEETS)
+        self.navigate_to(self.INVENTORY, self.STANDSHEETS)
 
     def navigate_to_stock_items(self):
         """
         Navigates to the Stock Items page.
         """
 
-        self.navigate_to([self.INVENTORY], self.STOCK_ITEMS)
+        self.navigate_to(self.INVENTORY, self.STOCK_ITEMS)
 
     def navigate_to_recipes(self):
         """
         Navigates to the Recipes page.
         """
 
-        self.navigate_to([self.INVENTORY], self.RECIPES)
+        self.navigate_to(self.INVENTORY, self.RECIPES)
 
     def navigate_to_vendors(self):
         """
         Navigates to the Vendors page.
         """
 
-        self.navigate_to([self.INVENTORY], self.VENDORS)
+        self.navigate_to(self.INVENTORY, self.VENDORS)
 
     def navigate_to_inventory_audits(self):
         """
         Navigates to the Inventory Audits page.
         """
 
-        self.navigate_to([self.INVENTORY], self.INVENTORY_AUDITS)
+        self.navigate_to(self.INVENTORY, self.INVENTORY_AUDITS)
 
     def navigate_to_purchasing_and_receiving(self):
         """
         Navigates to the Purchasing & Receiving page.
         """
 
-        self.navigate_to([self.INVENTORY], self.PURCHASE_AND_RECEIVING)
+        self.navigate_to(self.INVENTORY, self.PURCHASE_AND_RECEIVING)
 
     def navigate_to_warehouses(self):
         """
         Navigates to the Warehouses page.
         """
 
-        self.navigate_to([self.INVENTORY], self.WAREHOUSES)
+        self.navigate_to(self.INVENTORY, self.WAREHOUSES)
 
     def navigate_to_reports(self):
         """
         Navigates to the Reports page.
         """
 
-        self.navigate_to([self.REPORTING], self.REPORTS)
+        self.navigate_to(self.REPORTING, self.REPORTS)
 
     def navigate_to_report_templates(self):
         """
         Navigates to the Report Templates page.
         """
 
-        self.navigate_to([self.REPORTING], self.REPORT_TEMPLATES)
+        self.navigate_to(self.REPORTING, self.REPORT_TEMPLATES)
 
     def navigate_to_order_takers(self):
         """
@@ -639,28 +643,28 @@ class AdminPage(BasePage):
         Navigates to the Bucks Search page.
         """
 
-        self.navigate_to([self.BUCKS], self.BUCKS_CARD_SEARCH)
+        self.navigate_to(self.BUCKS, self.BUCKS_CARD_SEARCH)
 
     def navigate_to_bucks_new_card(self):
         """
         Navigates to the Bucks Add New Card page.
         """
 
-        self.navigate_to([self.BUCKS], self.BUCKS_ADD_NEW_CARD)
+        self.navigate_to(self.BUCKS, self.BUCKS_ADD_NEW_CARD)
 
     def navigate_to_bucks_allocate_cards(self):
         """
         Navigates to the Bucks Allocate Cards page.
         """
 
-        self.navigate_to([self.BUCKS], self.BUCKS_ALLOCATE_CARDS)
+        self.navigate_to(self.BUCKS, self.BUCKS_ALLOCATE_CARDS)
 
     def navigate_to_bucks_import_export(self):
         """
         Navigates to the Bucks Import Export page.
         """
 
-        self.navigate_to([self.BUCKS], self.BUCKS_IMPORT_EXPORT)
+        self.navigate_to(self.BUCKS, self.BUCKS_IMPORT_EXPORT)
 
     #def _get_dropdown_selector_by_text(self, text, index_when_multiple_match=0):
     #    """
