@@ -1,7 +1,10 @@
 # The base test class to be inherited by all other test classes
 
+from __future__ import unicode_literals
 import unittest
 import os
+from functools import wraps
+import datetime
 
 from tests import trclient, read_session_info
 
@@ -45,6 +48,22 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         # self.driver.save_screenshot('tests/img/{}.png'.format(self._testMethodName))
         self.driver.quit()
+
+    @staticmethod
+    def screenshot_on_error(test):
+        @wraps(test)
+        def wrapper(*args, **kwargs):
+            try:
+                test(*args, **kwargs)
+            except:
+                test_obj = args[0]
+                screenshot_dir = './screenshots'
+                if not os.path.exists(screenshot_dir):
+                    os.mkdir(screenshot_dir)
+                date_string = datetime.datetime.now().strftime('%m%d%y-%H%M%S')
+                fname = '{0}.png'.format(os.path.join(os.path.abspath(screenshot_dir), date_string))
+                test_obj.driver.get_screenshot_as_file(fname)
+        return wrapper
 
 
 class BaseLoginTest(BaseTest):

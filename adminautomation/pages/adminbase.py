@@ -666,6 +666,24 @@ class AdminPage(BasePage):
 
         self.navigate_to(self.BUCKS, self.BUCKS_IMPORT_EXPORT)
 
+    def wait_for_angular(self):
+        angular_wait_script = """
+        var callback = arguments[arguments.length - 1];
+        var app = document.querySelector('div[ng-app]');
+        try {
+            if (angular.getTestability) {
+                angular.getTestability(app).whenStable(callback);
+            } else {
+                angular.element(app).injector().get('$browser').
+                        notifyWhenNoOutstandingRequests(callback);
+            }
+        } catch (e) {
+            callback(e);
+        }
+        """
+        self.driver.execute_async_script(angular_wait_script)
+
+
     #def _get_dropdown_selector_by_text(self, text, index_when_multiple_match=0):
     #    """
     #    Gets the 'select2-container' element based on the current text. If multiple selectors have the same text,

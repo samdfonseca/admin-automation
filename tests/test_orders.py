@@ -36,3 +36,4 @@ class OrdersTest(BaseTest):
         admin.reload_table()
         admin.wait_for_element(admin.locators.DATATABLE + ' a[href="/orders/{0}"]'.format(order['id']))
         assert_that(admin.get_order_id_links_by_link_text(order['id'])[0], is_(WebElement))
+

@@ -22,6 +22,18 @@ class ItemsPage(AdminPage, DataTablePage):
     def ITEMS_SEARCHBOX(self):
         return self.get_element(self.locators.ITEMS_SEARCHBOX)
 
+    @property
+    def BULK_ACTIONS_BUTTON(self):
+        return self.get_element(self.locators.BULK_ACTIONS_BUTTON)
+
+    @property
+    def BULK_ACTIONS_MENU(self):
+        return self.get_element(self.locators.BULK_ACTIONS_MENU)
+
+    @property
+    def BULK_ACTIONS_OPTIONS(self):
+        return self.get_elements(self.locators.BULK_ACTIONS_OPTIONS)
+
     def open_new_item_form(self):
         self.NEW_ITEM_BUTTON.click()
         self.wait_for_page_title('Items - New', timeout=30)
@@ -62,3 +74,14 @@ class ItemsPage(AdminPage, DataTablePage):
     def click_edit_item_link_by_name(self, item_name):
         item_id = filter(lambda i: i['name'] == item_name, self.items)[0]['id']
         self.get_element(self.locators.EDIT_LINK_PARTIAL_HREF.format(item_id)).click()
+
+    def toggle_take_bulk_actions_menu(self):
+        self.BULK_ACTIONS_BUTTON.click()
+
+    def open_take_bulk_actions_menu(self):
+        if not self.BULK_ACTIONS_MENU.is_displayed():
+            self.toggle_take_bulk_actions_menu()
+
+    def close_take_bulk_actions_menu(self):
+        if self.BULK_ACTIONS_MENU.is_displayed():
+            self.toggle_take_bulk_actions_menu()

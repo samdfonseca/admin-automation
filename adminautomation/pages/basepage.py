@@ -3,11 +3,13 @@
 from __future__ import print_function
 from urlparse import urljoin
 from time import sleep
+import logging
 
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from twisted.python import log
 
 from adminautomation.utils import AdminSessionCookie
 
@@ -31,6 +33,17 @@ class BasePage(object):
 
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
         self.URL = kwargs.get("url", urljoin(self.ROOT_URL, self.PATH))
+
+        # if kwargs.has_key('log_file'):
+        #     from twisted.python import logfile
+        #     log_output = logfile.LogFile(kwargs.get('log_file', '{0}.log'.format(__file__)))
+        # else:
+        #     from sys import stdin
+        #     log_output = stdin
+        # from twisted.python import logfile
+        # default_log_file = kwargs.get('log_file', '{0}.log'.format(__file__))
+        # log_output = logfile.LogFile(kwargs.get('log_file', default_log_file), '.')
+        # log.startLogging(log_output)
 
 
     def attach_session_cookie(self):
@@ -191,6 +204,10 @@ class BasePage(object):
 
         found_title = self.driver.title
         self.check_value("page_title", found_title, custom_message=custom_message)
+
+
+    def log(self, *args, **kwargs):
+        log.msg(*args, **kwargs)
 
 
     @staticmethod

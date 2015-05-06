@@ -16,7 +16,13 @@ class OrdersPage(AdminPage, BasePage):
 
     def __init__(self, *args, **kwargs):
         super(OrdersPage, self).__init__(*args, **kwargs)
-        self.wait_for_elements(self.locators.DATATABLE_ORDER_IDS, timeout=30)
+        wait_for = kwargs.get('wait_for', self.locators.DATATABLE_ORDER_IDS)
+        wait_for_angular = kwargs.get('wait_for_angular')
+        if wait_for_angular:
+            self.wait_for_page_title('Orders - Index', 30)
+            self.wait_for_angular()
+        elif wait_for:
+            self.wait_for_elements(wait_for, timeout=30)
 
     @property
     def RELOAD_TABLE_BUTTON(self):

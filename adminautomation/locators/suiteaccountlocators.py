@@ -35,7 +35,6 @@ class ModifySuiteAccountLocators(BaseLocatorGroup):
     BILLING_ADDRESS_INPUT = css('textarea[ng-model="suite_account.address"]')
     NOTES_INPUT = css('textarea[ng-model="suite_account.notes"]')
 
-    SUITE_INPUT_LABEL = xpath('//div[@id="suite-account"]//form//label[text()="Suite"]')
     SUITE_INPUT = css('div#suite-account '
                       'form div.form-group:nth-of-type(3) '
                       'a.select2-choice')
