@@ -1,8 +1,12 @@
 __author__ = 'samfonseca'
 
-from suiteaccountstructs import SuiteAccountRow
+from .dropdownselector import Select2
+from .genericstructs import PageSection
+from .suiteaccountstructs import SuiteAccountRow
 
 
 __all__ = [
-    "SuiteAccountRow"
+    'SuiteAccountRow',
+    'Select2',
+    'PageSection',
 ]
