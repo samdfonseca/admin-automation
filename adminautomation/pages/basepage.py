@@ -87,7 +87,7 @@ class BasePage(object):
 
     def get_element(self, locator, **kwargs):
         """
-        A generic element retriever function.
+        A generic element retriever method.
 
         :param locator: a locator tuple
         :return: a WebElement object
@@ -103,7 +103,7 @@ class BasePage(object):
 
     def get_elements(self, locator, **kwargs):
         """
-        A generic elements retriever function.
+        A generic elements retriever method.
 
         :param locator: a locator tuple
         :return: a list of WebElement objects
