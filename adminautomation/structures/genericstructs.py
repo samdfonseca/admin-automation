@@ -47,3 +47,7 @@ class PaginationButtons(object):
     def get_button_by_text(self, button_text):
         return filter(lambda button: button.text == str(button_text), self.BUTTONS)[0]
 
+
+class PageSection(object):
+    def __init__(self, page):
+        self._page = page
