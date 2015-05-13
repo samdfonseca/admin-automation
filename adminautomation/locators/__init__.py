@@ -3,6 +3,7 @@ class BaseLocatorGroup(object):
 
 from .adminlocators import AdminPageLocators
 from .choosevenuelocators import ChooseVenueLocators
+from .eventscalendarlocators import EventsCalendarLocators
 from .inventorystatuslocators import InventoryStatusLocators
 from .itemslocators import ItemsLocators
 from .loginlocators import LoginPageLocators
