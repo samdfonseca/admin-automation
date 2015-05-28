@@ -12,13 +12,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from twisted.python import log
 
 from adminautomation.utils import AdminSessionCookie
+from adminautomation.structures import AdminElement
 
 
 class BasePage(object):
-    # Ideally this would be an Abstract Base Class but it works fine as is for now
 
     ROOT_URL = "https://admin-integration.bypasslane.com"
-
 
     def __init__(self, driver, **kwargs):
         """
@@ -45,7 +44,6 @@ class BasePage(object):
         # log_output = logfile.LogFile(kwargs.get('log_file', default_log_file), '.')
         # log.startLogging(log_output)
 
-
     def attach_session_cookie(self):
         """
         Replaces the current _bypass_admin_session cookie with a pre-authenticated one to avoid
@@ -56,14 +54,12 @@ class BasePage(object):
         self.driver.delete_cookie(name=cookie['name'])
         self.driver.add_cookie(cookie)
 
-
     def go_to_page_url(self):
         """
         Go to the url assigned to the pages URL attribute.
         """
 
         self.driver.get(self.URL)
-
 
     def refresh_page(self):
         """
@@ -72,7 +68,6 @@ class BasePage(object):
         """
 
         self.driver.refresh()
-
 
     def go_to_url(self, *args):
         """
@@ -84,7 +79,6 @@ class BasePage(object):
         url = urljoin(*args)
         self.driver.get(url)
 
-
     def get_element(self, locator, **kwargs):
         """
         A generic element retriever method.
@@ -93,13 +87,13 @@ class BasePage(object):
         :return: a WebElement object
         """
 
+        do_wait = kwargs.pop('wait', True)
         try:
-            self.wait_for_element(locator)
+            if do_wait:
+                self.wait_for_element(locator)
             return self.driver.find_element(*locator, **kwargs)
         except (NoSuchElementException, StaleElementReferenceException):
             raise Warning('Unable to get element. (Locator: {})'.format(locator[1]))
-        return None
-
 
     def get_elements(self, locator, **kwargs):
         """
@@ -109,59 +103,51 @@ class BasePage(object):
         :return: a list of WebElement objects
         """
 
+        do_wait = kwargs.pop('wait', True)
         try:
-            self.wait_for_elements(locator)
+            if do_wait:
+                self.wait_for_elements(locator)
             return self.driver.find_elements(*locator, **kwargs)
         except (NoSuchElementException, StaleElementReferenceException):
             raise Warning('Unable to get elements. (Locator: {})'.format(locator[1]))
-        return None
-
 
     def _wait_until(self, until_function, locator, timeout):
         return WebDriverWait(self.driver, timeout).until(
             until_function(locator)
         )
 
-
     def wait_for_element(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(
             EC.presence_of_element_located(locator)
         )
-
 
     def wait_for_element_to_not_exist(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until_not(
             EC.presence_of_element_located(locator)
         )
 
-
     def wait_for_element_invisibility(self, *args):
         return self._wait_until(EC.invisibility_of_element_located, *args)
-
 
     def wait_for_elements(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(
             EC.presence_of_all_elements_located(locator)
         )
 
-
     def wait_for_elements_to_not_exist(self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until_not(
             EC.presence_of_all_elements_located(locator)
         )
-
 
     def wait_for_text_in_element(self, locator, text, timeout=10):
         return WebDriverWait(self.driver, timeout).until(
             EC.text_to_be_present_in_element(locator, text)
         )
 
-
     def wait_for_page_title(self, title, timeout=10):
         return WebDriverWait(self.driver, timeout).until(
             EC.title_is(title)
         )
-
 
     def check_value(self, check_value_name, found_value, custom_message=None):
         if custom_message is not None:
@@ -176,7 +162,6 @@ class BasePage(object):
         except KeyError:
             print("No expected value for {}".format(check_value_name))
 
-
     def check_element_exists(self, locator):
         try:
             target_item = self.get_element(locator)
@@ -185,7 +170,6 @@ class BasePage(object):
 
         return True
 
-
     def check_elements_exist(self, locator):
         try:
             target_item = self.get_elements(locator)
@@ -193,7 +177,6 @@ class BasePage(object):
             return False
 
         return True
-
 
     def is_title_match(self, custom_message):
         """
@@ -205,13 +188,9 @@ class BasePage(object):
         found_title = self.driver.title
         self.check_value("page_title", found_title, custom_message=custom_message)
 
-
     def log(self, *args, **kwargs):
         log.msg(*args, **kwargs)
-
 
     @staticmethod
     def sleep(seconds):
         sleep(seconds)
-
-

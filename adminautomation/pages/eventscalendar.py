@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 from adminautomation.pages import BasePage, AdminPage
 from adminautomation.locators import EventsCalendarLocators
 from adminautomation.structures import Select2, PageSection
@@ -7,7 +8,13 @@ class EventsCalendarPage(AdminPage):
     PATH = '/events'
     locators = EventsCalendarLocators
 
+    def __init__(self, *args, **kwargs):
+        kwargs['skip_login'] = True
+        super(EventsCalendarPage, self).__init__(self, *args, **kwargs)
+
     class AddNewEventForm(PageSection):
+        DEFAULT_DATE_FORMAT = '%B %d, %Y %H:%M %p'
+
         @property
         def NAME(self):
             return self._page.get_element(self._page.locators.AddNewEventLocators.NAME)
@@ -22,7 +29,7 @@ class EventsCalendarPage(AdminPage):
 
         @property
         def EVENT_TEMPLATE(self):
-            return Select2(self._page.get_element(self._page.locators.AddNewEventLocators.EVENT_TEMPLATE))
+            return Select2(self._page, self._page.locators.AddNewEventLocators.EVENT_TEMPLATE)
 
         @property
         def EVENT_TYPE(self):
@@ -31,6 +38,73 @@ class EventsCalendarPage(AdminPage):
         @property
         def CREATE_EVENT_BUTTON(self):
             return self._page.get_element(self._page.locators.AddNewEventLocators.CREATE_EVENT_BUTTON)
+
+        def enter_name(self, name):
+            """
+            :param str name:
+            :return:
+            """
+            self.NAME.send_keys(name)
+
+        @staticmethod
+        def enter_date(date_input_element, date, date_format=None):
+            """
+            :param date_element:
+            :param date:
+            :param_date_format:
+            :return:
+            """
+            date_format = EventsCalendarPage.AddNewEventForm.DEFAULT_DATE_FORMAT if date_format is None else date_format
+            date_input_element.clear()
+            date_input_element.send_keys(date.strftime(date_format))
+            date_input_element.send_keys(Keys.ESCAPE)
+
+        def enter_start_date(self, date, date_format=None):
+            """
+            :param date:
+            :param date_format:
+            :return:
+            """
+            self.enter_date(self.START_DATE, date, date_format)
+
+        def enter_end_date(self, date, date_format=None):
+            """
+            :param date:
+            :param date_format:
+            :return:
+            """
+            self.enter_date(self.END_DATE, date, date_format)
+
+        def enter_event_template(self, template_name):
+            """
+
+            :param template_name:
+            :return:
+            """
+            self.EVENT_TEMPLATE.select_by_visible_text(template_name)
+
+        def click_create_event_button(self):
+            """
+
+            :return:
+            """
+            self.CREATE_EVENT_BUTTON.click()
+
+        def create_event(self, name, start_date, end_date, template_name=None, **kwargs):
+            """
+
+            :param name:
+            :param start_date:
+            :param end_date:
+            :param template_name:
+            :return:
+            """
+            self.enter_name(name)
+            self.enter_start_date(start_date, kwargs.get('start_date_format'))
+            self.enter_end_date(end_date, kwargs.get('end_date_format'))
+            if template_name:
+                self.enter_event_template(template_name)
+            self.click_create_event_button()
 
     class CalendarView(PageSection):
         @property
@@ -61,7 +135,17 @@ class EventsCalendarPage(AdminPage):
         def CALENDAR_TITLE(self):
             return self._page.get_element(self._page.locators.CalendarViewLocators.CALENDAR_TITLE)
 
-        class MonthView(PageSection):
+        class CalendarViewSection(PageSection):
+            def open(self, wait_for=None):
+                self.open_view_button.click()
+                if wait_for:
+                    self._page.wait_for_element(wait_for)
+
+        class MonthView(CalendarViewSection):
+            def __init__(self, *args, **kwargs):
+                super(EventsCalendarPage.CalendarView.MonthView, self).__init__(*args, **kwargs)
+                self.open_view_button = self._page.calendar_view.MONTH_BUTTON
+
             @property
             def ALL_DAYS(self):
                 return self._page.get_elements(self._page.locators.CalendarViewLocators.MonthViewLocators.ALL_DAYS)
@@ -90,7 +174,11 @@ class EventsCalendarPage(AdminPage):
             def EVENT_NAMES(self):
                 return self._page.get_elements(self._page.locators.CalendarViewLocators.MonthViewLocators.EVENT_NAMES)
 
-        class WeekView(PageSection):
+        class WeekView(CalendarViewSection):
+            def __init__(self, *args, **kwargs):
+                super(EventsCalendarPage.CalendarView.WeekView, self).__init__(*args, **kwargs)
+                self.open_view_button = self._page.calendar_view.WEEK_BUTTON
+
             @property
             def ALL_DAYS(self):
                 return self._page.get_elements(self._page.locators.CalendarViewLocators.WeekViewLocators.ALL_DAYS)
@@ -119,7 +207,11 @@ class EventsCalendarPage(AdminPage):
             def EVENT_NAMES(self):
                 return self._page.get_elements(self._page.locators.CalendarViewLocators.WeekViewLocators.EVENT_NAMES)
 
-        class DayView(PageSection):
+        class DayView(CalendarViewSection):
+            def __init__(self, *args, **kwargs):
+                super(EventsCalendarPage.CalendarView.DayView, self).__init__(*args, **kwargs)
+                self.open_view_button = self._page.calendar_view.DAY_BUTTON
+
             @property
             def DAY_OF_WEEK(self):
                 return self._page.get_elements(self._page.locators.CalendarViewLocators.DayViewLocators.DAY_OF_WEEK)
@@ -139,4 +231,5 @@ class EventsCalendarPage(AdminPage):
         self.add_new_event_form = self.AddNewEventForm(self)
         self.calendar_view = self.CalendarView(self)
         self.calendar_view.month_view = self.calendar_view.MonthView(self)
-
+        self.calendar_view.week_view = self.calendar_view.WeekView(self)
+        self.calendar_view.day_view = self.calendar_view.DayView(self)

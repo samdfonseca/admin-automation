@@ -1,7 +1,9 @@
 # Basepage for all logged-in Admin pages
 
 from adminautomation.pages import BasePage, LoginPage
-from adminautomation.locators import NavBarLocators, SidebarLocators, AdminPageLocators
+from adminautomation.structures.dropdownselector import Select2
+from adminautomation.locators import NavBarLocators, SidebarLocators, AdminPageLocators, BaseLocatorGroup
+from adminautomation.locators.by import BaseLocator
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException, StaleElementReferenceException
 from time import sleep
@@ -10,7 +12,14 @@ from urlparse import urljoin
 
 class AdminPage(BasePage):
 
+    admin_locators = NavBarLocators() + AdminPageLocators() + SidebarLocators()
+
     def __init__(self, driver, **kwargs):
+        # self.admin_locators = BaseLocatorGroup()
+        # for k, v in (NavBarLocators.__dict__.items() + SidebarLocators.__dict__.items() + AdminPageLocators.__dict__.items()):
+        #     if isinstance(v, BaseLocator):
+        #         self.admin_locators.__setattr__(k, v)
+
         self.SKIP_LOGIN = kwargs.get("skip_login", False)
         self.AUTO_LOGIN = kwargs.get("auto_login", True)
 
@@ -30,31 +39,35 @@ class AdminPage(BasePage):
 
     @property
     def LOGO_HOME_BUTTON(self):
-        return self.get_element(NavBarLocators.LOGO_HOME_BUTTON)
+        return self.get_element(self.admin_locators.LOGO_HOME_BUTTON)
+
+    @property
+    def VENUES_SELECT(self):
+        return Select2(self, self.admin_locators.VENUES_LISTBOX)
 
     @property
     def VENUES_LISTBOX(self):
-        return self.get_element(NavBarLocators.VENUES_LISTBOX)
+        return self.get_element(self.admin_locators.VENUES_LISTBOX)
 
     @property
     def VENUE_LIST_DROPDOWN(self):
-        return self.get_element(NavBarLocators.VENUE_LIST_DROPDOWN)
+        return self.get_element(self.admin_locators.VENUE_LIST_DROPDOWN)
 
     @property
     def VENUE_LIST_SEARCHBOX(self):
-        return self.get_element(NavBarLocators.VENUE_LIST_SEARCHBOX)
+        return self.get_element(self.admin_locators.VENUE_LIST_SEARCHBOX)
 
     @property
     def VENUE_LIST(self):
-        return self.get_element(NavBarLocators.VENUE_LIST)
+        return self.get_element(self.admin_locators.VENUE_LIST)
 
     @property
     def VENUE_LIST_ITEMS(self):
-        return self.get_elements(NavBarLocators.VENUE_LIST_ITEMS)
+        return self.get_elements(self.admin_locators.VENUE_LIST_ITEMS)
 
     @property
     def CURRENT_VENUE_OPTION(self):
-        return self.get_element(NavBarLocators.CURRENT_VENUE_OPTION)
+        return self.get_element(self.admin_locators.CURRENT_VENUE_OPTION)
 
     @property
     def CURRENT_VENUE_ID(self):
@@ -66,215 +79,215 @@ class AdminPage(BasePage):
 
     @property
     def PUSH_UPDATES_NOTIFICATION(self):
-        return self.get_element(NavBarLocators.PUSH_UPDATES_NOTIFICATION)
+        return self.get_element(self.admin_locators.PUSH_UPDATES_NOTIFICATION)
 
     @property
     def PUSH_UPDATES_BUTTON(self):
-        return self.get_element(NavBarLocators.PUSH_UPDATES_BUTTON)
+        return self.get_element(self.admin_locators.PUSH_UPDATES_BUTTON)
 
     @property
     def LOGOUT_BUTTON(self):
-        return self.get_element(NavBarLocators.LOGOUT_BUTTON)
+        return self.get_element(self.admin_locators.LOGOUT_BUTTON)
 
     @property
     def DASHBOARD(self):
-        return self.get_element(SidebarLocators.DASHBOARD)
+        return self.get_element(self.admin_locators.DASHBOARD)
 
     @property
     def LOCATION_CONTROL(self):
-        return self.get_element(SidebarLocators.LOCATION_CONTROL)
+        return self.get_element(self.admin_locators.LOCATION_CONTROL)
 
     @property
     def CATEGORIES(self):
-        return self.get_element(SidebarLocators.CATEGORIES)
+        return self.get_element(self.admin_locators.CATEGORIES)
 
     @property
     def ITEM_CATEGORIES(self):
-        return self.get_element(SidebarLocators.ITEM_CATEGORIES)
+        return self.get_element(self.admin_locators.ITEM_CATEGORIES)
 
     @property
     def MODIFIER_CATEGORIES(self):
-        return self.get_element(SidebarLocators.MODIFIER_CATEGORIES)
+        return self.get_element(self.admin_locators.MODIFIER_CATEGORIES)
 
     @property
     def GROUPS(self):
-        return self.get_element(SidebarLocators.GROUPS)
+        return self.get_element(self.admin_locators.GROUPS)
 
     @property
     def ITEMS(self):
-        return self.get_element(SidebarLocators.ITEMS)
+        return self.get_element(self.admin_locators.ITEMS)
 
     @property
     def MENUS(self):
-        return self.get_element(SidebarLocators.MENUS)
+        return self.get_element(self.admin_locators.MENUS)
 
     @property
     def LOCATIONS(self):
-        return self.get_element(SidebarLocators.LOCATIONS)
+        return self.get_element(self.admin_locators.LOCATIONS)
 
     @property
     def SECTIONS(self):
-        return self.get_element(SidebarLocators.SECTIONS)
+        return self.get_element(self.admin_locators.SECTIONS)
 
     @property
     def TABLES(self):
-        return self.get_element(SidebarLocators.TABLES)
+        return self.get_element(self.admin_locators.TABLES)
 
     @property
     def VARIANT_SETS(self):
-        return self.get_element(SidebarLocators.VARIANT_SETS)
+        return self.get_element(self.admin_locators.VARIANT_SETS)
 
     @property
     def MODIFIERS(self):
-        return self.get_element(SidebarLocators.MODIFIERS)
+        return self.get_element(self.admin_locators.MODIFIERS)
 
     @property
     def ADDON_GROUPS(self):
-        return self.get_element(SidebarLocators.ADDON_GROUPS)
+        return self.get_element(self.admin_locators.ADDON_GROUPS)
 
     @property
     def SUITES(self):
-        return self.get_element(SidebarLocators.SUITES)
+        return self.get_element(self.admin_locators.SUITES)
 
     @property
     def SUITES_ACCOUNTS(self):
-        return self.get_element(SidebarLocators.SUITES_ACCOUNTS)
+        return self.get_element(self.admin_locators.SUITES_ACCOUNTS)
 
     @property
     def SUITES_SETUP(self):
-        return self.get_element(SidebarLocators.SUITES_SETUP)
+        return self.get_element(self.admin_locators.SUITES_SETUP)
 
     @property
     def SUITES_PREORDER(self):
-        return self.get_element(SidebarLocators.SUITES_PREORDER)
+        return self.get_element(self.admin_locators.SUITES_PREORDER)
 
     @property
     def EVENTS(self):
-        return self.get_element(SidebarLocators.EVENTS)
+        return self.get_element(self.admin_locators.EVENTS)
 
     @property
     def EVENTS_CALENDAR(self):
-        return self.get_element(SidebarLocators.EVENTS_CALENDAR)
+        return self.get_element(self.admin_locators.EVENTS_CALENDAR)
 
     @property
     def EVENTS_TEMPLATES(self):
-        return self.get_element(SidebarLocators.EVENTS_TEMPLATES)
+        return self.get_element(self.admin_locators.EVENTS_TEMPLATES)
 
     @property
     def ORDERS(self):
-        return self.get_element(SidebarLocators.ORDERS)
+        return self.get_element(self.admin_locators.ORDERS)
 
     @property
     def TIPS(self):
-        return self.get_element(SidebarLocators.TIPS)
+        return self.get_element(self.admin_locators.TIPS)
 
     @property
     def CASHROOM(self):
-        return self.get_element(SidebarLocators.CASHROOM)
+        return self.get_element(self.admin_locators.CASHROOM)
 
     @property
     def INVENTORY(self):
-        return self.get_element(SidebarLocators.INVENTORY)
+        return self.get_element(self.admin_locators.INVENTORY)
 
     @property
     def STATUS(self):
-        return self.get_element(SidebarLocators.STATUS)
+        return self.get_element(self.admin_locators.STATUS)
 
     @property
     def INVENTORY_CATEGORIES(self):
-        return self.get_element(SidebarLocators.INVENTORY_CATEGORIES)
+        return self.get_element(self.admin_locators.INVENTORY_CATEGORIES)
 
     @property
     def INVENTORY_TRANSFERS(self):
-        return self.get_element(SidebarLocators.INVENTORY_TRANSFERS)
+        return self.get_element(self.admin_locators.INVENTORY_TRANSFERS)
 
     @property
     def INVENTORY_MOVEMENTS(self):
-        return self.get_element(SidebarLocators.INVENTORY_MOVEMENTS)
+        return self.get_element(self.admin_locators.INVENTORY_MOVEMENTS)
 
     @property
     def STANDSHEETS(self):
-        return self.get_element(SidebarLocators.STANDSHEETS)
+        return self.get_element(self.admin_locators.STANDSHEETS)
 
     @property
     def STOCK_ITEMS(self):
-        return self.get_element(SidebarLocators.STOCK_ITEMS)
+        return self.get_element(self.admin_locators.STOCK_ITEMS)
 
     @property
     def RECIPES(self):
-        return self.get_element(SidebarLocators.RECIPES)
+        return self.get_element(self.admin_locators.RECIPES)
 
     @property
     def VENDORS(self):
-        return self.get_element(SidebarLocators.VENDORS)
+        return self.get_element(self.admin_locators.VENDORS)
 
     @property
     def INVENTORY_AUDITS(self):
-        return self.get_element(SidebarLocators.INVENTORY_AUDITS)
+        return self.get_element(self.admin_locators.INVENTORY_AUDITS)
 
     @property
     def PURCHASE_AND_RECEIVING(self):
-        return self.get_element(SidebarLocators.PURCHASE_AND_RECEIVING)
+        return self.get_element(self.admin_locators.PURCHASE_AND_RECEIVING)
 
     @property
     def WAREHOUSES(self):
-        return self.get_element(SidebarLocators.WAREHOUSES)
+        return self.get_element(self.admin_locators.WAREHOUSES)
 
     @property
     def REPORTING(self):
-        return self.get_element(SidebarLocators.REPORTING)
+        return self.get_element(self.admin_locators.REPORTING)
 
     @property
     def REPORTS(self):
-        return self.get_element(SidebarLocators.REPORTS)
+        return self.get_element(self.admin_locators.REPORTS)
 
     @property
     def REPORT_TEMPLATES(self):
-        return self.get_element(SidebarLocators.REPORT_TEMPLATES)
+        return self.get_element(self.admin_locators.REPORT_TEMPLATES)
 
     @property
     def ORDER_TAKERS(self):
-        return self.get_element(SidebarLocators.ORDER_TAKERS)
+        return self.get_element(self.admin_locators.ORDER_TAKERS)
 
     @property
     def DEVICES(self):
-        return self.get_element(SidebarLocators.DEVICES)
+        return self.get_element(self.admin_locators.DEVICES)
 
     @property
     def ALERTS(self):
-        return self.get_element(SidebarLocators.ALERTS)
+        return self.get_element(self.admin_locators.ALERTS)
 
     @property
     def BUCKS(self):
-        return self.get_element(SidebarLocators.BUCKS)
+        return self.get_element(self.admin_locators.BUCKS)
 
     @property
     def BUCKS_CARD_SEARCH(self):
-        return self.get_element(SidebarLocators.BUCKS_CARD_SEARCH)
+        return self.get_element(self.admin_locators.BUCKS_CARD_SEARCH)
 
     @property
     def BUCKS_ADD_NEW_CARD(self):
-        return self.get_element(SidebarLocators.BUCKS_ADD_NEW_CARD)
+        return self.get_element(self.admin_locators.BUCKS_ADD_NEW_CARD)
 
     @property
     def BUCKS_ALLOCATE_CARDS(self):
-        return self.get_element(SidebarLocators.BUCKS_ALLOCATE_CARDS)
+        return self.get_element(self.admin_locators.BUCKS_ALLOCATE_CARDS)
 
     @property
     def BUCKS_IMPORT_EXPORT(self):
-        return self.get_element(SidebarLocators.BUCKS_IMPORT_EXPORT)
+        return self.get_element(self.admin_locators.BUCKS_IMPORT_EXPORT)
 
     @property
     def PAGE_TITLE(self):
-        return self.get_element(AdminPageLocators.PAGE_TITLE)
+        return self.get_element(self.admin_locators.PAGE_TITLE)
 
     @property
     def BREADCRUMB_LINKS(self):
-        return self.get_elements(AdminPageLocators.BREADCRUMB_LINKS)
+        return self.get_elements(self.admin_locators.BREADCRUMB_LINKS)
 
     @property
     def PORTLET_TITLE(self):
-        return self.get_element(AdminPageLocators.PORTLET_TITLE)
+        return self.get_element(self.admin_locators.PORTLET_TITLE)
 
     def return_to_home_by_navbar_logo(self):
         """
