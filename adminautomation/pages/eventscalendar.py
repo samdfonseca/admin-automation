@@ -8,9 +8,17 @@ class EventsCalendarPage(AdminPage):
     PATH = '/events'
     locators = EventsCalendarLocators
 
+    # def __init__(self, *args, **kwargs):
+    #     kwargs['skip_login'] = True
+    #     super(EventsCalendarPage, self).__init__(self, *args, **kwargs)
+
     def __init__(self, *args, **kwargs):
-        kwargs['skip_login'] = True
-        super(EventsCalendarPage, self).__init__(self, *args, **kwargs)
+        super(EventsCalendarPage, self).__init__(*args, **kwargs)
+        self.add_new_event_form = self.AddNewEventForm(self)
+        self.calendar_view = self.CalendarView(self)
+        self.calendar_view.month_view = self.calendar_view.MonthView(self)
+        self.calendar_view.week_view = self.calendar_view.WeekView(self)
+        self.calendar_view.day_view = self.calendar_view.DayView(self)
 
     class AddNewEventForm(PageSection):
         DEFAULT_DATE_FORMAT = '%B %d, %Y %H:%M %p'
@@ -83,6 +91,15 @@ class EventsCalendarPage(AdminPage):
             """
             self.EVENT_TEMPLATE.select_by_visible_text(template_name)
 
+        def enter_event_type(self, event_type):
+            """
+
+            :param event_type:
+            :return:
+            """
+            self.EVENT_TYPE.send_keys(event_type)
+
+
         def click_create_event_button(self):
             """
 
@@ -90,7 +107,7 @@ class EventsCalendarPage(AdminPage):
             """
             self.CREATE_EVENT_BUTTON.click()
 
-        def create_event(self, name, start_date, end_date, template_name=None, **kwargs):
+        def create_event(self, name, start_date, end_date, template_name=None, event_type=None, **kwargs):
             """
 
             :param name:
@@ -104,6 +121,8 @@ class EventsCalendarPage(AdminPage):
             self.enter_end_date(end_date, kwargs.get('end_date_format'))
             if template_name:
                 self.enter_event_template(template_name)
+            if event_type:
+                self.enter_event_type(event_type)
             self.click_create_event_button()
 
     class CalendarView(PageSection):
@@ -226,10 +245,4 @@ class EventsCalendarPage(AdminPage):
 
 
 
-    def __init__(self, *args, **kwargs):
-        super(EventsCalendarPage, self).__init__(*args, **kwargs)
-        self.add_new_event_form = self.AddNewEventForm(self)
-        self.calendar_view = self.CalendarView(self)
-        self.calendar_view.month_view = self.calendar_view.MonthView(self)
-        self.calendar_view.week_view = self.calendar_view.WeekView(self)
-        self.calendar_view.day_view = self.calendar_view.DayView(self)
+
