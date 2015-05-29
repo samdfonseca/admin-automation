@@ -49,7 +49,7 @@ class Select2(AdminElement):
         candidates = filter(lambda i: i.text == text, self.options)
         if candidates:
             self.driver.execute_script("arguments[0].scrollIntoView(true);", candidates[0])
-            self.wait_for_element_visibility(timeout=60)
+            self.wait_for_element_visibility(60)
             candidates[0].click()
             return
         raise NoSuchElementException("Could not locate element with visible text: %s" % text)

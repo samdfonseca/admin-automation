@@ -18,6 +18,7 @@ setup(
     install_requires=depends,
     dependency_links=[
         'git+ssh://git@github.com/bypasslane/testrailwrapper.git@0.1.20150127#egg=testrailwrapper-0.1.20150127',
+        'git+ssh://git@github.com/bypasslane/bypass-qatesting-common.git@0.0.1#egg=bypassqatesting-0.0.1',
         'git+ssh://git@github.com/samdfonseca/sneeze.git#egg=nose-sneeze-0.0.3',
         'git+ssh://git@github.com/samdfonseca/pocket.git#egg=sneeze-pocket-0.0.1',
         'git+ssh://git@github.com/samdfonseca/pocket_change.git#egg=pocket-change-0.0.6',

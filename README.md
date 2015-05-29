@@ -25,12 +25,16 @@ $ python setup.py develop
 - Set environment variables.
 
 ```
-$ export TESTRAIL_URL='https://bypassmobile.testrail.com'
-$ export TESTRAIL_USER='someone@bypassmobile.com'
-$ export TESTRAIL_PASSWORD='abcdefg12345'
 $ export ADMIN_USER='someone@bypassmobile.com'
 $ export ADMIN_PASSWORD='password1'
 $ export SELENIUM_SERVER_URL='http://127.0.0.1:4444/wd/hub'
+```
+
+- (Optional) Set variable for Sneeze reporting db
+
+```
+# A SQLAlchemy formatted connection string
+$ export sneeze_db_config='mysql://sneeze_user:sneeze_pass@localhost/sneeze_db'
 ```
 
 - Setup selenium server.
