@@ -21,7 +21,7 @@ class EventsCalendarPage(AdminPage):
         self.calendar_view.day_view = self.calendar_view.DayView(self)
 
     class AddNewEventForm(PageSection):
-        DEFAULT_DATE_FORMAT = '%B %d, %Y %H:%M %p'
+        DEFAULT_DATE_FORMAT = '%B %d, %Y %I:%M %p'
 
         @property
         def NAME(self):
