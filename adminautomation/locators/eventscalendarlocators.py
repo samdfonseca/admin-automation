@@ -61,13 +61,12 @@ class EventsCalendarLocators(BaseLocatorGroup):
             EVENTS = css('.fc-event')
             EVENT_NAMES = css('.fc-title')
 
-    class EventListLocators(BaseLocatorGroup):
-        EVENT_LIST_TABLE = css('table.event_list')
+    class EventsListLocators(BaseLocatorGroup):
+        EVENTS_LIST_TABLE = css('table.event_list')
         HEADERS = css('thead tr:nth-child(1) th')
         NAME_HEADER = css('th:nth-child(1)')
         START_HEADER = css('th:nth-child(2)')
         END_HEADER = css('th:nth-child(3)')
         TYPE_HEADER = css('th:nth-child(4)')
         EVENT_TEMPLATE_HEADER = css('th:nth-child(5)')
-
         EVENT_ROWS = css('tr[ng-repeat="event in events"]')
