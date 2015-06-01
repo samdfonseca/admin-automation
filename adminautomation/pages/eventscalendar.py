@@ -1,7 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 from adminautomation.pages import BasePage, AdminPage
 from adminautomation.locators import EventsCalendarLocators
-from adminautomation.structures import Select2, PageSection
+from adminautomation.structures import Select2, PageSection, AdminElement
 
 
 class EventsCalendarPage(AdminPage):
@@ -19,6 +19,8 @@ class EventsCalendarPage(AdminPage):
         self.calendar_view.month_view = self.calendar_view.MonthView(self)
         self.calendar_view.week_view = self.calendar_view.WeekView(self)
         self.calendar_view.day_view = self.calendar_view.DayView(self)
+        self.event_list_view = self.EventListView(self)
+        self.event_list_view.event_list_table = self.event_list_view.EventListTable(self, self.locators.EventListLocators.EVENT_LIST_TABLE)
 
     class AddNewEventForm(PageSection):
         DEFAULT_DATE_FORMAT = '%B %d, %Y %I:%M %p'
@@ -65,7 +67,7 @@ class EventsCalendarPage(AdminPage):
             date_format = EventsCalendarPage.AddNewEventForm.DEFAULT_DATE_FORMAT if date_format is None else date_format
             date_input_element.clear()
             date_input_element.send_keys(date.strftime(date_format))
-            date_input_element.send_keys(Keys.ESCAPE)
+            date_input_element.click()
 
         def enter_start_date(self, date, date_format=None):
             """
@@ -98,7 +100,6 @@ class EventsCalendarPage(AdminPage):
             :return:
             """
             self.EVENT_TYPE.send_keys(event_type)
-
 
         def click_create_event_button(self):
             """
@@ -243,6 +244,44 @@ class EventsCalendarPage(AdminPage):
             def EVENT_NAMES(self):
                 return self._page.get_elements(self._page.locators.CalendarViewLocators.DayViewLocators.EVENT_NAMES)
 
+    class EventListView(PageSection):
+        class EventListTable(AdminElement):
+            locators = EventsCalendarLocators.EventListLocators()
 
+            @property
+            def headers(self):
+                return self.get_elements(self.locators.HEADERS)
 
+            @property
+            def name_header(self):
+                return self.get_element(self.locators.NAME_HEADER)
 
+            @property
+            def start_header(self):
+                return self.get_element(self.locators.START_HEADER)
+
+            @property
+            def end_header(self):
+                return self.get_element(self.locators.END_HEADER)
+
+            @property
+            def type_header(self):
+                return self.get_element(self.locators.TYPE_HEADER)
+
+            @property
+            def event_template_header(self):
+                return self.get_element(self.locators.EVENT_TEMPLATE_HEADER)
+
+    @property
+    def calendar_view_tab(self):
+        return self.get_element(self.locators.CALENDAR_VIEW_TAB)
+
+    @property
+    def events_list_view_tab(self):
+        return self.get_element(self.locators.EVENTS_LIST_VIEW_TAB)
+
+    def open_calendar_view_tab(self):
+        self.calendar_view_tab.click()
+
+    def open_events_list_view_tab(self):
+        self.events_list_view_tab.click()

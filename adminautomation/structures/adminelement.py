@@ -28,7 +28,7 @@ class AdminElement(object):
         try:
             if do_wait:
                 self.wait_for_element(locator)
-            return self.driver.find_element(*locator, **kwargs)
+            return self.elem.find_element(*locator, **kwargs)
         except (NoSuchElementException, StaleElementReferenceException):
             raise Warning('Unable to get element. (Locator: {})'.format(locator[1]))
 
@@ -44,7 +44,7 @@ class AdminElement(object):
         try:
             if do_wait:
                 self.wait_for_elements(locator)
-            return self.driver.find_elements(*locator, **kwargs)
+            return self.elem.find_elements(*locator, **kwargs)
         except (NoSuchElementException, StaleElementReferenceException):
             raise Warning('Unable to get elements. (Locator: {})'.format(locator[1]))
 

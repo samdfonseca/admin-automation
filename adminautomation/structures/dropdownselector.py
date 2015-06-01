@@ -29,11 +29,11 @@ class Select2(AdminElement):
 
     @property
     def container(self):
-        return self.get_element(css(str(self.locator) + str(self.locators.CONTAINER_CLASS)))
+        return self.get_element(self.locators.CONTAINER_CLASS)
 
     @property
     def options(self):
-        return self.get_elements(self.locator + '>' + self.locators.SELECT + self.locators.OPTIONS)
+        return self.get_elements(self.locators.OPTIONS)
 
     @property
     def items(self):
@@ -49,7 +49,7 @@ class Select2(AdminElement):
         candidates = filter(lambda i: i.text == text, self.options)
         if candidates:
             self.driver.execute_script("arguments[0].scrollIntoView(true);", candidates[0])
-            self.wait_for_element_visibility(60)
+            # self.wait_for_element_visibility()
             candidates[0].click()
             return
         raise NoSuchElementException("Could not locate element with visible text: %s" % text)
