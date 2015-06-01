@@ -3,6 +3,8 @@ from adminautomation.locators.by import css
 
 
 class EventsCalendarLocators(BaseLocatorGroup):
+    CALENDAR_VIEW_TAB = css('a[href="#calendar"]')
+    EVENTS_LIST_VIEW_TAB = css('a[href="#events"]')
 
     class AddNewEventLocators(BaseLocatorGroup):
         NAME = css('input[ng-model="event.name"]')
@@ -59,9 +61,12 @@ class EventsCalendarLocators(BaseLocatorGroup):
             EVENTS = css('.fc-event')
             EVENT_NAMES = css('.fc-title')
 
-    # class ImportEventsForm(BaseLocatorGroup):
-    #     pass
-    #
-    # class EventsCalendar(BaseLocatorGroup):
-    #     pass
-
+    class EventsListLocators(BaseLocatorGroup):
+        EVENTS_LIST_TABLE = css('table.event_list')
+        HEADERS = css('thead tr:nth-child(1) th')
+        NAME_HEADER = css('th:nth-child(1)')
+        START_HEADER = css('th:nth-child(2)')
+        END_HEADER = css('th:nth-child(3)')
+        TYPE_HEADER = css('th:nth-child(4)')
+        EVENT_TEMPLATE_HEADER = css('th:nth-child(5)')
+        EVENT_ROWS = css('tr[ng-repeat="event in events"]')

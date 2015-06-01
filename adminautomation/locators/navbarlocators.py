@@ -5,6 +5,7 @@ from adminautomation.locators.by import css
 class NavBarLocators(BaseLocatorGroup):
     LOGO_HOME_BUTTON = css('a.navbar-brand[href="/"]')
 
+    VENUES_SELECT = css('form#update_venue')
     VENUES_LISTBOX = css('div#s2id_change_venue')
     VENUE_LIST_DROPDOWN = css('div#select2-drop')
     VENUE_LIST_SEARCHBOX = css('input.select2-input')
