@@ -25,7 +25,7 @@ class BaseLocator(tuple):
                 # BaseLocators are of different types, i.e. css + xpath
                 raise LocatorTypeException
         elif isinstance(value, basestring):
-            return BaseLocator(self[0], ''.join([self[1],value]))
+            return BaseLocator(self[0], ' '.join([self[1],value]))
         else:
             raise UnrecognizedLocatorValueException
 

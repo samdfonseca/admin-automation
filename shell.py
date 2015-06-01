@@ -21,7 +21,10 @@ import adminautomation
 import adminautomation.locators
 import adminautomation.structures
 import adminautomation.utils
+from adminautomation.utils.drivers import get_chrome_driver as RemoteChromeDriver
+from adminautomation.utils.drivers import get_phantomjs_driver as RemotePhantomJSDriver
 from adminautomation.pages import *
+import bypassqatesting as qatest
 
 
 sys.dont_write_bytecode = True

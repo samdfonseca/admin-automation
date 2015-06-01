@@ -1,7 +1,5 @@
-import operator
 from hamcrest import *
 from selenium.common.exceptions import StaleElementReferenceException
-from selenium.webdriver.remote.webelement import WebElement
 
 from basetest import BaseTest
 from adminautomation.pages import ItemsPage
@@ -12,10 +10,11 @@ class ItemsTest(BaseTest):
 
     DATA_FILE = './tests/data/itemstests.json'
 
-    def search_for_item(self, admin, test_data):
-        admin.search_for_item(test_data.search_query)
-        row = admin.get_item_row_by_name(test_data.target_item_name)
-        assert(row.text, starts_with(test_data.target_item_name))
+    @staticmethod
+    def search_for_item(admin, search_query, target_item_name):
+        admin.search_for_item(search_query)
+        row = admin.get_item_row_by_name(target_item_name)
+        assert(row.text, starts_with(target_item_name))
 
     def sort_items_by_header(self, header_text, ascending=True):
         header_to_key_dict = {
@@ -39,21 +38,30 @@ class ItemsTest(BaseTest):
                 admin.sleep(.5)
             else:
                 break
-        print(sorted_item_names[:len(displayed_item_names)])
-        print(displayed_item_names)
+        # print(sorted_item_names[:len(displayed_item_names)])
+        # print(displayed_item_names)
         assert(sorted_item_names, contains(displayed_item_names))
 
-
     def test_search_for_item_partial_match(self):
-        self.search_for_item(self.CURRENT_TEST_DATA)
+        admin = ItemsPage(self.driver, skip_login=True)
+        ItemsTest.search_for_item(admin, self.CURRENT_TEST_DATA.search_query, self.CURRENT_TEST_DATA.target_item_name)
+
+    def test_search_for_item_partial_nonstarting_match(self):
+        admin = ItemsPage(self.driver, skip_login=True)
+        ItemsTest.search_for_item(admin, self.CURRENT_TEST_DATA.search_query, self.CURRENT_TEST_DATA.target_item_name)
 
     def test_search_for_item_full_match(self):
         admin = ItemsPage(self.driver, skip_login=True)
-        
-        self.search_for_item(self.CURRENT_TEST_DATA)
+        ItemsTest.search_for_item(admin, self.CURRENT_TEST_DATA.search_query, self.CURRENT_TEST_DATA.target_item_name)
+
+    # def test_search(self):
+    #     admin = ItemsPage(self.driver, skip_login=True)
+    #     for test_method in filter(lambda i: i.startswith('test_search'), self.TEST_DATA):
+    #         yield ItemsTest.search_for_item, admin, self.TEST_DATA[test_method].search_query, self.TEST_DATA[test_method].target_item_name
 
     def test_sort_items_by_name_ascending(self):
         self.sort_items_by_header('Name', ascending=True)
 
     def test_sort_items_by_name_descending(self):
         self.sort_items_by_header('Name', ascending=False)
+

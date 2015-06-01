@@ -1,8 +1,9 @@
 from .basepage import BasePage
-from .choosevenue import ChooseVenuePage
 from .login import LoginPage
-from .datatablepage import DataTablePage
 from .adminbase import AdminPage
+from .choosevenue import ChooseVenuePage
+from .eventscalendar import EventsCalendarPage
+from .datatablepage import DataTablePage
 from .dashboard import DashboardPage
 from .suiteaccounts import SuiteAccountsPage
 from .orders import OrdersPage
@@ -12,6 +13,7 @@ from .items import ItemsPage
 __all__ = [
     'BasePage',
     'ChooseVenuePage',
+    'EventsCalendarPage',
     'LoginPage',
     'AdminPage',
     'DashboardPage',
