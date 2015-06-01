@@ -5,7 +5,7 @@ import nose.tools
 
 from basetest import BaseTest
 from adminautomation.pages import OrdersPage
-from adminautomation.utils.api.orders import new_cash_order
+from bypassqatesting.api.orders import new_cash_order
 
 
 class OrdersTest(BaseTest):

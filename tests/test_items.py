@@ -3,7 +3,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 from basetest import BaseTest
 from adminautomation.pages import ItemsPage
-from adminautomation.utils.api.items import get_item_count, get_items_list
+from bypassqatesting.api.items import get_item_count, get_items_list
 
 
 class ItemsTest(BaseTest):
