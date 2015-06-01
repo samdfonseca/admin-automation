@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.select import Select
 from adminautomation.pages import BasePage, AdminPage
 from adminautomation.locators import EventsCalendarLocators
 from adminautomation.structures import Select2, PageSection, AdminElement
@@ -39,7 +40,7 @@ class EventsCalendarPage(AdminPage):
 
         @property
         def EVENT_TEMPLATE(self):
-            return Select2(self._page, self._page.locators.AddNewEventLocators.EVENT_TEMPLATE)
+            return Select2(self._page.get_element(self._page.locators.AddNewEventLocators.EVENT_TEMPLATE))
 
         @property
         def EVENT_TYPE(self):

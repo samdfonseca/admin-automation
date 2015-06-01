@@ -43,7 +43,7 @@ class AdminPage(BasePage):
 
     @property
     def VENUES_SELECT(self):
-        return Select2(self, self.admin_locators.VENUES_LISTBOX)
+        return Select2(self.get_element(self.admin_locators.VENUES_SELECT))
 
     @property
     def VENUES_LISTBOX(self):
@@ -340,14 +340,15 @@ class AdminPage(BasePage):
         :param venue: the venue name as a string
         """
 
-        self.expand_venues_list()
-        target_item = filter(lambda item: item.text == venue, self.VENUE_LIST_ITEMS)[0]
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", target_item)
-        while True:
-            sleep(1)
-            if target_item.is_displayed():
-                break
-        target_item.click()
+        self.VENUES_SELECT.select_by_visible_text(venue)
+        # self.expand_venues_list()
+        # target_item = filter(lambda item: item.text == venue, self.VENUE_LIST_ITEMS)[0]
+        # self.driver.execute_script("arguments[0].scrollIntoView(true);", target_item)
+        # while True:
+        #     sleep(1)
+        #     if target_item.is_displayed():
+        #         break
+        # target_item.click()
         # list_items = self.VENUE_LIST_ITEMS
         # for item in list_items:
         #     if item.text == venue:
