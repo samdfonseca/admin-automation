@@ -96,13 +96,21 @@ class EventsCalendarPage(AdminPage):
             """
             self.EVENT_TEMPLATE.select_by_visible_text(template_name)
 
-        def enter_event_type(self, event_type):
+        def enter_event_type(self, tags):
             """
 
             :param event_type:
             :return:
             """
-            self.EVENT_TYPE.find_element('css selector', 'input').send_keys(event_type)
+            if isinstance(tags, list):
+                for tag in tags:
+                    self.EVENT_TYPE.find_element('css selector', 'input').send_keys(tag)
+                    self.EVENT_TYPE.find_element('css selector', 'input').send_keys(Keys.RETURN)
+            else:
+                self.EVENT_TYPE.find_element('css selector', 'input').send_keys(tags)
+                self.EVENT_TYPE.find_element('css selector', 'input').send_keys(Keys.RETURN)
+
+
 
         def click_create_event_button(self):
             """
