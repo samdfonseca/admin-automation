@@ -30,7 +30,7 @@ tests/*.pickle
 tests/data/*
 
 # bin files
-bin/*
+bin
 
 # Created by .gitignore support plugin (hsz.mobi)
 .exvim.admin-automation

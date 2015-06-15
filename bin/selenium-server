@@ -1,0 +1,80 @@
+#!/bin/bash
+
+
+# echo $BASH_SOURCE
+DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
+
+SELENIUM_SERVER_VERSION="$(grep 'selenium_server_version = ' setup.py | cut -d '=' -f 2 | cut -d ' ' -f 2)"
+
+PIDFILE="$PWD/var/run/selenium-server.pid"
+[ ! -d "$(dirname $PIDFILE)" ] && mkdir -p $(dirname $PIDFILE)
+
+LOGFILE="$PWD/var/log/selenium-server.log"
+[ ! -d "$(dirname $LOGFILE)" ] && mkdir -p $(dirname $LOGFILE)
+
+[ -x $SELENIUM_SERVER_JAR ] && \
+    if [ -e ./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+        JARFILE=./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+    elif [ -e ~/bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+        JARFILE=~/bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+    elif [ -e /opt/lib/selenium-server/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+        JARFILE=/opt/lib/selenium-server/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+    fi
+
+function start_server() {
+    if [ `pgrep -f selenium-server-standalone-$SELENIUM_SERVER_VERSION` ]; then
+        echo "Selenium server is already running..."
+    else
+        echo "Starting selenium server..."
+        java -jar $JARFILE &> $LOGFILE &
+        echo $! > $PIDFILE
+    fi
+}
+
+function stop_server() {
+    echo "Stopping selenium server..."
+    if [ -e $PIDFILE ]; then
+        pkill -F $PIDFILE
+        rm -f $PIDFILE
+    else
+        force_stop_server
+    fi
+}
+
+function force_stop_server() {
+    echo "Force stopping selenium server..."
+    pkill -f selenium-server-standalone-$SELENIUM_SERVER_VERSION
+    [ -e $PIDFILE ] && rm -f $PIDFILE
+}
+
+function server_status() {
+    [ -e $PIDFILE ] && \
+        SERVER_PID=`cat $PIDFILE` || \
+        SERVER_PID=`pgrep -f selenium-server-standalone-$SELENIUM_SERVER_VERSION`
+    [ $SERVER_PID ] && \
+        ps -f -p $SERVER_PID || \
+        echo "Selenium server is not running..."
+}
+
+case "$1" in
+    start)
+        start_server
+        ;;
+    stop)
+        stop_server
+        ;;
+    force-stop)
+        force_stop_server
+        ;;
+    restart)
+        [ -e $PIDFILE ] && stop_server
+        start_server
+        ;;
+    status)
+        server_status
+        ;;
+    *)
+        echo "Usage: $DIR/selenium-server {start|stop|restart|status}"
+        ;;
+esac
+
