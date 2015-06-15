@@ -13,6 +13,9 @@ from bypassqatesting.api import events
 class TestEventsCalendarPage(BaseTest):
     def tearDown(self):
         super(TestEventsCalendarPage, self).tearDown()
+    #     current_events = events.filter_current_events(events.get_all_events(venue_id='187'))
+    #     for event in current_events:
+    #         events.delete_event(venue_id='187', event_id=event['id'])
         if self.event:
             events.delete_event(venue_id='187', event_id=self.event['id'])
 
@@ -45,7 +48,9 @@ class TestEventsCalendarPage(BaseTest):
         end_time = start_time + datetimeutil.timedelta(minutes=5)
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         page.add_new_event_form.create_event(event_name, start_time, end_time)
+        page.sleep(5)
         self.event = events.get_all_events(venue_id='187')[-1]
+        # self.event = events.filter_current_events(events.get_all_events(venue_id='187'))[0]
         assert_that(self.event['name'], is_(event_name))
 
     def test_create_new_event_with_template(self):
@@ -53,11 +58,12 @@ class TestEventsCalendarPage(BaseTest):
         page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
-        start_time = datetimeutil.now()
+        start_time = datetimeutil.now() + datetimeutil.timedelta(days=1)
         end_time = start_time + datetimeutil.timedelta(minutes=5)
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         event_template_name = 'First Template'
         page.add_new_event_form.create_event(event_name, start_time, end_time, event_template_name)
+        page.sleep(5)
         self.event = events.get_all_events(venue_id='187')[-1]
         assert_that(self.event['name'], is_(event_name))
         assert_that(self.event['event_template_name'], is_(event_template_name))
@@ -67,11 +73,12 @@ class TestEventsCalendarPage(BaseTest):
         page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
-        start_time = datetimeutil.now()
+        start_time = datetimeutil.now() + datetimeutil.timedelta(days=2)
         end_time = start_time + datetimeutil.timedelta(minutes=5)
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         tags = 'testing'
         page.add_new_event_form.create_event(event_name, start_time, end_time, None, tags)
+        page.sleep(5)
         self.event = events.get_all_events(venue_id='187')[-1]
         assert_that(self.event['name'], is_(event_name))
         assert_that(self.event['tag_list'], is_([tags]))
@@ -81,11 +88,12 @@ class TestEventsCalendarPage(BaseTest):
         page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
-        start_time = datetimeutil.now()
+        start_time = datetimeutil.now() + datetimeutil.timedelta(days=3)
         end_time = start_time + datetimeutil.timedelta(minutes=5)
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         tags = ['tagA', 'tagB', 'tagC']
         page.add_new_event_form.create_event(event_name, start_time, end_time, None, tags)
+        page.sleep(5)
         self.event = events.get_all_events(venue_id='187')[-1]
         assert_that(self.event['name'], is_(event_name))
         assert_that(self.event['tag_list'], is_(tags))
