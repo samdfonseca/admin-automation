@@ -2,8 +2,6 @@ import random
 import string
 
 from hamcrest import *
-import nose.tools
-from nose_parameterized import parameterized
 
 from basetest import BaseTest
 from adminautomation.pages import EventsCalendarPage
