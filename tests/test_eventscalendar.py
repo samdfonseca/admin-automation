@@ -114,3 +114,49 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(self.event['name'], is_(event_name))
         assert_that(self.event['tag_list'], is_(tags))
         assert_that(self.event['event_template_name'], is_(event_template_name))
+
+    def test_create_new_event_no_start_date(self):
+        page = EventsCalendarPage(self.driver, skip_login=True)
+        page.choose_venue_from_list('QA Kingdom')
+        if page.driver.current_url != page.URL:
+            page.go_to_page_url()
+        start_time = datetimeutil.now() + datetimeutil.timedelta(days=4)
+        end_time = start_time + datetimeutil.timedelta(minutes=5)
+        event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
+        page.add_new_event_form.enter_name(event_name)
+        page.add_new_event_form.enter_end_date(end_time)
+        elem = page.add_new_event_form.CREATE_EVENT_BUTTON
+        assert_that(elem.is_enabled(), is_(False))
+
+    def test_create_new_event_no_end_date(self):
+        page = EventsCalendarPage(self.driver, skip_login=True)
+        page.choose_venue_from_list('QA Kingdom')
+        if page.driver.current_url != page.URL:
+            page.go_to_page_url()
+        start_time = datetimeutil.now() + datetimeutil.timedelta(days=4)
+        end_time = start_time + datetimeutil.timedelta(minutes=5)
+        event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
+        page.add_new_event_form.enter_name(event_name)
+        page.add_new_event_form.enter_start_date(start_time)
+        elem = page.add_new_event_form.CREATE_EVENT_BUTTON
+        assert_that(elem.is_enabled(), is_(False))
+
+    def test_create_new_event_no_event_name(self):
+        page = EventsCalendarPage(self.driver, skip_login=True)
+        page.choose_venue_from_list('QA Kingdom')
+        if page.driver.current_url != page.URL:
+            page.go_to_page_url()
+        start_time = datetimeutil.now() + datetimeutil.timedelta(days=4)
+        end_time = start_time + datetimeutil.timedelta(minutes=5)
+        page.add_new_event_form.enter_start_date(start_time)
+        page.add_new_event_form.enter_end_date(end_time)
+        elem = page.add_new_event_form.CREATE_EVENT_BUTTON
+        assert_that(elem.is_enabled(), is_(False))
+
+    def test_create_new_event_all_fields_empty(self):
+        page = EventsCalendarPage(self.driver, skip_login=True)
+        page.choose_venue_from_list('QA Kingdom')
+        if page.driver.current_url != page.URL:
+            page.go_to_page_url()
+        elem = page.add_new_event_form.CREATE_EVENT_BUTTON
+        assert_that(elem.is_enabled(), is_(False))
