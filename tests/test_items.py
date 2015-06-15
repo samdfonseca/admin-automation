@@ -38,21 +38,31 @@ class ItemsTest(BaseTest):
                 admin.sleep(.5)
             else:
                 break
-        # print(sorted_item_names[:len(displayed_item_names)])
-        # print(displayed_item_names)
         assert(sorted_item_names, contains(displayed_item_names))
 
     def test_search_for_item_partial_match(self):
         admin = ItemsPage(self.driver, skip_login=True)
-        ItemsTest.search_for_item(admin, self.CURRENT_TEST_DATA.search_query, self.CURRENT_TEST_DATA.target_item_name)
+        admin.show_filters()
+        admin.filter_table('Name', self.CURRENT_TEST_DATA.search_query)
+        admin.sleep(2)
+        rows = admin.filter_rows_by_value('Name', self.CURRENT_TEST_DATA.target_item_name)
+        assert_that(len(rows), greater_than_or_equal_to(1))
 
     def test_search_for_item_partial_nonstarting_match(self):
         admin = ItemsPage(self.driver, skip_login=True)
-        ItemsTest.search_for_item(admin, self.CURRENT_TEST_DATA.search_query, self.CURRENT_TEST_DATA.target_item_name)
+        admin.show_filters()
+        admin.filter_table('Name', self.CURRENT_TEST_DATA.search_query)
+        admin.sleep(2)
+        rows = admin.filter_rows_by_value('Name', self.CURRENT_TEST_DATA.target_item_name)
+        assert_that(len(rows), greater_than_or_equal_to(1))
 
     def test_search_for_item_full_match(self):
         admin = ItemsPage(self.driver, skip_login=True)
-        ItemsTest.search_for_item(admin, self.CURRENT_TEST_DATA.search_query, self.CURRENT_TEST_DATA.target_item_name)
+        admin.show_filters()
+        admin.filter_table('Name', self.CURRENT_TEST_DATA.search_query)
+        admin.sleep(2)
+        rows = admin.filter_rows_by_value('Name', self.CURRENT_TEST_DATA.target_item_name)
+        assert_that(len(rows), greater_than_or_equal_to(1))
 
     # def test_search(self):
     #     admin = ItemsPage(self.driver, skip_login=True)
