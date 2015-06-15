@@ -48,7 +48,7 @@ class TestEventsCalendarPage(BaseTest):
         end_time = start_time + datetimeutil.timedelta(minutes=5)
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         page.add_new_event_form.create_event(event_name, start_time, end_time)
-        page.sleep(5)
+        page.sleep(1)
         self.event = events.get_all_events(venue_id='187')[-1]
         # self.event = events.filter_current_events(events.get_all_events(venue_id='187'))[0]
         assert_that(self.event['name'], is_(event_name))
@@ -63,7 +63,7 @@ class TestEventsCalendarPage(BaseTest):
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         event_template_name = 'First Template'
         page.add_new_event_form.create_event(event_name, start_time, end_time, event_template_name)
-        page.sleep(5)
+        page.sleep(1)
         self.event = events.get_all_events(venue_id='187')[-1]
         assert_that(self.event['name'], is_(event_name))
         assert_that(self.event['event_template_name'], is_(event_template_name))
@@ -78,7 +78,7 @@ class TestEventsCalendarPage(BaseTest):
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         tags = 'testing'
         page.add_new_event_form.create_event(event_name, start_time, end_time, None, tags)
-        page.sleep(5)
+        page.sleep(1)
         self.event = events.get_all_events(venue_id='187')[-1]
         assert_that(self.event['name'], is_(event_name))
         assert_that(self.event['tag_list'], is_([tags]))
@@ -93,7 +93,24 @@ class TestEventsCalendarPage(BaseTest):
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         tags = ['tagA', 'tagB', 'tagC']
         page.add_new_event_form.create_event(event_name, start_time, end_time, None, tags)
-        page.sleep(5)
+        page.sleep(1)
         self.event = events.get_all_events(venue_id='187')[-1]
         assert_that(self.event['name'], is_(event_name))
         assert_that(self.event['tag_list'], is_(tags))
+
+    def test_create_new_event_with_multiple_tags_and_template(self):
+        page = EventsCalendarPage(self.driver, skip_login=True)
+        page.choose_venue_from_list('QA Kingdom')
+        if page.driver.current_url != page.URL:
+            page.go_to_page_url()
+        start_time = datetimeutil.now() + datetimeutil.timedelta(days=4)
+        end_time = start_time + datetimeutil.timedelta(minutes=5)
+        event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
+        event_template_name = 'First Template'
+        tags = ['tagA', 'tagB', 'tagC']
+        page.add_new_event_form.create_event(event_name, start_time, end_time, event_template_name, tags)
+        page.sleep(1)
+        self.event = events.get_all_events(venue_id='187')[-1]
+        assert_that(self.event['name'], is_(event_name))
+        assert_that(self.event['tag_list'], is_(tags))
+        assert_that(self.event['event_template_name'], is_(event_template_name))
