@@ -3,17 +3,31 @@ import string
 
 from hamcrest import *
 
+from adminautomation.utils.drivers import get_chrome_driver
 from basetest import BaseTest
 from adminautomation.pages import EventsCalendarPage
 from bypassqatesting import datetimeutil
 from bypassqatesting.api import events
 
 class TestEventsCalendarPage(BaseTest):
+    @classmethod
+    def setUpClass(cls):
+        super(TestEventsCalendarPage, cls).setUpClass()
+        driver = get_chrome_driver()
+        page = EventsCalendarPage(driver, skip_login=True)
+        page.choose_venue_from_list('QA Kingdom')
+        page.driver.quit()
+
+    @classmethod
+    def tearDownClass(cls):
+        super(TestEventsCalendarPage, cls).tearDownClass()
+        driver = get_chrome_driver()
+        page = EventsCalendarPage(driver, skip_login=True)
+        page.choose_venue_from_list('Bypass WORLD Headquarters')
+        page.driver.quit()
+
     def tearDown(self):
         super(TestEventsCalendarPage, self).tearDown()
-    #     current_events = events.filter_current_events(events.get_all_events(venue_id='187'))
-    #     for event in current_events:
-    #         events.delete_event(venue_id='187', event_id=event['id'])
         if self.event:
             events.delete_event(venue_id='187', event_id=self.event['id'])
 
@@ -39,7 +53,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         start_time = datetimeutil.now()
@@ -53,7 +66,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event_with_template(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         start_time = datetimeutil.now() + datetimeutil.timedelta(days=1)
@@ -68,7 +80,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event_with_single_tag(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         start_time = datetimeutil.now() + datetimeutil.timedelta(days=2)
@@ -83,7 +94,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event_with_multiple_tags(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         start_time = datetimeutil.now() + datetimeutil.timedelta(days=3)
@@ -98,7 +108,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event_with_multiple_tags_and_template(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         start_time = datetimeutil.now() + datetimeutil.timedelta(days=4)
@@ -115,7 +124,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event_no_start_date(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         start_time = datetimeutil.now() + datetimeutil.timedelta(days=4)
@@ -128,7 +136,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event_no_end_date(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         start_time = datetimeutil.now() + datetimeutil.timedelta(days=4)
@@ -141,7 +148,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event_no_event_name(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         start_time = datetimeutil.now() + datetimeutil.timedelta(days=4)
@@ -153,7 +159,6 @@ class TestEventsCalendarPage(BaseTest):
 
     def test_create_new_event_all_fields_empty(self):
         page = EventsCalendarPage(self.driver, skip_login=True)
-        page.choose_venue_from_list('QA Kingdom')
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
         elem = page.add_new_event_form.CREATE_EVENT_BUTTON

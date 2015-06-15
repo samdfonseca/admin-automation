@@ -39,6 +39,10 @@ class BaseTest(unittest.TestCase):
         cls.SESSION_TOKEN = get_session_token(user=os.environ['ADMIN_USER'], password=os.environ['ADMIN_PASSWORD']) \
             if cls.SESSION_TOKEN is None else cls.SESSION_TOKEN
 
+    @classmethod
+    def tearDownClass(cls):
+        pass
+
     def setUp(self):
         if self.USE_HEADLESS_WEBDRIVER:
             self.driver = get_phantomjs_driver()
