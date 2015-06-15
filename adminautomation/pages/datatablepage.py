@@ -1,5 +1,6 @@
 import re
 from selenium.webdriver.support.select import Select
+from selenium.common.exceptions import TimeoutException
 from adminautomation.locators.by import css
 from adminautomation.structures.genericstructs import PaginationButtons
 
@@ -71,7 +72,11 @@ class DataTablePage(object):
             return None
 
     def get_column_by_header_text(self, header_text):
-        return self.get_elements(self.locators.DATATABLE + css('td[data-title-text="{0}"]'.format(header_text)))
+        try:
+            elems = self.get_elements(self.locators.DATATABLE + css('td[data-title-text="{0}"]'.format(header_text)))
+        except TimeoutException:
+            return []
+        return elems
 
     def toggle_filters(self):
         self.DATATABLE_FILTER_TOGGLE.click()
