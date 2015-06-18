@@ -36,6 +36,7 @@ class TestEventsCalendarPage(BaseTest):
         self.event = None
 
     def test_enter_well_formated_date_into_start_date(self):
+        """Enter well formated date into start date"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         start_time = datetimeutil.now()
         page.add_new_event_form.enter_start_date(start_time)
@@ -44,6 +45,7 @@ class TestEventsCalendarPage(BaseTest):
                     is_(start_time.strftime(page.add_new_event_form.DEFAULT_DATE_FORMAT)))
 
     def test_enter_well_formated_date_into_end_date(self):
+        """Enter well formated date into end date"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         end_time = datetimeutil.now()
         page.add_new_event_form.enter_end_date(end_time)
@@ -52,6 +54,7 @@ class TestEventsCalendarPage(BaseTest):
                     is_(end_time.strftime(page.add_new_event_form.DEFAULT_DATE_FORMAT)))
 
     def test_create_new_event(self):
+        """C1705 - Create new event"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
@@ -65,6 +68,7 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(self.event['name'], is_(event_name))
 
     def test_create_new_event_with_template(self):
+        """Create new event w/ template"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
@@ -79,6 +83,7 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(self.event['event_template_name'], is_(event_template_name))
 
     def test_create_new_event_with_single_tag(self):
+        """Create new event w/ single tag"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
@@ -93,6 +98,7 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(self.event['tag_list'], is_([tags]))
 
     def test_create_new_event_with_multiple_tags(self):
+        """Create new event w/ multiple tags"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
@@ -107,6 +113,7 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(self.event['tag_list'], is_(tags))
 
     def test_create_new_event_with_multiple_tags_and_template(self):
+        """Create new event w/ multiple tags and template"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
@@ -123,6 +130,7 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(self.event['event_template_name'], is_(event_template_name))
 
     def test_create_new_event_no_start_date(self):
+        """Create new event w/ no start date"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
@@ -135,6 +143,7 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(elem.is_enabled(), is_(False))
 
     def test_create_new_event_no_end_date(self):
+        """Create new event w/ no end date"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
@@ -147,6 +156,7 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(elem.is_enabled(), is_(False))
 
     def test_create_new_event_no_event_name(self):
+        """Create new event w/ no event name"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
@@ -158,6 +168,7 @@ class TestEventsCalendarPage(BaseTest):
         assert_that(elem.is_enabled(), is_(False))
 
     def test_create_new_event_all_fields_empty(self):
+        """Create new event w/ all fields empty"""
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
