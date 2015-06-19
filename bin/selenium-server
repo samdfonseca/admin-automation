@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export PIDFILE=${PIDFILE:="$HOME/var/run/selenium-server.pid"}
-export LOGFILE=${LOGFILE:="$HOME/var/log/selenium-server.log"}
+PIDFILE="$HOME/var/run/selenium-server.pid"
+LOGFILE="$HOME/var/log/selenium-server.log"
 
 DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 
@@ -57,7 +57,7 @@ function stop_server() {
 }
 
 function force_stop_server() {
-    echo "Force stopping selenium server...\n"
+    echo "Force stopping selenium server..."
     OIFS=$IFS
     IFS=$'\n'
     echo "Select the process to kill:"
@@ -72,12 +72,12 @@ function force_stop_server() {
 }
 
 function server_status() {
-    [ -e $PIDFILE ] && \
-        SERVER_PID=`cat $PIDFILE` || \
-        SERVER_PID=`pgrep -f selenium-server`
-    [ $SERVER_PID ] && \
-        ps -f -p $SERVER_PID || \
+    if [ -e $PIDFILE ]; then
+        SERVER_PID=`cat $PIDFILE`
+        ps -f -p $SERVER_PID
+    else
         echo "Selenium server is not running..."
+    fi
 }
 
 function tail_log() {
