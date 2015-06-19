@@ -1,25 +1,40 @@
 #!/bin/bash
 
+export PIDFILE=${PIDFILE:="$HOME/var/run/selenium-server.pid"}
+export LOGFILE=${LOGFILE:="$HOME/var/log/selenium-server.log"}
 
-# echo $BASH_SOURCE
 DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 
-SELENIUM_SERVER_VERSION="$(grep 'selenium_server_version = ' setup.py | cut -d '=' -f 2 | cut -d ' ' -f 2)"
+if [ ! $SELENIUM_SERVER_VERSION ]; then
+    if [ -x 'setup.py' ]; then
+        SELENIUM_SERVER_VERSION="$(grep 'selenium_server_version = ' setup.py | cut -d '=' -f 2 | cut -d ' ' -f 2)"
+    else
+        echo "Could not find selenium server jar"
+        exit 1
+    fi
+fi
 
-PIDFILE="$PWD/var/run/selenium-server.pid"
-[ ! -d "$(dirname $PIDFILE)" ] && mkdir -p $(dirname $PIDFILE)
+if [ ! -d "$(dirname $PIDFILE)" ]; then
+    mkdir -p $(dirname $PIDFILE)
+fi
 
-LOGFILE="$PWD/var/log/selenium-server.log"
-[ ! -d "$(dirname $LOGFILE)" ] && mkdir -p $(dirname $LOGFILE)
+if [ ! -d $LOGFILE ]; then
+    mkdir -p $(dirname $LOGFILE)
+fi
 
-[ -x $SELENIUM_SERVER_JAR ] && \
-    if [ -e ./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+if [ -x $SELENIUM_SERVER_JAR ]; then
+    if [ -e $DIR/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+        JARFILE=$DIR/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+    elif [ -e selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+        JARFILE=selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+    elif [ -e ./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
         JARFILE=./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
     elif [ -e ~/bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
         JARFILE=~/bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
     elif [ -e /opt/lib/selenium-server/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
         JARFILE=/opt/lib/selenium-server/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
     fi
+fi
 
 function start_server() {
     if [ `pgrep -f selenium-server-standalone-$SELENIUM_SERVER_VERSION` ]; then
@@ -42,18 +57,36 @@ function stop_server() {
 }
 
 function force_stop_server() {
-    echo "Force stopping selenium server..."
-    pkill -f selenium-server-standalone-$SELENIUM_SERVER_VERSION
+    echo "Force stopping selenium server...\n"
+    OIFS=$IFS
+    IFS=$'\n'
+    echo "Select the process to kill:"
+    SELENIUM_PIDS=$(ps -ef | grep selenium-server)
+    select pid in $SELENIUM_PIDS; do
+        killpid=$(echo $pid | cut -d " " -f 7)
+        kill $killpid
+        break
+    done
+    IFS=$OIFS
     [ -e $PIDFILE ] && rm -f $PIDFILE
 }
 
 function server_status() {
     [ -e $PIDFILE ] && \
         SERVER_PID=`cat $PIDFILE` || \
-        SERVER_PID=`pgrep -f selenium-server-standalone-$SELENIUM_SERVER_VERSION`
+        SERVER_PID=`pgrep -f selenium-server`
     [ $SERVER_PID ] && \
         ps -f -p $SERVER_PID || \
         echo "Selenium server is not running..."
+}
+
+function tail_log() {
+    if [ -x $LOGFILE ]; then
+        tail -f $LOGFILE
+    else
+        echo "Unable to find log file"
+        exit 1
+    fi
 }
 
 case "$1" in
@@ -73,8 +106,11 @@ case "$1" in
     status)
         server_status
         ;;
+    log)
+        tail_log
+        ;;
     *)
-        echo "Usage: $DIR/selenium-server {start|stop|restart|status}"
+        echo "Usage: $DIR/selenium-server {start|stop|force-stop|restart|status|log}"
         ;;
 esac
 
