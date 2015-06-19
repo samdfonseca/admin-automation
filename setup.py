@@ -30,6 +30,7 @@ import os
 selenium_server_version = '2.45.0'
 bin_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'bin')
 selenium_jar_file = os.path.join(bin_dir, 'selenium-server-standalone-{0}.jar'.format(selenium_server_version))
+selenium_symlink_file = os.path.join(os.path.dirname(selenium_jar_file), 'selenium-server.jar')
 selenium_version_file = os.path.join(bin_dir, '.selenium-version')
 
 
@@ -49,6 +50,7 @@ def download_selenium_server(version):
         c.perform()
         print('Download finished')
         c.close()
+        os.link(selenium_jar_file, selenium_symlink_file)
 
     with open(selenium_version_file, 'w') as f:
         f.write(version)
@@ -56,6 +58,7 @@ def download_selenium_server(version):
 
 print(bin_dir)
 print(selenium_jar_file)
+print(selenium_symlink_file)
 print(selenium_version_file)
 try:
     if not os.path.exists(selenium_jar_file):

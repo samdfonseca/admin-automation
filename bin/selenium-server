@@ -5,7 +5,9 @@ LOGFILE="$HOME/var/log/selenium-server.log"
 
 DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 
-if [ ! $SELENIUM_SERVER_VERSION ]; then
+if [ -f $DIR/selenium-server.jar ]; then
+    JARFILE=$DIR/selenium-server.jar
+elif [ ! $SELENIUM_SERVER_VERSION ]; then
     if [ -x 'setup.py' ]; then
         SELENIUM_SERVER_VERSION="$(grep 'selenium_server_version = ' setup.py | cut -d '=' -f 2 | cut -d ' ' -f 2)"
     else
@@ -22,17 +24,19 @@ if [ ! -d $LOGFILE ]; then
     mkdir -p $(dirname $LOGFILE)
 fi
 
-if [ -x $SELENIUM_SERVER_JAR ]; then
-    if [ -e $DIR/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
-        JARFILE=$DIR/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
-    elif [ -e selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
-        JARFILE=selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
-    elif [ -e ./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
-        JARFILE=./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
-    elif [ -e ~/bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
-        JARFILE=~/bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
-    elif [ -e /opt/lib/selenium-server/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
-        JARFILE=/opt/lib/selenium-server/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+if [ ! $JARFILE ]; then
+    if [ -x $SELENIUM_SERVER_JAR ]; then
+        if [ -e $DIR/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+            JARFILE=$DIR/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+        elif [ -e selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+            JARFILE=selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+        elif [ -e ./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+            JARFILE=./bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+        elif [ -e ~/bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+            JARFILE=~/bin/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+        elif [ -e /opt/lib/selenium-server/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar ]; then
+            JARFILE=/opt/lib/selenium-server/selenium-server-standalone-"$SELENIUM_SERVER_VERSION".jar
+        fi
     fi
 fi
 
