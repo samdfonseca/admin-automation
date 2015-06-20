@@ -6,8 +6,6 @@ import os
 from functools import wraps
 import datetime
 
-from tests import trclient, read_session_info
-
 from adminautomation.utils import TestCaseDataReader
 from adminautomation.utils import AdminSessionCookie
 from adminautomation.utils.drivers import get_chrome_driver
@@ -34,8 +32,6 @@ class BaseTest(unittest.TestCase):
     def setUpClass(cls):
         cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE) if cls.DATA_FILE else None
         cls.AUTH_COOKIE = AdminSessionCookie() if cls.AUTH_COOKIE is None else cls.AUTH_COOKIE
-        cls.TESTRAIL_CLIENT = trclient if cls.TESTRAIL_CLIENT is None else cls.TESTRAIL_CLIENT
-        cls.SESSION_INFO = read_session_info()
         cls.SESSION_TOKEN = get_session_token(user=os.environ['ADMIN_USER'], password=os.environ['ADMIN_PASSWORD']) \
             if cls.SESSION_TOKEN is None else cls.SESSION_TOKEN
 
@@ -74,4 +70,3 @@ class BaseLoginTest(BaseTest):
     @classmethod
     def setupClass(cls):
         cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE) if cls.DATA_FILE else None
-        cls.TESTRAIL_CLIENT = trclient
