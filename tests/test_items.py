@@ -46,7 +46,8 @@ class ItemsTest(BaseTest):
         admin.filter_table('Name', self.CURRENT_TEST_DATA.search_query)
         admin.sleep(2)
         rows = admin.filter_rows_by_value('Name', self.CURRENT_TEST_DATA.target_item_name)
-        assert_that(len(rows), greater_than_or_equal_to(1))
+        assert_that(self.CURRENT_TEST_DATA.target_item_name, is_in(map(lambda i: i.text, rows)))
+        # assert_that(len(rows), greater_than_or_equal_to(1))
 
     def test_search_for_item_partial_nonstarting_match(self):
         admin = ItemsPage(self.driver, skip_login=True)
@@ -54,7 +55,8 @@ class ItemsTest(BaseTest):
         admin.filter_table('Name', self.CURRENT_TEST_DATA.search_query)
         admin.sleep(2)
         rows = admin.filter_rows_by_value('Name', self.CURRENT_TEST_DATA.target_item_name)
-        assert_that(len(rows), greater_than_or_equal_to(1))
+        assert_that(self.CURRENT_TEST_DATA.target_item_name, is_in(map(lambda i: i.text, rows)))
+        # assert_that(len(rows), greater_than_or_equal_to(1))
 
     def test_search_for_item_full_match(self):
         admin = ItemsPage(self.driver, skip_login=True)
@@ -62,7 +64,8 @@ class ItemsTest(BaseTest):
         admin.filter_table('Name', self.CURRENT_TEST_DATA.search_query)
         admin.sleep(2)
         rows = admin.filter_rows_by_value('Name', self.CURRENT_TEST_DATA.target_item_name)
-        assert_that(len(rows), greater_than_or_equal_to(1))
+        assert_that(self.CURRENT_TEST_DATA.target_item_name, is_in(map(lambda i: i.text, rows)))
+        # assert_that(len(rows), greater_than_or_equal_to(1))
 
     # def test_search(self):
     #     admin = ItemsPage(self.driver, skip_login=True)
