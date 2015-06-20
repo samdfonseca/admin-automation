@@ -28,11 +28,7 @@ class OrdersTest(BaseTest):
         test_data = self.CURRENT_TEST_DATA
 
         admin = OrdersPage(self.driver, skip_login=True)
-        order = new_cash_order(base_url=self.SESSION_INFO['api_server'],
-                               auth_server=self.SESSION_INFO['auth_server'],
-                               user=self.SESSION_INFO['user'],
-                               password=self.SESSION_INFO['passwd'],
-                               venue_id=self.SESSION_INFO['default_venue'])
+        order = new_cash_order()
         admin.reload_table()
         admin.wait_for_element(admin.locators.DATATABLE + ' a[href="/orders/{0}"]'.format(order['id']))
         assert_that(admin.get_order_id_links_by_link_text(order['id'])[0], is_(WebElement))
