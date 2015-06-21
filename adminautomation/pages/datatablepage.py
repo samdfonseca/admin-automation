@@ -1,6 +1,7 @@
 import re
 from selenium.webdriver.support.select import Select
 from selenium.common.exceptions import TimeoutException
+from adminautomation.locators.datatablelocators import DataTableLocators
 from adminautomation.locators.by import css
 from adminautomation.structures.genericstructs import PaginationButtons
 
@@ -8,55 +9,67 @@ from adminautomation.structures.genericstructs import PaginationButtons
 class DataTablePage(object):
     @property
     def DATATABLE(self):
-        return self.get_element(self.locators.DATATABLE)
+        return self.get_element(DataTableLocators.DATATABLE)
 
     @property
     def DATATABLE_HEADERS(self):
-        return self.get_elements(self.locators.DATATABLE_HEADERS)
+        return self.get_elements(DataTableLocators.DATATABLE_HEADERS)
 
     @property
     def DATATABLE_HEADER_CHECKBOX(self):
-        return self.get_element(self.locators.DATATABLE_HEADER_CHECKBOX)
+        return self.get_element(DataTableLocators.DATATABLE_HEADER_CHECKBOX)
 
     @property
     def DATATABLE_FILTER_ROW(self):
-        return self.get_element(self.locators.DATATABLE_FILTER_ROW)
+        return self.get_element(DataTableLocators.DATATABLE_FILTER_ROW)
 
     @property
     def DATATABLE_FILTER_TOGGLE(self):
-        return self.get_element(self.locators.DATATABLE_FILTER_TOGGLE)
+        return self.get_element(DataTableLocators.DATATABLE_FILTER_TOGGLE)
 
     @property
     def DATATABLE_FILTERS(self):
-        return self.get_elements(self.locators.DATATABLE_FILTERS)
+        return self.get_elements(DataTableLocators.DATATABLE_FILTERS)
 
     @property
     def DATATABLE_CLEAR_FILTERS_BUTTON(self):
-        return self.get_element(self.locators.DATATABLE_CLEAR_FILTERS_BUTTON)
+        return self.get_element(DataTableLocators.DATATABLE_CLEAR_FILTERS_BUTTON)
 
     @property
     def DATATABLE_TABLE_ROWS(self):
-        return self.get_elements(self.locators.DATATABLE_TABLE_ROWS)
+        return self.get_elements(DataTableLocators.DATATABLE_TABLE_ROWS)
 
     @property
     def DATATABLE_FOOTER(self):
-        return self.get_element(self.locators.DATATABLE_FOOTER)
+        return self.get_element(DataTableLocators.DATATABLE_FOOTER)
 
     @property
     def PAGINATION_BUTTONS(self):
-        return PaginationButtons(self.locators.PAGINATION_BUTTONS)
+        return PaginationButtons(DataTableLocators.PAGINATION_BUTTONS)
 
     @property
     def TOTAL_ITEMS_STRONG(self):
         try:
-            return self.get_element(self.locators.TOTAL_ITEMS_STRONG)
+            return self.get_element(DataTableLocators.TOTAL_ITEMS_STRONG)
         except AttributeError:
             return None
 
     @property
+    def BULK_ACTIONS_BUTTON(self):
+        return self.get_element(self.locators.BULK_ACTIONS_BUTTON)
+
+    @property
+    def BULK_ACTIONS_MENU(self):
+        return self.get_element(self.locators.BULK_ACTIONS_MENU)
+
+    @property
+    def BULK_ACTIONS_OPTIONS(self):
+        return self.get_elements(self.locators.BULK_ACTIONS_OPTIONS)
+
+    @property
     def ITEMS_PER_PAGE_SELECTOR(self):
         try:
-            return Select(self.get_element(self.locators.ITEMS_PER_PAGE_SELECTOR))
+            return Select(self.get_element(DataTableLocators.ITEMS_PER_PAGE_SELECTOR))
         except AttributeError:
             return None
 
@@ -73,7 +86,7 @@ class DataTablePage(object):
 
     def get_column_by_header_text(self, header_text):
         try:
-            elems = self.get_elements(self.locators.DATATABLE + css('td[data-title-text="{0}"]'.format(header_text)))
+            elems = self.get_elements(DataTableLocators.DATATABLE + css('td[data-title-text="{0}"]'.format(header_text)))
         except TimeoutException:
             return []
         return elems
@@ -117,3 +130,14 @@ class DataTablePage(object):
     def filter_rows_by_value(self, header_text, filter_value):
         elems = self.get_column_by_header_text(header_text)
         return filter(lambda i: i.text == filter_value, elems)
+
+    def toggle_take_bulk_actions_menu(self):
+        self.BULK_ACTIONS_BUTTON.click()
+
+    def open_take_bulk_actions_menu(self):
+        if not self.BULK_ACTIONS_MENU.is_displayed():
+            self.toggle_take_bulk_actions_menu()
+
+    def close_take_bulk_actions_menu(self):
+        if self.BULK_ACTIONS_MENU.is_displayed():
+            self.toggle_take_bulk_actions_menu()
