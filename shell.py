@@ -12,19 +12,22 @@ from tempfile import mkstemp
 from code import InteractiveConsole
 import pdb
 
+import tinydb
+from tinydb import TinyDB, where
+from tinydb.operations import delete, increment, decrement
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 from selenium.common.exceptions import *
 
 import adminautomation
-import adminautomation.locators
-import adminautomation.structures
-import adminautomation.utils
 from adminautomation.utils.drivers import get_chrome_driver as RemoteChromeDriver
 from adminautomation.utils.drivers import get_phantomjs_driver as RemotePhantomJSDriver
 from adminautomation.pages import *
-import bypassqatesting as qatest
+from adminautomation.locators import *
+from adminautomation.structures import *
+
+import bypassqatesting
 
 
 sys.dont_write_bytecode = True
@@ -128,6 +131,8 @@ try:
     setup_readline()
 except ImportError:
     readline.parse_and_bind('tab: complete')
+
+testdata_db = TinyDB('tests/db.json')
 
 if __doc__ is None:
     c = EditableBufferInteractiveConsole(locals=locals())
