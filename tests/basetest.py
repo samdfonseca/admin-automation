@@ -6,23 +6,20 @@ import os
 from functools import wraps
 import datetime
 
+import tinydb
+from tinydb import TinyDB, where
+from tinydb.operations import delete, increment, decrement
+
 from adminautomation.utils import TestCaseDataReader
-from adminautomation.utils import AdminSessionCookie
-from adminautomation.utils.drivers import get_chrome_driver
-from adminautomation.utils.drivers import get_phantomjs_driver
-from adminautomation.utils.api.auth import get_session_token
+from bypassqatesting.drivers import get_chrome_driver
 
 
 class BaseTest(unittest.TestCase):
     # Ideally this would be an Abstract Base Class but it works fine as is for now
 
-    # AUTH_FILE = './data/auth.json'
     DATA_FILE = None
     TEST_DATA = None
     AUTH_COOKIE = None
-    USE_HEADLESS_WEBDRIVER = False
-    TESTRAIL_CLIENT = None
-    SESSION_TOKEN = None
 
     @property
     def CURRENT_TEST_DATA(self):
@@ -30,23 +27,19 @@ class BaseTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.db = TinyDB('tests/db.json')
         cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE) if cls.DATA_FILE else None
-        cls.AUTH_COOKIE = AdminSessionCookie() if cls.AUTH_COOKIE is None else cls.AUTH_COOKIE
-        cls.SESSION_TOKEN = get_session_token(user=os.environ['ADMIN_USER'], password=os.environ['ADMIN_PASSWORD']) \
-            if cls.SESSION_TOKEN is None else cls.SESSION_TOKEN
+        cls.AUTH_COOKIE = cls.db.get(where('admin_session_cookie'))['admin_session_cookie']
 
     @classmethod
     def tearDownClass(cls):
         pass
 
     def setUp(self):
-        if self.USE_HEADLESS_WEBDRIVER:
-            self.driver = get_phantomjs_driver()
-        else:
-            self.driver = get_chrome_driver()
+        self.driver = get_chrome_driver()
+        self.driver.set_window_size(1500, 900)
 
     def tearDown(self):
-        # self.driver.save_screenshot('tests/img/{}.png'.format(self._testMethodName))
         self.driver.quit()
 
     @staticmethod
@@ -61,12 +54,21 @@ class BaseTest(unittest.TestCase):
                 if not os.path.exists(screenshot_dir):
                     os.mkdir(screenshot_dir)
                 date_string = datetime.datetime.now().strftime('%m%d%y-%H%M%S')
-                fname = '{0}.png'.format(os.path.join(os.path.abspath(screenshot_dir), date_string))
+                test_name = test_obj.__name__
+                fname = '{screendir}/{testname}-{timestamp}.png'.format(screendir=os.path.abspath(screenshot_dir),
+                                                                        testname=test_name,
+                                                                        timestamp=date_string)
                 test_obj.driver.get_screenshot_as_file(fname)
         return wrapper
+    
+    @classmethod
+    def get_test_data(cls, key):
+        try:
+            return cls.db.get(where(key))[key]
+        except TypeError:
+            return None
 
 
 class BaseLoginTest(BaseTest):
-    @classmethod
-    def setupClass(cls):
-        cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE) if cls.DATA_FILE else None
+    # Forget why this was needed...
+    pass
