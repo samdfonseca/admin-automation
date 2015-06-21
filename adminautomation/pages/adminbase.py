@@ -20,8 +20,8 @@ class AdminPage(BasePage):
         #     if isinstance(v, BaseLocator):
         #         self.admin_locators.__setattr__(k, v)
 
-        self.SKIP_LOGIN = kwargs.get("skip_login", False)
-        self.AUTO_LOGIN = kwargs.get("auto_login", True)
+        self.SKIP_LOGIN = kwargs.get("skip_login", False) # Use cached session id cookie to skip login page
+        self.AUTO_LOGIN = kwargs.get("auto_login", True) # Automatically login with the supplied credentials
 
         super(AdminPage, self).__init__(driver, **kwargs)
         self.driver.get(self.ROOT_URL)
