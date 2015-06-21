@@ -1,7 +1,7 @@
 #!/usr/bin/env ipython -i
 from __future__ import print_function
 
-import json
+import simplejson as json
 import sys
 import os
 import datetime
