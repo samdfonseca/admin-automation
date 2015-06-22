@@ -5,38 +5,46 @@ from hamcrest import *
 from tinydb import where
 from adminautomation.pages import LoginPage
 import pytest
+from bypassqatesting.logger import get_module_logger
 
+
+mlog = get_module_logger()
 
 @pytest.fixture
 def page(driver):
     return LoginPage(driver)
 
+
+def setup_module(module):
+    mlog.debug('Switching to prod')
+    mlog.debug(dir(module.pytest))
+    # module.globals testdata.update({'baseurl':'https://admin.bypassmobile.com'})
+    
 def test_root_url_unauthenticated(page):
     assert_that(page.url, has_string(ends_with(page.PATH)))
 
 def test_root_url_authenticated(authenticated_driver, testdata):
-    base_url = testdata.get(where('baseurl'))['baseurl']
+    base_url = testdata['baseurl']
     authenticated_driver.get(base_url)
     assert_that(authenticated_driver.current_url, has_string(base_url))
 
 def test_login_non_superuser(page, testdata):
-    login_data = testdata.get(where('test_login'))['test_login']
-    base_url = testdata.get(where('baseurl'))['baseurl']
-    user = login_data['normaluser']
-    password = login_data['normalpassword']
+    base_url = testdata['baseurl']
+    user = testdata['test_login']['normaluser']
+    password = testdata['test_login']['normalpassword']
     page.login(user, password)
     assert_that(page.url, is_(base_url))
 
 def test_login_superuser(page, testdata):
-    login_data = testdata.get(where('test_login'))['test_login']
-    base_url = testdata.get(where('baseurl'))['baseurl']
+    login_data = testdata['test_login']
+    base_url = testdata['baseurl']
     user = login_data['superuser']
     password = login_data['superpassword']
     page.login(user, password)
     assert_that(page.url, is_(base_url+'admin_sessions/choose_venue'))
 
 def test_login_invalid_user(page, testdata):
-    login_data = testdata.get(where('test_login'))['test_login']
+    login_data = testdata['test_login']
     base_url = testdata.get(where('baseurl'))['baseurl']
     user = login_data['baduser']
     password = login_data['badpassword']
@@ -48,8 +56,8 @@ def test_login_no_credentials(page):
     assert_that(page.url, has_string(ends_with('admin_sessions/new')))
 
 def test_login_caps_username(page, testdata):
-    login_data = testdata.get(where('test_login'))['test_login']
-    base_url = testdata.get(where('baseurl'))['baseurl']
+    login_data = testdata['test_login']
+    base_url = testdata['baseurl']
     user = login_data['normaluser'].upper()
     password = login_data['normalpassword']
     page.login(user, password)
