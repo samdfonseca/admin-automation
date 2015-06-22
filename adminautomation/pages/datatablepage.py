@@ -91,6 +91,9 @@ class DataTablePage(object):
             return []
         return elems
 
+    def get_column_items_text_by_header_text(self, header_text):
+        return map(lambda e: e.text, self.get_column_by_header_text(header_text))
+
     def toggle_filters(self):
         self.DATATABLE_FILTER_TOGGLE.click()
 
@@ -104,7 +107,7 @@ class DataTablePage(object):
 
     def get_filter_input_by_column_header_text(self, header_text):
         filter_index = map(lambda i: i.text, self.DATATABLE_HEADERS).index(header_text)
-        return self.DATATABLE_FILTERS[filter_index - 1]
+        return self.DATATABLE_FILTERS[filter_index]
 
     def clear_all_filters(self):
         self.show_filters()

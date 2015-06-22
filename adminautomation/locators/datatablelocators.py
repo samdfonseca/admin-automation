@@ -7,8 +7,7 @@ class DataTableLocators(BaseLocatorGroup):
     BULK_ACTIONS_MENU = css('ul#bulk-actions-menu')
     BULK_ACTIONS_OPTIONS = BULK_ACTIONS_MENU + 'li'
 
-    DATATABLE = css('div#items '
-                    'div.portlet-body '
+    DATATABLE = css('div.portlet-body '
                     'table')
     DATATABLE_HEADERS = DATATABLE + css('th.header')
     DATATABLE_HEADER_CHECKBOX = DATATABLE + css('input[type="checkbox"]')
@@ -29,5 +28,5 @@ class DataTableLocators(BaseLocatorGroup):
     PAGINATION_BUTTONS = css('ul.pagination')
 
     CHECKBOX_PARTIAL_TRACKED_ID = css('input[tracked-id="{0}"]')
-    EDIT_LINK_PARTIAL_HREF = css('a[href="#/items/{0}/edit"]')
+    EDIT_LINK_PARTIAL_HREF = css('a[href="#/{0}/{1}/edit"]')
 
