@@ -1,6 +1,6 @@
 # Basepage for all logged-in Admin pages
 
-from adminautomation.pages import BasePage, LoginPage
+from adminautomation.pages import BasePage, LoginPage, ChooseVenuePage
 from adminautomation.structures.dropdownselector import Select2
 from adminautomation.locators import NavBarLocators, SidebarLocators, AdminPageLocators, BaseLocatorGroup
 from adminautomation.locators.by import BaseLocator
@@ -33,7 +33,9 @@ class AdminPage(BasePage):
         elif self.driver.current_url == login_url and self.AUTO_LOGIN is True:
             admin = LoginPage(self.driver)
             admin.login(kwargs.get("user"), kwargs.get("passwd"))
-            admin.go_to_page_url()
+            admin = ChooseVenuePage(self.driver)
+            admin.select_venue_from_list_by_name(kwargs.get("venue"))
+            self.go_to_page_url()
         elif self.driver.current_url != self.URL:
             self.go_to_page_url()
 
@@ -696,6 +698,13 @@ class AdminPage(BasePage):
         }
         """
         self.driver.execute_async_script(angular_wait_script)
+
+    def scroll_into_view(self, target_item):
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", target_item)
+        while True:
+            sleep(1)
+            if target_item.is_displayed():
+                break
 
 
     #def _get_dropdown_selector_by_text(self, text, index_when_multiple_match=0):

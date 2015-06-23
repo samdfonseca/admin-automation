@@ -15,7 +15,7 @@ class NewLocationFormLocators(BaseLocatorGroup):
     TYPE_SELECT = css('#location_type')
     LOCATION_GROUP_SELECT = css('#location_location_group_id')
     DEFAULT_TRANSFER_SOURCE_SELECT = css('#location_default_transfer_source_id')
-    LOCATION_TAGS_INPUT = css('#location_tag_list')
+    LOCATION_TAGS_INPUT = css('div.location-tags .select2-search-field input')
     CLOSED_RADIO_BUTTON = css('#concessionClosed')
     OPEN_RADIO_BUTTON = css('#concessionOpen')
     INSEAT_DELIVERY_CHECKBOX = css('#location_has_inseat')

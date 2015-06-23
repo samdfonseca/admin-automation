@@ -1,3 +1,4 @@
+from urlparse import urlparse, urljoin
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.alert import Alert
@@ -34,7 +35,8 @@ class LocationsPage(AdminPage, DataTablePage):
 
     def search_for_location(self, query):
         self.filter_table('Name', query)
-        self.wait_for_elements(self.locators.DATATABLE_TABLE_ROWS)
+        self.wait_for_table_load_after_filter()
+        # self.wait_for_elements(self.locators.DATATABLE_TABLE_ROWS)
 
     def filter_table_by_type(self, location_type):
         self.show_filters()
@@ -66,10 +68,14 @@ class LocationsPage(AdminPage, DataTablePage):
 
     def click_edit_location_link_by_name(self, location_name):
         elem = self.get_row_by_name(location_name)
+        if not elem.is_displayed():
+            self.scroll_into_view(elem)
         elem.find_element_by_link_text('Edit').click()
 
     def click_delete_location_link_by_name(self, location_name):
         elem = self.get_row_by_name(location_name)
+        if not elem.is_displayed():
+            self.scroll_into_view(elem)
         elem.find_element_by_link_text('Delete').click()
 
     def accept_alert(self):
@@ -88,16 +94,32 @@ class NewLocationPage(AdminPage):
         return self.get_element(self.locators.NAME_INPUT)
 
     @property
+    def name(self):
+        return self.name_input.get_attribute('value')
+
+    @property
     def description_input(self):
         return self.get_element(self.locators.DESCRIPTION_INPUT)
+
+    @property
+    def description(self):
+        return self.description_input.get_attribute('value')
 
     @property
     def type_select(self):
         return Select2(self.get_element(self.locators.TYPE_SELECT))
 
     @property
+    def type(self):
+        return self.type_select.select.first_selected_option.text.strip()
+
+    @property
     def location_group_select(self):
         return Select2(self.get_element(self.locators.LOCATION_GROUP_SELECT))
+
+    @property
+    def location_group(self):
+        return self.location_group_select.select.first_selected_option.text
 
     @property
     def default_transfer_source_select(self):
@@ -196,9 +218,10 @@ class NewLocationPage(AdminPage):
 
     def add_location_tag(self, tag):
         self.location_tags_input.send_keys(tag)
+        # self.location_tags_input.send_keys(Keys.ENTER)
 
     def clear_location_tags(self):
-        for elem in self.location_tags_input.get_elements('a.select2-search-choice-close'):
+        for elem in self.location_tags_input.find_elements_by_css_selector('a.select2-search-choice-close'):
             elem.click()
         i = 0
         while self.location_tags_input.text != '':
@@ -208,7 +231,7 @@ class NewLocationPage(AdminPage):
                 break
 
     def remove_location_tag(self, tag):
-        elems = self.location_tags_input.get_elements('li.select2-search-choice')
+        elems = self.location_tags_input.find_elements_by_xpath('..').find_elements_by_css_selector('li.select2-search-choice')
         try:
             elem = filter(lambda e: e.text == tag, elems)[0]
         except IndexError:
@@ -285,3 +308,21 @@ class NewLocationPage(AdminPage):
         if self.payment_type_is_enabled(payment_type):
             self._get_payment_checkbox_by_name(payment_type).click()
 
+    def cancel(self):
+        self.cancel_button.click()
+
+    def save_location(self):
+        self.save_location_button.click()
+
+
+class EditLocationPage(NewLocationPage):
+    PATH = 'locations/{0}/edit'
+
+    def __init__(self, driver, **kwargs):
+        self.driver = driver
+        location_id = kwargs.get('location_id') # If location_id is supplied, browser with navigate to the url
+        if location_id:
+            self.PATH = self.PATH.format(location_id)
+            baseurl = '{0}://{1}'.format(*urlparse(self.url)[:2])
+            url = urljoin(baseurl, self.PATH)
+            self.driver.get(url)

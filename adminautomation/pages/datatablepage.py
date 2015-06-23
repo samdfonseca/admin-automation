@@ -1,6 +1,6 @@
 import re
 from selenium.webdriver.support.select import Select
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from adminautomation.locators.datatablelocators import DataTableLocators
 from adminautomation.locators.by import css
 from adminautomation.structures.genericstructs import PaginationButtons
@@ -92,7 +92,8 @@ class DataTablePage(object):
         return elems
 
     def get_column_items_text_by_header_text(self, header_text):
-        return map(lambda e: e.text, self.get_column_by_header_text(header_text))
+        elems = self.DATATABLE.find_element_by_css_selector('tbody').find_elements_by_css_selector('td[data-title-text="{0}"]'.format(header_text))
+        return map(lambda e: e.text, elems)
 
     def toggle_filters(self):
         self.DATATABLE_FILTER_TOGGLE.click()
@@ -133,6 +134,14 @@ class DataTablePage(object):
     def filter_rows_by_value(self, header_text, filter_value):
         elems = self.get_column_by_header_text(header_text)
         return filter(lambda i: i.text == filter_value, elems)
+
+    def wait_for_table_load_after_filter(self):
+        while True:
+            try:
+                map(lambda e: e.text, self.DATATABLE_TABLE_ROWS)
+            except StaleElementReferenceException:
+                break
+        return
 
     def toggle_take_bulk_actions_menu(self):
         self.BULK_ACTIONS_BUTTON.click()

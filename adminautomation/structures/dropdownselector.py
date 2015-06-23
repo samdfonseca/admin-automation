@@ -34,11 +34,11 @@ class Select2(AdminElement):
 
     @property
     def select(self):
-        return Select(self.get_element(self.locators.SELECT))
+        return Select(self.elem.find_element(*self.locators.SELECT))
 
     @property
     def container(self):
-        return self.get_element(self.locators.CONTAINER_CLASS)
+        return self.elem.find_element(*self.locators.CONTAINER_CLASS)
 
     @property
     def options(self):
