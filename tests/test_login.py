@@ -65,7 +65,7 @@ def test_login_caps_username(page, testdata):
 
 def test_invalid_login_error_message(page):
     page.click_login_button()
-    assert page.check_for_invalid_login_toast()
+    assert_that(page.check_for_invalid_login_toast(), is_(True))
 
 
 # class LoginTest(BaseLoginTest):

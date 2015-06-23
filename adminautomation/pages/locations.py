@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.alert import Alert
 from adminautomation.pages import AdminPage, DataTablePage
+from adminautomation.locators.by import css
 from adminautomation.locators.locationslocators import LocationsLocators, NewLocationFormLocators
 from adminautomation.locators.by import link_text
 from adminautomation.structures import Select2
@@ -19,7 +20,7 @@ class LocationsPage(AdminPage, DataTablePage):
 
     @property
     def new_location_button(self):
-        return self.get_element(self.locators.new_location_button)
+        return self.get_element(self.locators.NEW_LOCATION_BUTTON)
 
     @property
     def export_button(self):
@@ -35,14 +36,14 @@ class LocationsPage(AdminPage, DataTablePage):
 
     def search_for_location(self, query):
         self.filter_table('Name', query)
-        self.wait_for_table_load_after_filter()
+        # self.wait_for_table_load_after_filter()
         # self.wait_for_elements(self.locators.DATATABLE_TABLE_ROWS)
 
     def filter_table_by_type(self, location_type):
         self.show_filters()
-        type_column = map(lambda i: i.text, self.DATATABLE_HEADERS).index('Type')
-        type_filter = Select(self.DATATABLE_FILTERS[type_column].find_by('css selector', 'select'))
+        type_filter = Select(self.get_filter_input_by_column_header_text('Type'))
         type_filter.select_by_visible_text(location_type)
+        self.wait_for_table_load_after_filter()
 
     def sort_header_ascending(self, header_text):
         header = filter(lambda head: head.text == header_text, self.DATATABLE_HEADERS)[0]
@@ -58,12 +59,12 @@ class LocationsPage(AdminPage, DataTablePage):
         """Wait for the page to complete any ajax/angular requests. Page should be static once fully loaded.
         Does this by waiting for the existance of an element at the given ref_element_locator.
         """
-        ref_element_locator = kwargs.get('ref_element_locator', self.locators.DATATABLE_TABLE_ROWS)
-        timeout = kwargs.get('timeout', 30)
-        self.wait_for_elements(ref_element_locator, timeout=timeout)
+        ref_element_locator = kwargs.get('ref_element_locator', css('tr[ng-repeat="location in locations"]'))
+        self.wait_for_elements(ref_element_locator)
 
     def get_row_by_name(self, location_name):
-        elem = filter(lambda i: ' '.join(i.text.split()[:-4]) == location_name, self.DATATABLE_TABLE_ROWS)[0]
+        # Fuck this is slow...
+        elem = filter(lambda i: ' '.join(i.text.split()[:-4]) == location_name if 'Vending' not in i.text else ' '.join(i.text.split()[:-5]) == location_name, self.DATATABLE_TABLE_ROWS)[0]
         return elem
 
     def click_edit_location_link_by_name(self, location_name):

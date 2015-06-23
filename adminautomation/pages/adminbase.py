@@ -9,6 +9,11 @@ from selenium.common.exceptions import WebDriverException, StaleElementReference
 from time import sleep
 from urlparse import urljoin
 
+from bypassqatesting.adminsession import get_session_cookie
+from bypassqatesting.logger import get_module_logger
+
+
+mlog = get_module_logger()
 
 class AdminPage(BasePage):
 
@@ -20,23 +25,45 @@ class AdminPage(BasePage):
         #     if isinstance(v, BaseLocator):
         #         self.admin_locators.__setattr__(k, v)
 
+        # self.driver = driver
+        # self.URL = urljoin(self.ROOT_URL, self.PATH)
         self.SKIP_LOGIN = kwargs.get("skip_login", False) # Use cached session id cookie to skip login page
-        self.AUTO_LOGIN = kwargs.get("auto_login", True) # Automatically login with the supplied credentials
+        self.AUTO_LOGIN = kwargs.get("auto_login", False) # Automatically login with the supplied credentials
+        self.SKIP_GOTO = kwargs.get("skip_goto", False)
 
         super(AdminPage, self).__init__(driver, **kwargs)
-        self.driver.get(self.ROOT_URL)
+        mlog.debug('Page URL: {}'.format(self.URL))
+        # self.driver.get(self.ROOT_URL)
 
-        login_url = urljoin(self.ROOT_URL, LoginPage.PATH)
-        if self.driver.current_url == login_url and self.SKIP_LOGIN is True:
+        # self.driver.get('https://admin-integration.bypasslane.com/locations#/')
+        # login_url = urljoin(self.ROOT_URL, LoginPage.PATH)
+        # if self.SKIP_GOTO:
+        #     mlog.debug('Skip goto')
+        #     driver.get('https://admin-integration.bypasslane.com/locations#/')
+        if self.SKIP_LOGIN:
+            mlog.debug('Skip login')
+            self.driver.get(urljoin(self.ROOT_URL, '404.html'))
             self.attach_session_cookie()
             self.go_to_page_url()
-        elif self.driver.current_url == login_url and self.AUTO_LOGIN is True:
+        if 'admin_sessions/new' in self.url:
+            mlog.debug('Getting new admin cookie')
+            user = kwargs.get('user')
+            passwd = kwargs.get('passwd')
+            venue = kwargs.get('venue')
+            root_url = kwargs.get('root_url')
+            cookie = get_session_cookie(user=user, passwd=passwd, venue=venue, root_url=root_url)
+            self.driver.delete_all_cookies()
+            self.driver.add_cookie(cookie)
+            self.go_to_page_url()
+        elif self.AUTO_LOGIN:
+            mlog.debug('Auto login')
             admin = LoginPage(self.driver)
             admin.login(kwargs.get("user"), kwargs.get("passwd"))
             admin = ChooseVenuePage(self.driver)
             admin.select_venue_from_list_by_name(kwargs.get("venue"))
             self.go_to_page_url()
         elif self.driver.current_url != self.URL:
+            mlog.debug('Login other')
             self.go_to_page_url()
 
     @property

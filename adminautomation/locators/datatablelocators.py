@@ -13,8 +13,7 @@ class DataTableLocators(BaseLocatorGroup):
     DATATABLE_HEADER_CHECKBOX = DATATABLE + css('input[type="checkbox"]')
     DATATABLE_FILTER_TOGGLE = DATATABLE + css('button.filter')
     DATATABLE_FILTER_ROW = DATATABLE + css('tr.ng-table-filters')
-    DATATABLE_FILTERS = DATATABLE + css('th.filter '
-                                        'input')
+    DATATABLE_FILTERS = DATATABLE + css('thead:nth-of-type(1) th.filter')
     DATATABLE_CLEAR_FILTERS_BUTTON = DATATABLE_FILTER_ROW + css('button.filter')
 
     DATATABLE_TABLE_ROWS = DATATABLE + css('tbody '
