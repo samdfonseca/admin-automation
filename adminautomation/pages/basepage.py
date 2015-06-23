@@ -33,8 +33,6 @@ class BasePage(object):
         """
 
         self.driver = driver
-        self.driver.set_window_size(1500, 900) # Set to a larger size
-        self.driver.maximize_window() # If run in Xvfb this will do nothing, otherwise fits it to the screen
 
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
         self.URL = kwargs.get("url", urljoin(self.ROOT_URL, self.PATH))
