@@ -15,6 +15,7 @@ class DropDownLocators(BaseLocatorGroup):
     CONTAINER_CLASS = css('.select2-container')
     SELECT = css('select')
     OPTIONS = css('option')
+    CLEAR = css('.select2-search-choice-close')
 
 
 class Select2Exception(Exception):
@@ -24,14 +25,20 @@ class Select2Exception(Exception):
 class Select2(AdminElement):
     locators = DropDownLocators()
 
-    def __init__(self, webelement):
-        self.elem = webelement
+    def __init__(self, webelement=None, **kwargs):
+        if webelement.tag_name == 'select' or 'select2-container' in webelement.get_attribute('class').split():
+            self.elem = webelement.find_element_by_xpath('..')
+        else:
+            self.elem = webelement
         self.driver = self.elem.parent
-        self.select = Select(self.get_element(self.locators.SELECT))
+
+    @property
+    def select(self):
+        return Select(self.elem.find_element(*self.locators.SELECT))
 
     @property
     def container(self):
-        return self.get_element(self.locators.CONTAINER_CLASS)
+        return self.elem.find_element(*self.locators.CONTAINER_CLASS)
 
     @property
     def options(self):
@@ -40,6 +47,13 @@ class Select2(AdminElement):
     @property
     def items(self):
         return self.get_elements(self.locators.ITEMS)
+
+    @property
+    def _clear(self):
+        return self.get_element(self.locators.CLEAR)
+
+    def clear(self):
+        self._clear.click()
 
     def search(self, query):
         elem = self.get_element(self.locators.SEARCH_INPUT)
@@ -66,4 +80,3 @@ class Select2(AdminElement):
     def close_dropdown(self):
         if 'select2-container-open' in self.elem.get_attribute('class').split():
             self.toggle_dropdown()
-

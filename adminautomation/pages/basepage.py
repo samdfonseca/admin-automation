@@ -1,17 +1,24 @@
 # The base page object to be inherited by all other page objects
 
 from __future__ import print_function
+from contextlib import contextmanager
 from urlparse import urljoin
-from time import sleep
+from time import sleep, time
 import logging
 
+from selenium.webdriver import Remote as WebDriver
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # from twisted.python import log
 
+from bypassqatesting import ModuleLogger
 from bypassqatesting.adminsession import get_session_cookie
+from bypassqatesting.datetimeutil import now, seconds
 
+
+mlog = ModuleLogger()
 
 class UnableToGetElementException(Exception):
     def __init__(self, locator):
@@ -23,6 +30,7 @@ class UnableToGetElementException(Exception):
 class BasePage(object):
 
     ROOT_URL = "https://admin-integration.bypasslane.com"
+    TIMEOUT_LENGTH = 10
 
     def __init__(self, driver, **kwargs):
         """
@@ -33,6 +41,7 @@ class BasePage(object):
         """
 
         self.driver = driver
+        """@type : WebDriver"""
 
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
         self.URL = kwargs.get("url", urljoin(self.ROOT_URL, self.PATH))
@@ -48,7 +57,6 @@ class BasePage(object):
         # log_output = logfile.LogFile(kwargs.get('log_file', default_log_file), '.')
         # log.startLogging(log_output)
 
-    @property
     def url(self):
         return self.driver.current_url
 
@@ -97,13 +105,14 @@ class BasePage(object):
 
         :param locator: a locator tuple
         :return: a WebElement object
+        :rtype: WebElement
         """
 
         do_wait = kwargs.pop('wait', True)
         try:
             if do_wait:
-                self.wait_for_element(locator)
-            return self.driver.find_element(*locator, **kwargs)
+                return self.wait_for_element(locator)
+            return self.driver.find_element(*locator)
         except (NoSuchElementException, StaleElementReferenceException, TimeoutException):
             raise UnableToGetElementException(locator)
 
@@ -113,54 +122,72 @@ class BasePage(object):
 
         :param locator: a locator tuple
         :return: a list of WebElement objects
+        :rtype: WebElement
         """
 
         do_wait = kwargs.pop('wait', True)
         try:
             if do_wait:
-                self.wait_for_elements(locator)
-            return self.driver.find_elements(*locator, **kwargs)
+                return self.wait_for_elements(locator)
+            return self.driver.find_elements(*locator)
         except (NoSuchElementException, StaleElementReferenceException, TimeoutException):
             raise UnableToGetElementException(locator)
 
-    def _wait_until(self, until_function, locator, timeout):
-        return WebDriverWait(self.driver, timeout).until(
-            until_function(locator)
-        )
+    @contextmanager
+    def wait_for(self, wait_function, *args):
+        # def _wait_for(condition_function, *args, **kwargs):
+        #     start = now()
+        #     while now() < start + seconds(self.TIMEOUT_LENGTH):
+        #         if condition_function(*args, **kwargs):
+        #             return True
+        #         else:
+        #             self.sleep(0.1)
+        #     raise TimeoutException
+        yield wait_function(*args)
 
-    def wait_for_element(self, locator, timeout=10):
-        return self._wait_until(EC.presence_of_element_located, locator, timeout)
-        # return WebDriverWait(self.driver, timeout).until(
-        #     EC.presence_of_element_located(locator)
+    @contextmanager
+    def wait_for_webdriver(self, until_function, condition_function, *args):
+        yield self._wait_until(until_function, condition_function, *args)
+
+    def _wait_until(self, until_function, condition_function, *args):
+        _args = ', '.join(args) if len(args) > 1 else args[0]
+        mlog.debug('Starting wait (Until function: {0}, Condition function: {1}, Args: {2})'.format(until_function.__name__, condition_function.__name__, _args))
+        elem = until_function(condition_function(*args))
+        # elem = WebDriverWait(self.driver, timeout).until(
+        #     until_function(locator)
         # )
+        mlog.debug('Finished waiting')
+        return elem
 
-    def wait_for_element_to_not_exist(self, locator, timeout=10):
-        return WebDriverWait(self.driver, timeout).until_not(
-            EC.presence_of_element_located(locator)
-        )
+    @property
+    def _until(self):
+        return WebDriverWait(self.driver, self.TIMEOUT_LENGTH).until
+
+    @property
+    def _until_not(self):
+        return WebDriverWait(self.driver, self.TIMEOUT_LENGTH).until_not
+
+    @contextmanager
+    def wait_for_element(self, locator):
+        return self._wait_until(self._until, EC.presence_of_element_located, locator)
+
+    def wait_for_element_to_not_exist(self, locator):
+        return self._wait_until(self._until_not, EC.presence_of_element_located, locator)
 
     def wait_for_element_invisibility(self, *args):
-        return self._wait_until(EC.invisibility_of_element_located, *args)
+        return self._wait_until(self._until, EC.invisibility_of_element_located, *args)
 
-    def wait_for_elements(self, locator, timeout=10):
-        return WebDriverWait(self.driver, timeout).until(
-            EC.presence_of_all_elements_located(locator)
-        )
+    def wait_for_elements(self, locator):
+        return self._wait_until(self._until, EC.presence_of_all_elements_located, locator)
 
-    def wait_for_elements_to_not_exist(self, locator, timeout=10):
-        return WebDriverWait(self.driver, timeout).until_not(
-            EC.presence_of_all_elements_located(locator)
-        )
+    def wait_for_elements_to_not_exist(self, locator):
+        return self._wait_until(self._until_not, EC.presence_of_all_elements_located, locator)
 
-    def wait_for_text_in_element(self, locator, text, timeout=10):
-        return WebDriverWait(self.driver, timeout).until(
-            EC.text_to_be_present_in_element(locator, text)
-        )
+    def wait_for_text_in_element(self, locator, text):
+        return self._wait_until(self._until, EC.text_to_be_present_in_element, locator, text)
 
-    def wait_for_page_title(self, title, timeout=10):
-        return WebDriverWait(self.driver, timeout).until(
-            EC.title_is(title)
-        )
+    def wait_for_page_title(self, title):
+        return self._wait_until(self._until, EC.title_is, title)
 
     def check_value(self, check_value_name, found_value, custom_message=None):
         if custom_message is not None:

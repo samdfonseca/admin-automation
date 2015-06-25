@@ -16,3 +16,13 @@ class AdminElement(BasePage):
         self.driver = page.driver if isinstance(page, BasePage) else page
         self.locator = locator
         self.elem = page.get_element(locator)
+
+    def get_element(self, locator, **kwargs):
+        self.driver, d = self.elem, self.driver
+        super(AdminElement, self).get_element(locator, **kwargs)
+        self.driver = d
+
+    def get_elements(self, locator, **kwargs):
+        self.driver, d = self.elem, self.driver
+        super(AdminElement, self).get_elements(locator, **kwargs)
+        self.driver = d

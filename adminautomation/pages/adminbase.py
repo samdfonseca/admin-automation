@@ -1,6 +1,6 @@
 # Basepage for all logged-in Admin pages
 
-from adminautomation.pages import BasePage, LoginPage
+from adminautomation.pages import BasePage, LoginPage, ChooseVenuePage
 from adminautomation.structures.dropdownselector import Select2
 from adminautomation.locators import NavBarLocators, SidebarLocators, AdminPageLocators, BaseLocatorGroup
 from adminautomation.locators.by import BaseLocator
@@ -9,32 +9,59 @@ from selenium.common.exceptions import WebDriverException, StaleElementReference
 from time import sleep
 from urlparse import urljoin
 
+from bypassqatesting.adminsession import get_session_cookie
+from bypassqatesting.logger import get_module_logger
+
+
+mlog = get_module_logger()
 
 class AdminPage(BasePage):
 
+    DEFAULT_WINDOW_SIZE = (1500, 900)
     admin_locators = NavBarLocators() + AdminPageLocators() + SidebarLocators()
 
     def __init__(self, driver, **kwargs):
-        # self.admin_locators = BaseLocatorGroup()
-        # for k, v in (NavBarLocators.__dict__.items() + SidebarLocators.__dict__.items() + AdminPageLocators.__dict__.items()):
-        #     if isinstance(v, BaseLocator):
-        #         self.admin_locators.__setattr__(k, v)
+        """@type driver: WebDriver"""
 
         self.SKIP_LOGIN = kwargs.get("skip_login", False) # Use cached session id cookie to skip login page
-        self.AUTO_LOGIN = kwargs.get("auto_login", True) # Automatically login with the supplied credentials
-
+        self.AUTO_LOGIN = kwargs.get("auto_login", False) # Automatically login with the supplied credentials
         super(AdminPage, self).__init__(driver, **kwargs)
-        self.driver.get(self.ROOT_URL)
 
-        login_url = urljoin(self.ROOT_URL, LoginPage.PATH)
-        if self.driver.current_url == login_url and self.SKIP_LOGIN is True:
+        self.SKIP_INIT = kwargs.get("skip_init", False)
+        if self.SKIP_INIT:
+            return
+
+        mlog.debug('Page URL: {}'.format(self.URL))
+        self.driver.set_window_size(*self.DEFAULT_WINDOW_SIZE)
+        if kwargs.get("maximize_browser", True):
+            self.driver.maximize_window()
+            mlog.debug('Maximizing browser: ({0}x{1})'.format(self.driver.get_window_size()))
+        mlog.debug('Setting d')
+
+        if self.SKIP_LOGIN:
+            mlog.debug('Skip login')
+            self.driver.get(urljoin(self.ROOT_URL, '404.html'))
             self.attach_session_cookie()
             self.go_to_page_url()
-        elif self.driver.current_url == login_url and self.AUTO_LOGIN is True:
+        if 'admin_sessions/new' in self.url:
+            mlog.debug('Getting new admin cookie')
+            user = kwargs.get('user')
+            passwd = kwargs.get('passwd')
+            venue = kwargs.get('venue')
+            root_url = kwargs.get('root_url')
+            cookie = get_session_cookie(user=user, passwd=passwd, venue=venue, root_url=root_url)
+            self.driver.delete_all_cookies()
+            self.driver.add_cookie(cookie)
+            self.go_to_page_url()
+        elif self.AUTO_LOGIN:
+            mlog.debug('Auto login')
             admin = LoginPage(self.driver)
             admin.login(kwargs.get("user"), kwargs.get("passwd"))
-            admin.go_to_page_url()
+            admin = ChooseVenuePage(self.driver)
+            admin.select_venue_from_list_by_name(kwargs.get("venue"))
+            self.go_to_page_url()
         elif self.driver.current_url != self.URL:
+            mlog.debug('Login other')
             self.go_to_page_url()
 
     @property
@@ -696,6 +723,13 @@ class AdminPage(BasePage):
         }
         """
         self.driver.execute_async_script(angular_wait_script)
+
+    def scroll_into_view(self, target_item):
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", target_item)
+        while True:
+            sleep(1)
+            if target_item.is_displayed():
+                break
 
 
     #def _get_dropdown_selector_by_text(self, text, index_when_multiple_match=0):

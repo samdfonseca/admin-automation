@@ -1,6 +1,8 @@
 import re
+from contextlib import contextmanager
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from adminautomation.locators.datatablelocators import DataTableLocators
 from adminautomation.locators.by import css
 from adminautomation.structures.genericstructs import PaginationButtons
@@ -84,6 +86,18 @@ class DataTablePage(object):
         except AttributeError:
             return None
 
+    @property
+    def items_per_page_options(self):
+        return map(int, self.ITEMS_PER_PAGE_SELECTOR.options)
+
+    @property
+    def items_per_page(self):
+        return int(self.ITEMS_PER_PAGE_SELECTOR.first_selected_option)
+
+    def change_items_per_page(self, amount):
+        self.ITEMS_PER_PAGE_SELECTOR.select_by_visible_text(amount)
+        self.wait_for_table_load_after_filter()
+
     def get_column_by_header_text(self, header_text):
         try:
             elems = self.get_elements(DataTableLocators.DATATABLE + css('td[data-title-text="{0}"]'.format(header_text)))
@@ -91,24 +105,36 @@ class DataTablePage(object):
             return []
         return elems
 
+    def get_column_items_text_by_header_text(self, header_text):
+        elems = self.DATATABLE.find_element_by_css_selector('tbody').find_elements_by_css_selector('td[data-title-text="{0}"]'.format(header_text))
+        return map(lambda e: e.text, elems)
+
     def toggle_filters(self):
         self.DATATABLE_FILTER_TOGGLE.click()
 
     def show_filters(self):
-        if 'ng-hide' in self.DATATABLE_FILTER_ROW.get_attribute('class').split():
+        if not self.DATATABLE_FILTER_ROW.is_displayed():
+        # if 'ng-hide' in self.DATATABLE_FILTER_ROW.get_attribute('class').split():
             self.toggle_filters()
 
     def hide_filters(self):
-        if 'ng-hide' not in self.DATATABLE_FILTER_ROW.get_attribute('class').split():
+        if self.DATATABLE_FILTER_ROW.is_displayed():
+        # if 'ng-hide' not in self.DATATABLE_FILTER_ROW.get_attribute('class').split():
             self.toggle_filters()
 
     def get_filter_input_by_column_header_text(self, header_text):
         filter_index = map(lambda i: i.text, self.DATATABLE_HEADERS).index(header_text)
-        return self.DATATABLE_FILTERS[filter_index - 1]
+        elem = self.DATATABLE_FILTERS[filter_index].find_elements_by_css_selector('input')
+        if elem:
+            elem = elem[0]
+        else:
+            elem = self.DATATABLE_FILTERS[filter_index].find_element_by_css_selector('select')
+        return elem
 
     def clear_all_filters(self):
         self.show_filters()
         self.DATATABLE_CLEAR_FILTERS_BUTTON.click()
+        self.wait_for_table_load_after_filter()
 
     def toggle_header_checkbox(self):
         self.DATATABLE_HEADER_CHECKBOX.click()
@@ -131,6 +157,14 @@ class DataTablePage(object):
         elems = self.get_column_by_header_text(header_text)
         return filter(lambda i: i.text == filter_value, elems)
 
+    def wait_for_table_load_after_filter(self, passthroughs=2):
+        for i in range(passthroughs):
+            try:
+                map(lambda e: e.text, self.DATATABLE_TABLE_ROWS)
+            except StaleElementReferenceException:
+                return True
+        return True
+
     def toggle_take_bulk_actions_menu(self):
         self.BULK_ACTIONS_BUTTON.click()
 
@@ -141,3 +175,8 @@ class DataTablePage(object):
     def close_take_bulk_actions_menu(self):
         if self.BULK_ACTIONS_MENU.is_displayed():
             self.toggle_take_bulk_actions_menu()
+
+    def iter_table_rows(self):
+        rows = self.get_elements(DataTableLocators.DATATABLE_TABLE_ROWS)
+        for row in rows:
+            yield row
