@@ -35,7 +35,7 @@ class AdminPage(BasePage):
         self.driver.set_window_size(*self.DEFAULT_WINDOW_SIZE)
         if kwargs.get("maximize_browser", True):
             self.driver.maximize_window()
-            mlog.debug('Maximizing browser: ({0}x{1})'.format(self.driver.get_window_size()))
+            mlog.debug('Maximizing browser: ({0}x{1})'.format(*self.driver.get_window_size()))
         mlog.debug('Setting d')
 
         if self.SKIP_LOGIN:
@@ -43,7 +43,7 @@ class AdminPage(BasePage):
             self.driver.get(urljoin(self.ROOT_URL, '404.html'))
             self.attach_session_cookie()
             self.go_to_page_url()
-        if 'admin_sessions/new' in self.url:
+        if 'admin_sessions/new' in self.url():
             mlog.debug('Getting new admin cookie')
             user = kwargs.get('user')
             passwd = kwargs.get('passwd')

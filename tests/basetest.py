@@ -5,10 +5,7 @@ import unittest
 import os
 from functools import wraps
 import datetime
-
-import tinydb
-from tinydb import TinyDB, where
-from tinydb.operations import delete, increment, decrement
+import simplejson as json
 
 from adminautomation.utils import TestCaseDataReader
 from bypassqatesting.drivers import get_chrome_driver
@@ -27,9 +24,10 @@ class BaseTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.db = TinyDB('tests/db.json')
+        with open('tests/db.json', 'r') as f:
+            cls.db = json.load(f)
         cls.TEST_DATA = TestCaseDataReader(cls.DATA_FILE) if cls.DATA_FILE else None
-        cls.AUTH_COOKIE = cls.db.get(where('admin_session_cookie'))['admin_session_cookie']
+        cls.AUTH_COOKIE = cls.db.get('admin_session_cookie')
 
     @classmethod
     def tearDownClass(cls):

@@ -59,7 +59,7 @@ class TestEventsCalendarPage(BaseTest):
         page = EventsCalendarPage(self.driver, skip_login=True)
         if page.driver.current_url != page.URL:
             page.go_to_page_url()
-        start_time, end_time = events.next_available_event_time(datetimeutil.minutes(5), cached=True)
+        start_time, end_time = events.next_available_event_time(datetimeutil.minutes(5))
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
         page.add_new_event_form.create_event(event_name, start_time, end_time)
         page.sleep(1)
@@ -87,7 +87,7 @@ class TestEventsCalendarPage(BaseTest):
             page.go_to_page_url()
         start_time, end_time = events.next_available_event_time(datetimeutil.minutes(5))
         event_name = 'event_{}'.format(''.join(random.choice(string.ascii_letters + string.digits) for x in range(20)))
-        tags = 'testing'
+        tags = 'test'
         page.add_new_event_form.create_event(event_name, start_time, end_time, None, tags)
         page.sleep(1)
         self.event = events.get_event_by('name', event_name)

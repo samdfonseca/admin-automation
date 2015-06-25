@@ -36,7 +36,7 @@ class ItemsPage(AdminPage, DataTablePage):
 
     def open_new_item_form(self):
         self.NEW_ITEM_BUTTON.click()
-        self.wait_for_page_title('Items - New', timeout=30)
+        self.wait_for_page_title('Items - New')
 
     def search_for_item(self, query):
         self.ITEMS_SEARCHBOX.clear()
@@ -58,7 +58,7 @@ class ItemsPage(AdminPage, DataTablePage):
         """
         ref_element_locator = kwargs.get('ref_element_locator', self.locators.DATATABLE_TABLE_ROWS)
         timeout = kwargs.get('timeout', 30)
-        self.wait_for_elements(ref_element_locator, timeout=timeout)
+        self.wait_for_elements(ref_element_locator)
 
     def get_item_row_by_name(self, item_name):
         self.wait_for_element(link_text(item_name))

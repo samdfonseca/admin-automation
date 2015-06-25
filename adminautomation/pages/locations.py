@@ -30,12 +30,17 @@ class LocationsPage(AdminPage, DataTablePage):
     def alert(self):
         return Alert(self.driver)
 
+    def refresh_page(self):
+        super(LocationsPage, self).refresh_page()
+        self.wait_for_page_to_fully_load()
+
     def open_new_location_form(self):
         self.new_location_button.click()
-        self.wait_for_page_title('Locations - New', timeout=10)
+        self.wait_for_page_title('Locations - New')
 
     def search_for_location(self, query):
         self.filter_table('Name', query)
+        self.wait_for_table_load_after_filter()
         # self.wait_for_table_load_after_filter()
         # self.wait_for_elements(self.locators.DATATABLE_TABLE_ROWS)
 
@@ -64,7 +69,8 @@ class LocationsPage(AdminPage, DataTablePage):
 
     def get_row_by_name(self, location_name):
         # Fuck this is slow...
-        elem = filter(lambda i: ' '.join(i.text.split()[:-4]) == location_name if 'Vending' not in i.text else ' '.join(i.text.split()[:-5]) == location_name, self.DATATABLE_TABLE_ROWS)[0]
+        # elem = filter(lambda i: ' '.join(i.text.split()[:-4]) == location_name if 'Vending' not in i.text else ' '.join(i.text.split()[:-5]) == location_name, self.DATATABLE_TABLE_ROWS)[0]
+        elem = filter(lambda i: location_name in i.text, self.DATATABLE_TABLE_ROWS)[0]
         return elem
 
     def click_edit_location_link_by_name(self, location_name):

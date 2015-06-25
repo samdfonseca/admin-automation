@@ -112,7 +112,9 @@ def test_clear_filters(page, location_data):
     page.search_for_location(query)
     page.filter_table_by_type(location_type)
     page.clear_all_filters()
+    page.wait_for_table_load_after_filter(passthroughs=10)
     names_post = page.get_column_items_text_by_header_text('Name')
+
     for name in names_pre:
         assert_that(name, is_in(names_post))
 

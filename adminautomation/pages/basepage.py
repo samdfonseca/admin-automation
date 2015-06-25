@@ -167,7 +167,7 @@ class BasePage(object):
     def _until_not(self):
         return WebDriverWait(self.driver, self.TIMEOUT_LENGTH).until_not
 
-    @contextmanager
+    # @contextmanager
     def wait_for_element(self, locator):
         return self._wait_until(self._until, EC.presence_of_element_located, locator)
 

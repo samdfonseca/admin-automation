@@ -22,7 +22,7 @@ class OrdersPage(AdminPage, BasePage):
             self.wait_for_page_title('Orders - Index', 30)
             self.wait_for_angular()
         elif wait_for:
-            self.wait_for_elements(wait_for, timeout=30)
+            self.wait_for_elements(wait_for)
 
     @property
     def RELOAD_TABLE_BUTTON(self):

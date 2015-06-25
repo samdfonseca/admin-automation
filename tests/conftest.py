@@ -38,7 +38,7 @@ def testdata(request):
         mlog.debug('Closing database: {}'.format(db_file))
         with open(cached_db_file, 'r') as ff:
             mlog.debug('Reverting to cached database: {}'.format(cached_db_file))
-            with atomic_save(db_file, 'w') as f:
+            with atomic_save(db_file) as f:
                 json.dump(json.load(ff), f)
         os.remove(cached_db_file)
     request.addfinalizer(fin)
@@ -54,7 +54,7 @@ def update_testdata(testdata):
     return updater
 
 @pytest.fixture
-def driver(request):
+def unauthenticated_driver(request):
     mlog.debug('Starting new driver')
     driver = get_chrome_driver()
     def fin():
