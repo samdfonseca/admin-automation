@@ -8,6 +8,12 @@
   - [Selenium Server](http://www.seleniumhq.org/download/)
 
 ### Setup
+EASY WAY:
+
+- Ask Sam to do it.
+
+HARD WAY:
+
 - Setup virtualenv.
 
 ```
