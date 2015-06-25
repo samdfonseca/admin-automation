@@ -6,18 +6,19 @@ from urlparse import urljoin
 from time import sleep, time
 import logging
 
+from selenium.webdriver import Remote as WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # from twisted.python import log
 
-from bypassqatesting.logger import get_module_logger
+from bypassqatesting import ModuleLogger
 from bypassqatesting.adminsession import get_session_cookie
 from bypassqatesting.datetimeutil import now, seconds
 
 
-mlog = get_module_logger()
+mlog = ModuleLogger()
 
 class UnableToGetElementException(Exception):
     def __init__(self, locator):
@@ -40,6 +41,7 @@ class BasePage(object):
         """
 
         self.driver = driver
+        """@type : WebDriver"""
 
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
         self.URL = kwargs.get("url", urljoin(self.ROOT_URL, self.PATH))
@@ -55,7 +57,6 @@ class BasePage(object):
         # log_output = logfile.LogFile(kwargs.get('log_file', default_log_file), '.')
         # log.startLogging(log_output)
 
-    @property
     def url(self):
         return self.driver.current_url
 

@@ -132,7 +132,6 @@ try:
 except ImportError:
     readline.parse_and_bind('tab: complete')
 
-testdata_db = TinyDB('tests/db.json')
 
 if __doc__ is None:
     c = EditableBufferInteractiveConsole(locals=locals())

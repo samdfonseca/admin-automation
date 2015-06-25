@@ -22,6 +22,7 @@ setup(
         'git+ssh://git@github.com/samdfonseca/sneeze.git#egg=nose-sneeze-0.0.3',
         'git+ssh://git@github.com/samdfonseca/pocket.git#egg=sneeze-pocket-0.0.1',
         'git+ssh://git@github.com/samdfonseca/pocket_change.git#egg=pocket-change-0.0.6',
+        'git+ssh://git@github.com/samdfonseca/boltons#egg=boltons-0.6.5dev',
     ],
     description='Bypass Admin Automated Testing'
 )

@@ -17,29 +17,27 @@ mlog = get_module_logger()
 
 class AdminPage(BasePage):
 
+    DEFAULT_WINDOW_SIZE = (1500, 900)
     admin_locators = NavBarLocators() + AdminPageLocators() + SidebarLocators()
 
     def __init__(self, driver, **kwargs):
-        # self.admin_locators = BaseLocatorGroup()
-        # for k, v in (NavBarLocators.__dict__.items() + SidebarLocators.__dict__.items() + AdminPageLocators.__dict__.items()):
-        #     if isinstance(v, BaseLocator):
-        #         self.admin_locators.__setattr__(k, v)
+        """@type driver: WebDriver"""
 
-        # self.driver = driver
-        # self.URL = urljoin(self.ROOT_URL, self.PATH)
         self.SKIP_LOGIN = kwargs.get("skip_login", False) # Use cached session id cookie to skip login page
         self.AUTO_LOGIN = kwargs.get("auto_login", False) # Automatically login with the supplied credentials
-        self.SKIP_GOTO = kwargs.get("skip_goto", False)
-
         super(AdminPage, self).__init__(driver, **kwargs)
-        mlog.debug('Page URL: {}'.format(self.URL))
-        # self.driver.get(self.ROOT_URL)
 
-        # self.driver.get('https://admin-integration.bypasslane.com/locations#/')
-        # login_url = urljoin(self.ROOT_URL, LoginPage.PATH)
-        # if self.SKIP_GOTO:
-        #     mlog.debug('Skip goto')
-        #     driver.get('https://admin-integration.bypasslane.com/locations#/')
+        self.SKIP_INIT = kwargs.get("skip_init", False)
+        if self.SKIP_INIT:
+            return
+
+        mlog.debug('Page URL: {}'.format(self.URL))
+        self.driver.set_window_size(*self.DEFAULT_WINDOW_SIZE)
+        if kwargs.get("maximize_browser", True):
+            self.driver.maximize_window()
+            mlog.debug('Maximizing browser: ({0}x{1})'.format(self.driver.get_window_size()))
+        mlog.debug('Setting d')
+
         if self.SKIP_LOGIN:
             mlog.debug('Skip login')
             self.driver.get(urljoin(self.ROOT_URL, '404.html'))

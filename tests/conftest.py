@@ -2,7 +2,7 @@ import pytest
 import os
 import ConfigParser
 import simplejson as json
-from tinydb import TinyDB, where
+from boltons.fileutils import atomic_save
 from bypassqatesting.adminsession import get_session_cookie
 from bypassqatesting.drivers import get_chrome_driver
 from bypassqatesting.logger import get_module_logger
@@ -38,7 +38,7 @@ def testdata(request):
         mlog.debug('Closing database: {}'.format(db_file))
         with open(cached_db_file, 'r') as ff:
             mlog.debug('Reverting to cached database: {}'.format(cached_db_file))
-            with open(db_file, 'w') as f:
+            with atomic_save(db_file, 'w') as f:
                 json.dump(json.load(ff), f)
         os.remove(cached_db_file)
     request.addfinalizer(fin)

@@ -37,7 +37,9 @@ class BaseTest(unittest.TestCase):
 
     def setUp(self):
         self.driver = get_chrome_driver()
-        self.driver.set_window_size(1500, 900)
+        if os.environ.get('DISPLAY') == ':99':
+            self.driver.set_window_size(1500, 900) # Selenium server run in an Xvfb session
+        self.driver.maximize_window()
 
     def tearDown(self):
         self.driver.quit()
