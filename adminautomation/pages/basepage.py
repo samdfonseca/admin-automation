@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from contextlib import contextmanager
-from urlparse import urljoin
+from urlparse import urljoin, urlparse
 from time import sleep, time
 import logging
 
@@ -44,6 +44,9 @@ class BasePage(object):
         """@type : WebDriver"""
 
         self.ROOT_URL = kwargs.get("root_url", self.ROOT_URL)
+        p_url = '://'.join(urlparse(self.url())[:2])
+        if not self.ROOT_URL.startswith(p_url):
+            self.ROOT_URL = p_url
         self.URL = kwargs.get("url", urljoin(self.ROOT_URL, self.PATH))
 
         # if kwargs.has_key('log_file'):
@@ -79,7 +82,16 @@ class BasePage(object):
         Go to the url assigned to the pages URL attribute.
         """
 
+        mlog.debug('Going to URL: '+self.URL)
         self.driver.get(self.URL)
+
+    def go_to_page_url_if_not_already_there(self):
+        """
+        Go to the url assigned to the pages URL attribute, if not already on that page.
+        """
+
+        if self.url() != self.URL:
+            self.go_to_page_url()
 
     def refresh_page(self):
         """

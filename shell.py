@@ -21,8 +21,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import *
 
 import adminautomation
-from adminautomation.utils.drivers import get_chrome_driver as RemoteChromeDriver
-from adminautomation.utils.drivers import get_phantomjs_driver as RemotePhantomJSDriver
+from bypassqatesting import drivers
 from adminautomation.pages import *
 from adminautomation.locators import *
 from adminautomation.structures import *

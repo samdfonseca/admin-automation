@@ -145,6 +145,10 @@ class ChooseVenuePage(BasePage):
         return []
 
 
+    def get_current_list_items_text(self):
+        return [i.text for i in self.get_current_list_items()]
+
+
     def search_for_venue(self, search_query):
         """
         Simulates clicking the venues searchbox.

@@ -4,7 +4,7 @@ import ConfigParser
 import simplejson as json
 from boltons.fileutils import atomic_save
 from bypassqatesting.adminsession import get_session_cookie
-from bypassqatesting.drivers import get_chrome_driver
+from bypassqatesting.drivers import get_driver
 from bypassqatesting.logger import get_module_logger
 
 
@@ -53,31 +53,37 @@ def update_testdata(testdata):
             json.dump(testdata, f)
     return updater
 
-@pytest.fixture
-def unauthenticated_driver(request):
+@pytest.fixture(scope='module')
+def unauthenticated_driver(request, testdata):
     mlog.debug('Starting new driver')
-    driver = get_chrome_driver()
+    # browser_type = testdata.get('browser_type')
+    # browser_default_window_size = tuple(testdata.get('browser_default_window_size'))
+    # selenium_server_url = testdata.get('selenium_server_url')
+    # maximize_browser_window = testdata.get('maximize_browser_window')
+    # custom_webdriver_desired_capabilities = testdata.get('custom_webdriver_desired_capabilities')
+    webdriver_kwargs = testdata.get('webdriver_kwargs', {})
+    mlog.debug('Driver kwargs: {}'.format(', '.join(map(lambda i: '='.join([i[0], i[1]]), webdriver_kwargs.items()))))
+    driver = get_driver(**webdriver_kwargs)
     def fin():
         mlog.debug('Closing driver...')
         driver.close()
     request.addfinalizer(fin)
     return driver
 
-@pytest.fixture
-def authenticated_driver(request, testdata):
-    mlog.debug('Starting new authenticated driver...')
+@pytest.fixture(scope='module')
+def driver(request, unauthenticated_driver, testdata):
+    mlog.debug('Authenticating driver...')
     url = testdata.get('baseurl') + '404.html'
     user, password, venue, root_url = testdata['admin_user'], testdata['admin_password'], testdata['venue']['id'], testdata['baseurl']
     cookie = get_session_cookie(user=user, passwd=password, venue=venue, root_url=root_url)
-    # cookie = testdata.get('admin_session_cookie')
-    driver = get_chrome_driver()
+    driver = unauthenticated_driver
     driver.get(url)
     driver.delete_all_cookies()
     driver.add_cookie(cookie)
-    def fin():
-        mlog.debug('Closing driver...')
-        driver.close()
-    request.addfinalizer(fin)
+    # def fin():
+    #     mlog.debug('Closing driver...')
+    #     driver.close()
+    # request.addfinalizer(fin)
     mlog.debug('Driver started at url: {}'.format(driver.current_url))
     return driver
 
