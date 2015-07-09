@@ -121,6 +121,11 @@ class EditableBufferInteractiveConsole(InteractiveConsole):
             line = lines[-1]
         return line
 
+class SeleniumServerURL(object):
+    LOCAL = 'http://localhost:4444/wd/hub'
+    TUNNEL = 'http://localhost:4445/wd/hub'
+    LAB_INTERNAL = 'http://10.0.1.15:4444/wd/hub'
+
 try:
     from dateutil.parser import parser as parse_date
 except ImportError:
